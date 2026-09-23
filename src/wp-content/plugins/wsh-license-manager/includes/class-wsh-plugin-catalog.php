@@ -94,11 +94,10 @@ class WSH_Plugin_Catalog
 		wp_nonce_field('wsh_plugin_details', 'wsh_plugin_details_nonce');
 
 		$slug = (string) get_post_meta($post->ID, 'wsh_plugin_slug', true);
-		$version = (string) get_post_meta($post->ID, 'wsh_plugin_version', true);
 		$summary = (string) get_post_meta($post->ID, 'wsh_plugin_summary', true);
 		$landing_id = (int) get_post_meta($post->ID, '_wsh_landing_page_id', true);
 		$landing = $landing_id > 0 ? get_post($landing_id) : null;
-		$has_zip = WSH_Plugin_Storage::has_file($post->ID);
+		$packages = WSH_Plugin_Storage::packages($post->ID);
 		?>
 		<p><?php esc_html_e('The ZIP is stored outside the public uploads folder. Customers never see a direct file address. My Account gives them a personal download link that works only while their license is active.', 'wsh-license-manager'); ?></p>
 		<table class="form-table" role="presentation">
@@ -108,10 +107,6 @@ class WSH_Plugin_Catalog
 					<input type="text" class="regular-text" id="wsh_plugin_slug" name="wsh_plugin_slug" value="<?php echo esc_attr($slug); ?>" placeholder="wsh-views-counter-pro" required>
 					<p class="description"><?php esc_html_e('Must match the WooCommerce product meta wsh_plugin_slug. The license is issued for this slug.', 'wsh-license-manager'); ?></p>
 				</td>
-			</tr>
-			<tr>
-				<th scope="row"><label for="wsh_plugin_version"><?php esc_html_e('Version', 'wsh-license-manager'); ?></label></th>
-				<td><input type="text" class="regular-text" id="wsh_plugin_version" name="wsh_plugin_version" value="<?php echo esc_attr($version); ?>" placeholder="1.0.0"></td>
 			</tr>
 			<tr>
 				<th scope="row"><label for="wsh_plugin_summary"><?php esc_html_e('Landing summary', 'wsh-license-manager'); ?></label></th>
@@ -137,22 +132,54 @@ class WSH_Plugin_Catalog
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="wsh_plugin_zip"><?php esc_html_e('Plugin ZIP', 'wsh-license-manager'); ?></label></th>
+				<th scope="row"><?php esc_html_e('Plugin ZIPs', 'wsh-license-manager'); ?></th>
 				<td>
-					<?php if ($has_zip) : ?>
-						<p>
-							<strong><?php echo esc_html(WSH_Plugin_Storage::original_name($post->ID)); ?></strong>
-							— <?php esc_html_e('stored privately', 'wsh-license-manager'); ?>
-						</p>
-						<p><a class="button" href="<?php echo esc_url(WSH_Plugin_Storage::download_url($post->ID)); ?>"><?php esc_html_e('Test download', 'wsh-license-manager'); ?></a></p>
-						<label>
-							<input type="checkbox" name="wsh_plugin_zip_remove" value="1">
-							<?php esc_html_e('Remove the current ZIP', 'wsh-license-manager'); ?>
-						</label>
-					<?php else : ?>
-						<p class="description"><?php esc_html_e('No ZIP stored yet.', 'wsh-license-manager'); ?></p>
+					<p class="description"><?php esc_html_e('Add one row per version. Views Counter needs a Free row and a PRO row. Customers see the list newest first, and the file address stays private.', 'wsh-license-manager'); ?></p>
+					<?php if (! empty($packages)) : ?>
+						<table class="widefat striped" style="max-width:760px;margin-bottom:12px;">
+							<thead>
+								<tr>
+									<th><?php esc_html_e('Package', 'wsh-license-manager'); ?></th>
+									<th><?php esc_html_e('Version', 'wsh-license-manager'); ?></th>
+									<th><?php esc_html_e('File', 'wsh-license-manager'); ?></th>
+									<th><?php esc_html_e('Remove', 'wsh-license-manager'); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php foreach ($packages as $package) : ?>
+									<tr>
+										<td><?php echo esc_html($package['channel'] === 'free' ? 'Free' : 'PRO'); ?></td>
+										<td><?php echo esc_html($package['version']); ?></td>
+										<td>
+											<?php echo esc_html($package['original']); ?>
+											<a href="<?php echo esc_url(WSH_Plugin_Storage::download_url($post->ID, $package['id'])); ?>"><?php esc_html_e('Test', 'wsh-license-manager'); ?></a>
+										</td>
+										<td><input type="checkbox" name="wsh_remove_file[]" value="<?php echo esc_attr($package['id']); ?>"></td>
+									</tr>
+								<?php endforeach; ?>
+							</tbody>
+						</table>
 					<?php endif; ?>
-					<p><input type="file" id="wsh_plugin_zip" name="wsh_plugin_zip" accept=".zip,application/zip"></p>
+					<div id="wsh-file-rows">
+						<div class="wsh-file-row" style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+							<select name="wsh_new_channel[]">
+								<option value="free"><?php esc_html_e('Free', 'wsh-license-manager'); ?></option>
+								<option value="pro" selected><?php esc_html_e('PRO', 'wsh-license-manager'); ?></option>
+							</select>
+							<input type="text" name="wsh_new_version[]" placeholder="1.0.0" style="width:120px;">
+							<input type="file" name="wsh_new_zip[]" accept=".zip,application/zip">
+						</div>
+					</div>
+					<button type="button" class="button" id="wsh-add-file-row"><?php esc_html_e('Add version', 'wsh-license-manager'); ?></button>
+					<script>
+						document.getElementById('wsh-add-file-row').addEventListener('click', function () {
+							var rows = document.getElementById('wsh-file-rows');
+							var row = rows.querySelector('.wsh-file-row');
+							var copy = row.cloneNode(true);
+							copy.querySelectorAll('input').forEach(function (input) { input.value = ''; });
+							rows.appendChild(copy);
+						});
+					</script>
 				</td>
 			</tr>
 		</table>
@@ -194,23 +221,52 @@ class WSH_Plugin_Catalog
 			update_post_meta($post_id, 'wsh_plugin_slug', $slug);
 		}
 
-		$version = isset($_POST['wsh_plugin_version']) ? sanitize_text_field(wp_unslash($_POST['wsh_plugin_version'])) : '';
 		$summary = isset($_POST['wsh_plugin_summary']) ? sanitize_textarea_field(wp_unslash($_POST['wsh_plugin_summary'])) : '';
-		update_post_meta($post_id, 'wsh_plugin_version', $version);
 		update_post_meta($post_id, 'wsh_plugin_summary', $summary);
 
-		if (! empty($_POST['wsh_plugin_zip_remove'])) {
-			WSH_Plugin_Storage::delete_file($post_id);
+		if (! empty($_POST['wsh_remove_file']) && is_array($_POST['wsh_remove_file'])) {
+			WSH_Plugin_Storage::remove_packages($post_id, array_map('sanitize_text_field', wp_unslash($_POST['wsh_remove_file'])));
 		}
 
-		if (! empty($_FILES['wsh_plugin_zip']['name'])) {
-			$result = WSH_Plugin_Storage::store_upload($post_id, $_FILES['wsh_plugin_zip']);
+		self::save_new_packages($post_id);
+
+		self::ensure_landing_page($post_id, $post->post_title);
+	}
+
+	private static function save_new_packages($post_id)
+	{
+		$channels = isset($_POST['wsh_new_channel']) ? (array) wp_unslash($_POST['wsh_new_channel']) : array();
+		$versions = isset($_POST['wsh_new_version']) ? (array) wp_unslash($_POST['wsh_new_version']) : array();
+		$uploads = isset($_FILES['wsh_new_zip']) && is_array($_FILES['wsh_new_zip']) ? $_FILES['wsh_new_zip'] : array();
+
+		if (empty($uploads['name']) || ! is_array($uploads['name'])) {
+			return;
+		}
+
+		foreach ($uploads['name'] as $index => $name) {
+			if ($name === '') {
+				continue;
+			}
+
+			$version = sanitize_text_field($versions[$index] ?? '');
+			if ($version === '') {
+				self::notice(__('Each ZIP needs a version number.', 'wsh-license-manager'));
+				continue;
+			}
+
+			$channel = sanitize_key($channels[$index] ?? 'pro');
+			$result = WSH_Plugin_Storage::add_package($post_id, $channel, $version, array(
+				'name'     => $uploads['name'][$index] ?? '',
+				'type'     => $uploads['type'][$index] ?? '',
+				'tmp_name' => $uploads['tmp_name'][$index] ?? '',
+				'error'    => $uploads['error'][$index] ?? UPLOAD_ERR_NO_FILE,
+				'size'     => $uploads['size'][$index] ?? 0,
+			));
+
 			if (is_wp_error($result)) {
 				self::notice($result->get_error_message());
 			}
 		}
-
-		self::ensure_landing_page($post_id, $post->post_title);
 	}
 
 	private static function ensure_landing_page($plugin_id, $title)
@@ -298,8 +354,9 @@ class WSH_Plugin_Catalog
 		}
 
 		if ($column === 'wsh_zip') {
-			echo WSH_Plugin_Storage::has_file($post_id)
-				? esc_html__('Protected', 'wsh-license-manager')
+			$count = count(WSH_Plugin_Storage::packages($post_id));
+			echo $count > 0
+				? esc_html(sprintf(_n('%d protected', '%d protected', $count, 'wsh-license-manager'), $count))
 				: esc_html__('None', 'wsh-license-manager');
 		}
 	}
@@ -346,7 +403,8 @@ class WSH_Plugin_Catalog
 			));
 		}
 
-		echo '<h2>' . esc_html__('Your plugins', 'wsh-license-manager') . '</h2>';
+		echo '<h2>' . esc_html__('My Downloads', 'wsh-license-manager') . '</h2>';
+		echo '<div class="woocommerce-info">' . esc_html__('Always download the latest version available. Previous versions may not be secure or stable.', 'wsh-license-manager') . '</div>';
 
 		if (empty($licenses)) {
 			echo '<p>' . esc_html__('You do not have an active plugin license yet.', 'wsh-license-manager') . '</p>';
@@ -354,9 +412,9 @@ class WSH_Plugin_Catalog
 		}
 
 		echo '<table class="shop_table shop_table_responsive"><thead><tr>';
-		echo '<th>' . esc_html__('Plugin', 'wsh-license-manager') . '</th>';
+		echo '<th>' . esc_html__('Download name', 'wsh-license-manager') . '</th>';
 		echo '<th>' . esc_html__('License key', 'wsh-license-manager') . '</th>';
-		echo '<th>' . esc_html__('Download', 'wsh-license-manager') . '</th>';
+		echo '<th>' . esc_html__('Files', 'wsh-license-manager') . '</th>';
 		echo '</tr></thead><tbody>';
 
 		foreach ($licenses as $license) {
@@ -369,8 +427,9 @@ class WSH_Plugin_Catalog
 			echo '<td>' . esc_html($name) . '</td>';
 			echo '<td><code>' . esc_html($key) . '</code></td>';
 			echo '<td>';
-			if ($plugin instanceof WP_Post && WSH_Plugin_Storage::user_can_download(get_current_user_id(), $plugin->ID)) {
-				echo '<a class="button" href="' . esc_url(WSH_Plugin_Storage::download_url($plugin->ID)) . '">' . esc_html__('Download', 'wsh-license-manager') . '</a>';
+			if ($plugin instanceof WP_Post) {
+				self::render_version_links($plugin, 'free');
+				self::render_version_links($plugin, 'pro');
 			} else {
 				esc_html_e('Not available yet', 'wsh-license-manager');
 			}
@@ -378,6 +437,22 @@ class WSH_Plugin_Catalog
 		}
 
 		echo '</tbody></table>';
+	}
+
+	private static function render_version_links($plugin, $channel)
+	{
+		$packages = WSH_Plugin_Storage::packages_for_channel($plugin->ID, $channel);
+		if (empty($packages) || ! WSH_Plugin_Storage::user_can_download(get_current_user_id(), $plugin->ID, $channel)) {
+			return;
+		}
+
+		echo '<p style="margin:0 0 8px;"><strong>' . esc_html($channel === 'free' ? 'Free' : 'PRO') . '</strong></p>';
+		echo '<ul style="margin:0 0 16px;padding-left:18px;">';
+		foreach ($packages as $package) {
+			$label = trim(get_the_title($plugin) . ' ' . $package['version']);
+			echo '<li><a href="' . esc_url(WSH_Plugin_Storage::download_url($plugin->ID, $package['id'])) . '">' . esc_html($label) . '</a></li>';
+		}
+		echo '</ul>';
 	}
 
 	public static function find_by_slug($slug)
