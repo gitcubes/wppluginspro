@@ -38,7 +38,8 @@ $delays = ['0.1s', '0.18s', '0.26s', '0.34s'];
                         $plugin_bottom_button_url = get_field('plugin_bottom_button_url', $plugin_id);
                         $plugin_button_text = get_field('plugin_button_text', $plugin_id);
                         $plugin_badges = get_field('plugin_badges', $plugin_id);
-                        $plugin_single_url = get_permalink($plugin_id);
+                        $landing_id = (int) get_post_meta($plugin_id, 'wsh_landing_page_id', true);
+                        $plugin_single_url = $landing_id > 0 ? get_permalink($landing_id) : get_permalink($plugin_id);
 
                         if (!$plugin_button_text) {
                             $plugin_button_text = 'View plugin';

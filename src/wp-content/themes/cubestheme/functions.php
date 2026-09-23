@@ -159,6 +159,90 @@ function cubestheme_create_post_type()
 
 add_action('init', 'cubestheme_create_post_type');
 
+function cubestheme_migrate_featured_plugins_to_products()
+{
+    if (get_option('cubestheme_featured_products_migrated') === '1' || !class_exists('WC_Product_Simple')) {
+        return;
+    }
+
+    $front_id = (int) get_option('page_on_front');
+    $selected = $front_id > 0 ? get_post_meta($front_id, 'featured_plugins', true) : array();
+    if (!is_array($selected) || $selected === array()) {
+        update_option('cubestheme_featured_products_migrated', '1');
+        return;
+    }
+
+    $product_ids = array();
+
+    foreach ($selected as $old_id) {
+        $old_id = (int) $old_id;
+        if (get_post_type($old_id) === 'product') {
+            $product_ids[] = $old_id;
+            continue;
+        }
+
+        if (get_post_type($old_id) !== 'wp_plugins_pro') {
+            continue;
+        }
+
+        $product = new WC_Product_Simple();
+        $product->set_name(get_the_title($old_id));
+        $product->set_slug(get_post_field('post_name', $old_id));
+        $product->set_status('publish');
+        $product->set_catalog_visibility('hidden');
+        $product->set_virtual(true);
+        $product_id = $product->save();
+
+        if (!$product_id) {
+            continue;
+        }
+
+        $meta = get_post_meta($old_id);
+        foreach ($meta as $key => $values) {
+            if (strpos($key, 'plugin_') !== 0 && strpos($key, '_plugin_') !== 0) {
+                continue;
+            }
+
+            foreach ($values as $value) {
+                add_post_meta($product_id, $key, maybe_unserialize($value));
+            }
+        }
+
+        $thumbnail_id = (int) get_post_thumbnail_id($old_id);
+        if ($thumbnail_id > 0) {
+            set_post_thumbnail($product_id, $thumbnail_id);
+        }
+
+        $terms = wp_get_object_terms($old_id, 'plugin_category', array('fields' => 'ids'));
+        if (!is_wp_error($terms) && $terms) {
+            wp_set_object_terms($product_id, $terms, 'plugin_category');
+        }
+
+        $slug = (string) get_post_field('post_name', $old_id);
+        update_post_meta($product_id, 'wsh_plugin_slug', $slug);
+        update_post_meta($product_id, 'wsh_show_in_catalog', '1');
+
+        $landing_slug = strpos($slug, 'wsh-') === 0 ? substr($slug, 4) : $slug;
+        $landing = get_page_by_path($landing_slug);
+        if (!$landing instanceof WP_Post) {
+            $landing = get_page_by_path($slug);
+        }
+        if ($landing instanceof WP_Post) {
+            update_post_meta($product_id, 'wsh_landing_page_id', $landing->ID);
+        }
+
+        $product_ids[] = $product_id;
+    }
+
+    if ($product_ids !== array()) {
+        update_post_meta($front_id, 'featured_plugins', $product_ids);
+    }
+
+    update_option('cubestheme_featured_products_migrated', '1');
+}
+
+add_action('init', 'cubestheme_migrate_featured_plugins_to_products', 30);
+
 
 /*
 function cubestheme_init_sidebar()
