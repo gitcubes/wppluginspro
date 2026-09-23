@@ -16,7 +16,7 @@ if (!defined('_S_VERSION')) {
 
 function themeVersion()
 {
-    return  '1.0.4';
+    return  '1.0.5';
 }
 
 // INCLUDE FILES
@@ -210,6 +210,7 @@ require get_template_directory() . '/inc/options.php';
   Company Settings
  */
 require get_template_directory() . '/inc/company-settings.php';
+require get_template_directory() . '/inc/account-auth.php';
 
 /**
   Theme Widgets pagee

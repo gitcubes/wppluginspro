@@ -79,16 +79,21 @@
                     )); ?>
                 </nav>
 
+                <?php
+                $cubestheme_logged_in = is_user_logged_in();
+                $cubestheme_account_url = $cubestheme_logged_in ? cubestheme_account_url() : cubestheme_auth_page_url('login');
+                $cubestheme_cta_url = $cubestheme_logged_in ? cubestheme_account_url() : cubestheme_auth_page_url('register');
+                $cubestheme_cta_label = $cubestheme_logged_in ? __('Account', 'cubestheme') : __('Register', 'cubestheme');
+                ?>
                 <div class="header-actions">
-                    <a href="#" class="icon-button" type="button" aria-label="User account">
+                    <a href="<?php echo esc_url($cubestheme_account_url); ?>" class="icon-button" aria-label="<?php echo esc_attr($cubestheme_logged_in ? __('Your account', 'cubestheme') : __('Sign in', 'cubestheme')); ?>">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                             <path d="M19 20a7 7 0 0 0-14 0" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" />
                             <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" />
                         </svg>
                     </a>
-                    <a href="#" class="cta-button"
-                        type="button"><?php printf(esc_html__('Register', 'cubestheme')); ?></a>
+                    <a href="<?php echo esc_url($cubestheme_cta_url); ?>" class="cta-button"><?php echo esc_html($cubestheme_cta_label); ?></a>
                 </div>
 
                 <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false"
@@ -107,15 +112,14 @@
                             'submenu_link_class' => 'mobile-link',
                         )); ?>
                         <div class="mobile-actions">
-                            <a href="#" class="icon-button" type="button" aria-label="User account">
+                            <a href="<?php echo esc_url($cubestheme_account_url); ?>" class="icon-button" aria-label="<?php echo esc_attr($cubestheme_logged_in ? __('Your account', 'cubestheme') : __('Sign in', 'cubestheme')); ?>">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                     <path d="M19 20a7 7 0 0 0-14 0" stroke="currentColor" stroke-width="2"
                                         stroke-linecap="round" />
                                     <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" />
                                 </svg>
                             </a>
-                            <a href="#" class="cta-button"
-                                type="button"><?php printf(esc_html__('Register', 'cubestheme')); ?></a>
+                            <a href="<?php echo esc_url($cubestheme_cta_url); ?>" class="cta-button"><?php echo esc_html($cubestheme_cta_label); ?></a>
                         </div>
                     </nav>
                 </div>

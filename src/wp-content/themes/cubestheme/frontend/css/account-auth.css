@@ -1,0 +1,21 @@
+.hero-section form .auth-notice {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.hero-section form .auth-notice.is-error {
+  color: #8a1f11;
+  background: #fff1ee;
+  border: 1px solid rgba(180, 40, 20, 0.25);
+}
+
+.hero-section form .accept-terms-text a {
+  color: #034dd3;
+  font-weight: 600;
+  text-decoration: underline;
+}
