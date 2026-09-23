@@ -16,7 +16,7 @@ if (!defined('_S_VERSION')) {
 
 function themeVersion()
 {
-    return  '1.0.8';
+    return  '1.0.9';
 }
 
 // INCLUDE FILES
@@ -703,6 +703,56 @@ function cubestheme_commerce_assets()
 }
 
 add_action('wp_enqueue_scripts', 'cubestheme_commerce_assets', 100);
+
+function cubestheme_plugins_page_url()
+{
+    $pages = get_posts(array(
+        'post_type'      => 'page',
+        'post_status'    => 'publish',
+        'posts_per_page' => 1,
+        'fields'         => 'ids',
+        'meta_key'       => '_wp_page_template',
+        'meta_value'     => 'page-for-plugins.php',
+    ));
+
+    if ($pages) {
+        return get_permalink($pages[0]);
+    }
+
+    return home_url('/plugins/');
+}
+
+function cubestheme_empty_cart_block($content, $block)
+{
+    if (is_admin() || ($block['blockName'] ?? '') !== 'woocommerce/empty-cart-block') {
+        return $content;
+    }
+
+    $plugins_url = cubestheme_plugins_page_url();
+
+    ob_start();
+    ?>
+    <div data-block-name="woocommerce/empty-cart-block" class="wp-block-woocommerce-empty-cart-block">
+        <div class="cart-empty">
+            <div class="cart-empty-mark" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                    <path d="M6.5 8h11l-.8 11.2a1 1 0 0 1-1 .8H8.3a1 1 0 0 1-1-.8L6.5 8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M9 8V7a3 3 0 0 1 6 0v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h2><?php esc_html_e('Your cart is empty', 'cubestheme'); ?></h2>
+            <p><?php esc_html_e('Choose a plugin and the license will be added here.', 'cubestheme'); ?></p>
+            <a class="cart-empty-link" href="<?php echo esc_url($plugins_url); ?>">
+                <?php esc_html_e('Explore plugins', 'cubestheme'); ?>
+            </a>
+        </div>
+    </div>
+    <?php
+
+    return ob_get_clean();
+}
+
+add_filter('render_block', 'cubestheme_empty_cart_block', 20, 2);
 
 function cubestheme_checkout_order_open()
 {
