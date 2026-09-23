@@ -247,6 +247,13 @@
                 "operator": "==",
                 "value": "wp_plugins_pro"
             }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "product"
+            }
         ]
     ],
     "menu_order": 0,
@@ -254,14 +261,10 @@
     "style": "default",
     "label_placement": "top",
     "instruction_placement": "label",
-    "hide_on_screen": [
-        "the_content"
-    ],
+    "hide_on_screen": [],
     "active": true,
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "allow_ai_access": false,
-    "ai_description": "",
-    "modified": 1790121913
+    "modified": 1790211000
 }

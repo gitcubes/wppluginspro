@@ -516,6 +516,7 @@
                 "id": ""
             },
             "post_type": [
+                "product",
                 "wp_plugins_pro"
             ],
             "post_status": [

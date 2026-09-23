@@ -189,7 +189,7 @@ class WSH_Plugin_Storage
 		$plugin_id = (int) $plugin_id;
 		$channel = $channel === 'free' ? 'free' : 'pro';
 
-		if (get_post_type($plugin_id) !== 'wsh_plugin') {
+		if (get_post_type($plugin_id) !== 'product') {
 			return false;
 		}
 
@@ -211,21 +211,14 @@ class WSH_Plugin_Storage
 		}
 
 		$slug = (string) get_post_meta($plugin_id, 'wsh_plugin_slug', true);
-		if ($slug === '') {
-			return false;
-		}
+		$family = (string) get_post_meta($plugin_id, 'wsh_plugin_family', true);
 
 		$licenses = get_posts(array(
 			'post_type'      => 'wsh_license',
 			'post_status'    => 'publish',
-			'posts_per_page' => 1,
-			'fields'         => 'ids',
+			'posts_per_page' => 20,
 			'meta_query'     => array(
 				'relation' => 'AND',
-				array(
-					'key'   => 'wsh_product_slug',
-					'value' => $slug,
-				),
 				array(
 					'key'   => 'wsh_customer_email',
 					'value' => $user->user_email,
@@ -237,7 +230,20 @@ class WSH_Plugin_Storage
 			),
 		));
 
-		return ! empty($licenses);
+		foreach ($licenses as $license) {
+			$licensed_slug = (string) get_post_meta($license->ID, 'wsh_product_slug', true);
+			$licensed_group = (string) get_post_meta($license->ID, 'wsh_license_group', true);
+
+			if ($slug !== '' && $licensed_slug === $slug) {
+				return true;
+			}
+
+			if ($licensed_group === 'all' || ($family !== '' && $licensed_group === $family)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static function handle_download()

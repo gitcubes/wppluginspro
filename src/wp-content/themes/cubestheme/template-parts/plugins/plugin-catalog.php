@@ -10,11 +10,23 @@ $plugin_categories = get_terms([
 ]);
 
 $plugins_query = new WP_Query([
-    'post_type'      => 'wp_plugins_pro',
+    'post_type'      => 'product',
     'post_status'    => 'publish',
+    'post_parent'    => 0,
     'posts_per_page' => 12,
     'paged'          => $paged,
+    'meta_key'       => 'wsh_show_in_catalog',
+    'meta_value'     => '1',
 ]);
+
+if (!$plugins_query->have_posts()) {
+    $plugins_query = new WP_Query([
+        'post_type'      => 'wp_plugins_pro',
+        'post_status'    => 'publish',
+        'posts_per_page' => 12,
+        'paged'          => $paged,
+    ]);
+}
 
 $delays = ['0.12s', '0.18s', '0.24s', '0.3s', '0.36s', '0.42s'];
 ?>
@@ -66,7 +78,8 @@ $delays = ['0.12s', '0.18s', '0.24s', '0.3s', '0.36s', '0.42s'];
                         $plugin_bottom_button_url = get_field('plugin_bottom_button_url', $plugin_id);
 
                         $plugin_button_text = get_field('plugin_button_text', $plugin_id);
-                        $plugin_single_url = get_permalink($plugin_id);
+                        $landing_id = (int) get_post_meta($plugin_id, 'wsh_landing_page_id', true);
+                        $plugin_single_url = $landing_id > 0 ? get_permalink($landing_id) : get_permalink($plugin_id);
 
                         if (!$plugin_button_text) {
                             $plugin_button_text = 'View plugin';

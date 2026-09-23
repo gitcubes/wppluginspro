@@ -60,25 +60,26 @@ class WSH_License_WooCommerce
 				continue;
 			}
 
-			// For now, treat every subscription product as a license product.
-			$plugin_slug = get_post_meta($product_id, 'wsh_plugin_slug', true);
-			if (empty($plugin_slug)) {
+			$variation_id = method_exists($item, 'get_variation_id') ? (int) $item->get_variation_id() : 0;
+			$parent_id = $product_id;
+
+			$plugin_slug = (string) get_post_meta($parent_id, 'wsh_plugin_slug', true);
+			$license_group = (string) get_post_meta($parent_id, 'wsh_license_group', true);
+			if ($plugin_slug === '' && $license_group === '') {
 				$plugin_slug = 'wsh-views-counter-pro';
 			}
 
-			$max_sites = (int) get_post_meta($product_id, 'wsh_max_sites', true);
-			if ($max_sites <= 0) {
-				$max_sites = 1;
-			}
+			$max_sites = self::read_max_sites($variation_id > 0 ? $variation_id : $parent_id, $parent_id);
 
 			self::maybe_create_license(
 				$subscription,
 				$subscription_id,
-				$product_id,
+				$parent_id,
 				$plugin_slug,
 				$max_sites,
 				$customer_email,
-				$site_url
+				$site_url,
+				$license_group
 			);
 		}
 	}
@@ -142,7 +143,21 @@ class WSH_License_WooCommerce
 	 * @param int             $max_sites       Max number of sites allowed.
 	 * @param string          $customer_email   Customer email.
 	 */
-	protected static function maybe_create_license($subscription, $subscription_id, $product_id, $plugin_slug, $max_sites, $customer_email, $site_url)
+	protected static function read_max_sites($source_id, $parent_id)
+	{
+		$raw = get_post_meta($source_id, 'wsh_max_sites', true);
+		if ($raw === '' && $source_id !== $parent_id) {
+			$raw = get_post_meta($parent_id, 'wsh_max_sites', true);
+		}
+
+		if ($raw === '' || $raw === false) {
+			return 1;
+		}
+
+		return (int) $raw;
+	}
+
+	protected static function maybe_create_license($subscription, $subscription_id, $product_id, $plugin_slug, $max_sites, $customer_email, $site_url, $license_group = '')
 	{
 
 		// Check if license already exists for this subscription + product.
@@ -189,6 +204,7 @@ class WSH_License_WooCommerce
 			update_post_meta($license_id, 'wsh_subscription_id', $subscription_id);
 			update_post_meta($license_id, 'wsh_product_id', $product_id);
 			update_post_meta($license_id, 'wsh_product_slug', $plugin_slug);
+			update_post_meta($license_id, 'wsh_license_group', $license_group);
 			update_post_meta($license_id, 'wsh_max_sites', $max_sites);
 			update_post_meta($license_id, 'wsh_customer_email', $customer_email);
 			update_post_meta($license_id, 'wsh_status', 'active');

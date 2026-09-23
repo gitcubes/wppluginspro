@@ -4,62 +4,27 @@ if (! defined('ABSPATH')) {
 }
 
 /**
- * Admin catalog of sellable plugins: landing page, private ZIP, and the
- * customer download list in My Account.
+ * Plugin package fields on the WooCommerce product, plus customer downloads.
  */
 class WSH_Plugin_Catalog
 {
 
 	public static function init()
 	{
-		add_action('init', array(__CLASS__, 'register_cpt'));
 		add_action('init', array(__CLASS__, 'register_account_endpoint'));
 		add_action('init', array(__CLASS__, 'maybe_flush_rewrites'), 99);
-		add_action('add_meta_boxes', array(__CLASS__, 'add_meta_boxes'));
-		add_action('save_post_wsh_plugin', array(__CLASS__, 'save_plugin'), 10, 2);
-		add_action('before_delete_post', array(__CLASS__, 'delete_private_file'));
 		add_action('admin_notices', array(__CLASS__, 'render_notice'));
+		add_action('before_delete_post', array(__CLASS__, 'delete_private_file'));
 
-		add_filter('manage_edit-wsh_plugin_columns', array(__CLASS__, 'admin_columns'));
-		add_action('manage_wsh_plugin_posts_custom_column', array(__CLASS__, 'render_admin_column'), 10, 2);
+		add_filter('woocommerce_product_data_tabs', array(__CLASS__, 'product_tab'));
+		add_action('woocommerce_product_data_panels', array(__CLASS__, 'product_panel'));
+		add_action('woocommerce_process_product_meta', array(__CLASS__, 'save_product'));
+		add_action('woocommerce_product_after_variable_attributes', array(__CLASS__, 'variation_fields'), 10, 3);
+		add_action('woocommerce_save_product_variation', array(__CLASS__, 'save_variation'), 10, 2);
+		add_action('admin_post_wsh_create_site_variations', array(__CLASS__, 'create_site_variations'));
 
 		add_filter('woocommerce_account_menu_items', array(__CLASS__, 'account_menu_items'));
 		add_action('woocommerce_account_plugin-files_endpoint', array(__CLASS__, 'render_account_downloads'));
-	}
-
-	public static function register_cpt()
-	{
-		register_post_type('wsh_plugin', array(
-			'labels' => array(
-				'name'          => __('Plugins', 'wsh-license-manager'),
-				'singular_name' => __('Plugin', 'wsh-license-manager'),
-				'add_new_item'  => __('Add plugin', 'wsh-license-manager'),
-				'edit_item'     => __('Edit plugin', 'wsh-license-manager'),
-				'menu_name'     => __('Plugins', 'wsh-license-manager'),
-				'not_found'     => __('No plugins yet', 'wsh-license-manager'),
-			),
-			'public'              => false,
-			'show_ui'             => true,
-			'show_in_menu'        => 'edit.php?post_type=wsh_license',
-			'show_in_rest'        => false,
-			'exclude_from_search' => true,
-			'publicly_queryable'  => false,
-			'has_archive'         => false,
-			'rewrite'             => false,
-			'supports'            => array('title'),
-			'map_meta_cap'        => false,
-			'capabilities'        => array(
-				'edit_post'          => 'manage_options',
-				'read_post'          => 'manage_options',
-				'delete_post'        => 'manage_options',
-				'edit_posts'         => 'manage_options',
-				'edit_others_posts'  => 'manage_options',
-				'publish_posts'      => 'manage_options',
-				'read_private_posts' => 'manage_options',
-				'delete_posts'       => 'manage_options',
-				'create_posts'       => 'manage_options',
-			),
-		));
 	}
 
 	public static function register_account_endpoint()
@@ -77,288 +42,256 @@ class WSH_Plugin_Catalog
 		update_option('wsh_plugin_files_endpoint', '1', false);
 	}
 
-	public static function add_meta_boxes()
+	public static function product_tab($tabs)
 	{
-		add_meta_box(
-			'wsh_plugin_details',
-			__('Plugin setup', 'wsh-license-manager'),
-			array(__CLASS__, 'render_metabox'),
-			'wsh_plugin',
-			'normal',
-			'high'
+		$tabs['wsh_plugin'] = array(
+			'label'    => __('Plugin license', 'wsh-license-manager'),
+			'target'   => 'wsh_plugin_product_data',
+			'class'    => array(),
+			'priority' => 75,
 		);
+
+		return $tabs;
 	}
 
-	public static function render_metabox($post)
+	public static function product_panel()
 	{
-		wp_nonce_field('wsh_plugin_details', 'wsh_plugin_details_nonce');
+		global $post;
 
-		$slug = (string) get_post_meta($post->ID, 'wsh_plugin_slug', true);
-		$summary = (string) get_post_meta($post->ID, 'wsh_plugin_summary', true);
-		$landing_id = (int) get_post_meta($post->ID, '_wsh_landing_page_id', true);
-		$landing = $landing_id > 0 ? get_post($landing_id) : null;
-		$packages = WSH_Plugin_Storage::packages($post->ID);
+		$product_id = $post instanceof WP_Post ? $post->ID : 0;
+		$slug = (string) get_post_meta($product_id, 'wsh_plugin_slug', true);
+		$family = (string) get_post_meta($product_id, 'wsh_plugin_family', true);
+		$group = (string) get_post_meta($product_id, 'wsh_license_group', true);
+		$landing_id = (int) get_post_meta($product_id, 'wsh_landing_page_id', true);
+		$show = get_post_meta($product_id, 'wsh_show_in_catalog', true) === '1';
+		$packages = WSH_Plugin_Storage::packages($product_id);
+		$pages = get_pages(array('post_status' => array('publish', 'draft')));
 		?>
-		<p><?php esc_html_e('The ZIP is stored outside the public uploads folder. Customers never see a direct file address. My Account gives them a personal download link that works only while their license is active.', 'wsh-license-manager'); ?></p>
-		<table class="form-table" role="presentation">
-			<tr>
-				<th scope="row"><label for="wsh_plugin_slug"><?php esc_html_e('Plugin slug', 'wsh-license-manager'); ?></label></th>
-				<td>
-					<input type="text" class="regular-text" id="wsh_plugin_slug" name="wsh_plugin_slug" value="<?php echo esc_attr($slug); ?>" placeholder="wsh-views-counter-pro" required>
-					<p class="description"><?php esc_html_e('Must match the WooCommerce product meta wsh_plugin_slug. The license is issued for this slug.', 'wsh-license-manager'); ?></p>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><label for="wsh_plugin_summary"><?php esc_html_e('Landing summary', 'wsh-license-manager'); ?></label></th>
-				<td><textarea class="large-text" rows="4" id="wsh_plugin_summary" name="wsh_plugin_summary"><?php echo esc_textarea($summary); ?></textarea></td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e('Landing page', 'wsh-license-manager'); ?></th>
-				<td>
-					<?php if ($landing instanceof WP_Post) : ?>
-						<?php $landing_status = get_post_status_object($landing->post_status); ?>
-						<p>
-							<a href="<?php echo esc_url(get_edit_post_link($landing->ID)); ?>"><?php echo esc_html(get_the_title($landing)); ?></a>
-							— <?php echo esc_html($landing_status ? $landing_status->label : $landing->post_status); ?>
-						</p>
-						<?php if ($landing->post_status === 'publish') : ?>
-							<p><a href="<?php echo esc_url(get_permalink($landing)); ?>" target="_blank" rel="noopener"><?php esc_html_e('View landing page', 'wsh-license-manager'); ?></a></p>
-						<?php else : ?>
-							<p class="description"><?php esc_html_e('The landing page stays a draft until you publish it.', 'wsh-license-manager'); ?></p>
-						<?php endif; ?>
-					<?php else : ?>
-						<p class="description"><?php esc_html_e('A draft landing page is created the first time you save this plugin.', 'wsh-license-manager'); ?></p>
-					<?php endif; ?>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e('Plugin ZIPs', 'wsh-license-manager'); ?></th>
-				<td>
-					<p class="description"><?php esc_html_e('Add one row per version. Views Counter needs a Free row and a PRO row. Customers see the list newest first, and the file address stays private.', 'wsh-license-manager'); ?></p>
-					<?php if (! empty($packages)) : ?>
-						<table class="widefat striped" style="max-width:760px;margin-bottom:12px;">
-							<thead>
+		<div id="wsh_plugin_product_data" class="panel woocommerce_options_panel hidden">
+			<div class="options_group">
+				<?php
+				woocommerce_wp_text_input(array(
+					'id'          => 'wsh_plugin_slug',
+					'label'       => __('Plugin slug', 'wsh-license-manager'),
+					'description' => __('Used on a single plugin. Example: wsh-views-counter-pro. Leave empty on a suite.', 'wsh-license-manager'),
+					'value'       => $slug,
+				));
+				woocommerce_wp_select(array(
+					'id'          => 'wsh_plugin_family',
+					'label'       => __('Suite family', 'wsh-license-manager'),
+					'description' => __('Which suite key also unlocks this plugin.', 'wsh-license-manager'),
+					'value'       => $family,
+					'options'     => array(
+						''            => __('None', 'wsh-license-manager'),
+						'news'        => __('News', 'wsh-license-manager'),
+						'ecommerce'   => __('Ecommerce', 'wsh-license-manager'),
+					),
+				));
+				woocommerce_wp_select(array(
+					'id'          => 'wsh_license_group',
+					'label'       => __('This product sells', 'wsh-license-manager'),
+					'description' => __('Choose a group only for a News Suite, Ecommerce Suite, or All-Access product.', 'wsh-license-manager'),
+					'value'       => $group,
+					'options'     => array(
+						''            => __('One plugin', 'wsh-license-manager'),
+						'news'        => __('News suite', 'wsh-license-manager'),
+						'ecommerce'   => __('Ecommerce suite', 'wsh-license-manager'),
+						'all'         => __('All-Access', 'wsh-license-manager'),
+					),
+				));
+				woocommerce_wp_select(array(
+					'id'      => 'wsh_landing_page_id',
+					'label'   => __('Landing page', 'wsh-license-manager'),
+					'value'   => (string) $landing_id,
+					'options' => self::page_options($pages, $landing_id),
+				));
+				woocommerce_wp_checkbox(array(
+					'id'          => 'wsh_show_in_catalog',
+					'label'       => __('Show in plugin catalog', 'wsh-license-manager'),
+					'description' => __('Public plugins page. Leave off for the old test products.', 'wsh-license-manager'),
+					'value'       => $show ? 'yes' : 'no',
+				));
+				?>
+				<p class="form-field">
+					<label><?php esc_html_e('Site variations', 'wsh-license-manager'); ?></label>
+					<a class="button" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=wsh_create_site_variations&product_id=' . $product_id), 'wsh_create_site_variations_' . $product_id)); ?>">
+						<?php esc_html_e('Add 1 site, 5 sites, and unlimited', 'wsh-license-manager'); ?>
+					</a>
+					<span class="description"><?php esc_html_e('Turns this into a variable subscription. Existing test products stay as they are until you click this.', 'wsh-license-manager'); ?></span>
+				</p>
+			</div>
+
+			<div class="options_group">
+				<p class="form-field">
+					<label><?php esc_html_e('Plugin ZIPs', 'wsh-license-manager'); ?></label>
+					<span class="description"><?php esc_html_e('One row per version. Views Counter needs a Free row and a PRO row. The file address stays private.', 'wsh-license-manager'); ?></span>
+				</p>
+				<?php if (! empty($packages)) : ?>
+					<table class="widefat striped" style="width:auto;margin:0 12px 12px;">
+						<thead>
+							<tr>
+								<th><?php esc_html_e('Package', 'wsh-license-manager'); ?></th>
+								<th><?php esc_html_e('Version', 'wsh-license-manager'); ?></th>
+								<th><?php esc_html_e('File', 'wsh-license-manager'); ?></th>
+								<th><?php esc_html_e('Remove', 'wsh-license-manager'); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ($packages as $package) : ?>
 								<tr>
-									<th><?php esc_html_e('Package', 'wsh-license-manager'); ?></th>
-									<th><?php esc_html_e('Version', 'wsh-license-manager'); ?></th>
-									<th><?php esc_html_e('File', 'wsh-license-manager'); ?></th>
-									<th><?php esc_html_e('Remove', 'wsh-license-manager'); ?></th>
+									<td><?php echo esc_html($package['channel'] === 'free' ? 'Free' : 'PRO'); ?></td>
+									<td><?php echo esc_html($package['version']); ?></td>
+									<td>
+										<?php echo esc_html($package['original']); ?>
+										<a href="<?php echo esc_url(WSH_Plugin_Storage::download_url($product_id, $package['id'])); ?>"><?php esc_html_e('Test', 'wsh-license-manager'); ?></a>
+									</td>
+									<td><input type="checkbox" name="wsh_remove_file[]" value="<?php echo esc_attr($package['id']); ?>"></td>
 								</tr>
-							</thead>
-							<tbody>
-								<?php foreach ($packages as $package) : ?>
-									<tr>
-										<td><?php echo esc_html($package['channel'] === 'free' ? 'Free' : 'PRO'); ?></td>
-										<td><?php echo esc_html($package['version']); ?></td>
-										<td>
-											<?php echo esc_html($package['original']); ?>
-											<a href="<?php echo esc_url(WSH_Plugin_Storage::download_url($post->ID, $package['id'])); ?>"><?php esc_html_e('Test', 'wsh-license-manager'); ?></a>
-										</td>
-										<td><input type="checkbox" name="wsh_remove_file[]" value="<?php echo esc_attr($package['id']); ?>"></td>
-									</tr>
-								<?php endforeach; ?>
-							</tbody>
-						</table>
-					<?php endif; ?>
-					<div id="wsh-file-rows">
-						<div class="wsh-file-row" style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
-							<select name="wsh_new_channel[]">
-								<option value="free"><?php esc_html_e('Free', 'wsh-license-manager'); ?></option>
-								<option value="pro" selected><?php esc_html_e('PRO', 'wsh-license-manager'); ?></option>
-							</select>
-							<input type="text" name="wsh_new_version[]" placeholder="1.0.0" style="width:120px;">
-							<input type="file" name="wsh_new_zip[]" accept=".zip,application/zip">
-						</div>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				<?php endif; ?>
+				<div id="wsh-file-rows" style="margin:0 12px 12px;">
+					<div class="wsh-file-row" style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+						<select name="wsh_new_channel[]">
+							<option value="free"><?php esc_html_e('Free', 'wsh-license-manager'); ?></option>
+							<option value="pro" selected><?php esc_html_e('PRO', 'wsh-license-manager'); ?></option>
+						</select>
+						<input type="text" name="wsh_new_version[]" placeholder="1.0.0" style="width:120px;">
+						<input type="file" name="wsh_new_zip[]" accept=".zip,application/zip">
 					</div>
+				</div>
+				<p style="margin:0 12px 12px;">
 					<button type="button" class="button" id="wsh-add-file-row"><?php esc_html_e('Add version', 'wsh-license-manager'); ?></button>
-					<script>
-						document.getElementById('wsh-add-file-row').addEventListener('click', function () {
-							var rows = document.getElementById('wsh-file-rows');
-							var row = rows.querySelector('.wsh-file-row');
-							var copy = row.cloneNode(true);
-							copy.querySelectorAll('input').forEach(function (input) { input.value = ''; });
-							rows.appendChild(copy);
-						});
-					</script>
-				</td>
-			</tr>
-		</table>
+				</p>
+				<script>
+					document.getElementById('wsh-add-file-row').addEventListener('click', function () {
+						var rows = document.getElementById('wsh-file-rows');
+						var copy = rows.querySelector('.wsh-file-row').cloneNode(true);
+						copy.querySelectorAll('input').forEach(function (input) { input.value = ''; });
+						rows.appendChild(copy);
+					});
+				</script>
+			</div>
+		</div>
 		<?php
 	}
 
-	public static function save_plugin($post_id, $post)
+	public static function variation_fields($loop, $variation_data, $variation)
 	{
-		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+		woocommerce_wp_text_input(array(
+			'id'            => 'wsh_max_sites_' . $loop,
+			'name'          => 'wsh_max_sites[' . $loop . ']',
+			'value'         => get_post_meta($variation->ID, 'wsh_max_sites', true),
+			'label'         => __('Max sites', 'wsh-license-manager'),
+			'description'   => __('1, 5, or 0 for unlimited.', 'wsh-license-manager'),
+			'type'          => 'number',
+			'wrapper_class' => 'form-row form-row-full',
+			'custom_attributes' => array('min' => '0', 'step' => '1'),
+		));
+	}
+
+	public static function save_variation($variation_id, $loop)
+	{
+		if (! isset($_POST['wsh_max_sites'][$loop])) {
 			return;
 		}
 
-		if (! isset($_POST['wsh_plugin_details_nonce']) || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['wsh_plugin_details_nonce'])), 'wsh_plugin_details')) {
-			return;
-		}
+		update_post_meta($variation_id, 'wsh_max_sites', max(0, (int) wp_unslash($_POST['wsh_max_sites'][$loop])));
+	}
 
+	public static function save_product($product_id)
+	{
 		if (! current_user_can('manage_options')) {
 			return;
 		}
 
 		$slug = isset($_POST['wsh_plugin_slug']) ? sanitize_title(wp_unslash($_POST['wsh_plugin_slug'])) : '';
-		if ($slug === '') {
-			$slug = sanitize_title($post->post_title);
+		$family = isset($_POST['wsh_plugin_family']) ? sanitize_key(wp_unslash($_POST['wsh_plugin_family'])) : '';
+		$group = isset($_POST['wsh_license_group']) ? sanitize_key(wp_unslash($_POST['wsh_license_group'])) : '';
+		$landing_id = isset($_POST['wsh_landing_page_id']) ? (int) $_POST['wsh_landing_page_id'] : 0;
+
+		if (! in_array($family, array('news', 'ecommerce'), true)) {
+			$family = '';
+		}
+		if (! in_array($group, array('news', 'ecommerce', 'all'), true)) {
+			$group = '';
 		}
 
-		$duplicate = get_posts(array(
-			'post_type'      => 'wsh_plugin',
-			'post_status'    => 'any',
-			'posts_per_page' => 1,
-			'post__not_in'   => array($post_id),
-			'fields'         => 'ids',
-			'meta_key'       => 'wsh_plugin_slug',
-			'meta_value'     => $slug,
-		));
-
-		if ($slug === '' || ! empty($duplicate)) {
-			self::notice(__('Plugin slug is missing or already used by another plugin.', 'wsh-license-manager'));
-		} else {
-			update_post_meta($post_id, 'wsh_plugin_slug', $slug);
-		}
-
-		$summary = isset($_POST['wsh_plugin_summary']) ? sanitize_textarea_field(wp_unslash($_POST['wsh_plugin_summary'])) : '';
-		update_post_meta($post_id, 'wsh_plugin_summary', $summary);
+		update_post_meta($product_id, 'wsh_plugin_slug', $slug);
+		update_post_meta($product_id, 'wsh_plugin_family', $family);
+		update_post_meta($product_id, 'wsh_license_group', $group);
+		update_post_meta($product_id, 'wsh_landing_page_id', $landing_id);
+		update_post_meta($product_id, 'wsh_show_in_catalog', empty($_POST['wsh_show_in_catalog']) ? '0' : '1');
 
 		if (! empty($_POST['wsh_remove_file']) && is_array($_POST['wsh_remove_file'])) {
-			WSH_Plugin_Storage::remove_packages($post_id, array_map('sanitize_text_field', wp_unslash($_POST['wsh_remove_file'])));
+			WSH_Plugin_Storage::remove_packages($product_id, array_map('sanitize_text_field', wp_unslash($_POST['wsh_remove_file'])));
 		}
 
-		self::save_new_packages($post_id);
-
-		self::ensure_landing_page($post_id, $post->post_title);
+		self::save_new_packages($product_id);
 	}
 
-	private static function save_new_packages($post_id)
+	public static function create_site_variations()
 	{
-		$channels = isset($_POST['wsh_new_channel']) ? (array) wp_unslash($_POST['wsh_new_channel']) : array();
-		$versions = isset($_POST['wsh_new_version']) ? (array) wp_unslash($_POST['wsh_new_version']) : array();
-		$uploads = isset($_FILES['wsh_new_zip']) && is_array($_FILES['wsh_new_zip']) ? $_FILES['wsh_new_zip'] : array();
+		$product_id = isset($_GET['product_id']) ? (int) $_GET['product_id'] : 0;
+		check_admin_referer('wsh_create_site_variations_' . $product_id);
 
-		if (empty($uploads['name']) || ! is_array($uploads['name'])) {
-			return;
+		if (! current_user_can('manage_options') || get_post_type($product_id) !== 'product') {
+			wp_die(esc_html__('You cannot edit this product.', 'wsh-license-manager'));
 		}
 
-		foreach ($uploads['name'] as $index => $name) {
-			if ($name === '') {
+		self::ensure_sites_attribute();
+		wp_set_object_terms($product_id, 'variable-subscription', 'product_type');
+		clean_post_cache($product_id);
+
+		$terms = array();
+		foreach (array('1-site' => '1 site', '5-sites' => '5 sites', 'unlimited' => 'Unlimited') as $slug => $name) {
+			$term = get_term_by('slug', $slug, 'pa_sites');
+			if ($term instanceof WP_Term) {
+				$terms[$slug] = (int) $term->term_id;
+			}
+		}
+
+		wp_set_object_terms($product_id, array_values($terms), 'pa_sites');
+
+		$product = new WC_Product_Variable_Subscription($product_id);
+		$attribute = new WC_Product_Attribute();
+		$attribute->set_id((int) wc_attribute_taxonomy_id_by_name('sites'));
+		$attribute->set_name('pa_sites');
+		$attribute->set_options(array_values($terms));
+		$attribute->set_visible(true);
+		$attribute->set_variation(true);
+		$product->set_attributes(array($attribute));
+		$product->save();
+
+		$limits = array('1-site' => 1, '5-sites' => 5, 'unlimited' => 0);
+		$price = get_post_meta($product_id, '_subscription_price', true);
+		if ($price === '') {
+			$price = get_post_meta($product_id, '_regular_price', true);
+		}
+		$period = get_post_meta($product_id, '_subscription_period', true);
+		$interval = get_post_meta($product_id, '_subscription_period_interval', true);
+
+		foreach ($limits as $slug => $max_sites) {
+			if (self::variation_exists($product_id, $slug)) {
 				continue;
 			}
 
-			$version = sanitize_text_field($versions[$index] ?? '');
-			if ($version === '') {
-				self::notice(__('Each ZIP needs a version number.', 'wsh-license-manager'));
-				continue;
-			}
-
-			$channel = sanitize_key($channels[$index] ?? 'pro');
-			$result = WSH_Plugin_Storage::add_package($post_id, $channel, $version, array(
-				'name'     => $uploads['name'][$index] ?? '',
-				'type'     => $uploads['type'][$index] ?? '',
-				'tmp_name' => $uploads['tmp_name'][$index] ?? '',
-				'error'    => $uploads['error'][$index] ?? UPLOAD_ERR_NO_FILE,
-				'size'     => $uploads['size'][$index] ?? 0,
-			));
-
-			if (is_wp_error($result)) {
-				self::notice($result->get_error_message());
-			}
-		}
-	}
-
-	private static function ensure_landing_page($plugin_id, $title)
-	{
-		$existing_id = (int) get_post_meta($plugin_id, '_wsh_landing_page_id', true);
-		if ($existing_id > 0 && get_post($existing_id) instanceof WP_Post) {
-			return;
+			$variation = new WC_Product_Subscription_Variation();
+			$variation->set_parent_id($product_id);
+			$variation->set_attributes(array('pa_sites' => $slug));
+			$variation->set_regular_price($price !== '' ? $price : '0');
+			$variation->set_status('publish');
+			$variation->update_meta_data('_subscription_period', $period !== '' ? $period : 'year');
+			$variation->update_meta_data('_subscription_period_interval', $interval !== '' ? $interval : 1);
+			$variation->update_meta_data('_subscription_length', 0);
+			$variation->update_meta_data('wsh_max_sites', $max_sites);
+			$variation->save();
 		}
 
-		$slug = (string) get_post_meta($plugin_id, 'wsh_plugin_slug', true);
-		$page_id = wp_insert_post(array(
-			'post_type'    => 'page',
-			'post_status'  => 'draft',
-			'post_title'   => $title,
-			'post_name'    => $slug !== '' ? $slug : sanitize_title($title),
-			'post_content' => '',
-		));
-
-		if (! $page_id || is_wp_error($page_id)) {
-			return;
-		}
-
-		update_post_meta($page_id, '_wsh_plugin_id', $plugin_id);
-		update_post_meta($plugin_id, '_wsh_landing_page_id', $page_id);
-	}
-
-	public static function template_include($template)
-	{
-		if (! is_page()) {
-			return $template;
-		}
-
-		$plugin_id = (int) get_post_meta(get_queried_object_id(), '_wsh_plugin_id', true);
-		if ($plugin_id <= 0 || get_post_type($plugin_id) !== 'wsh_plugin') {
-			return $template;
-		}
-
-		$landing = WSH_LICENSE_MANAGER_PATH . 'templates/plugin-landing.php';
-
-		return file_exists($landing) ? $landing : $template;
-	}
-
-	public static function delete_private_file($post_id)
-	{
-		if (get_post_type($post_id) !== 'wsh_plugin') {
-			return;
-		}
-
-		WSH_Plugin_Storage::delete_file($post_id);
-	}
-
-	public static function admin_columns($columns)
-	{
-		$new = array();
-
-		foreach ($columns as $key => $label) {
-			$new[$key] = $label;
-			if ($key === 'title') {
-				$new['wsh_slug'] = __('Slug', 'wsh-license-manager');
-				$new['wsh_landing'] = __('Landing', 'wsh-license-manager');
-				$new['wsh_zip'] = __('ZIP', 'wsh-license-manager');
-			}
-		}
-
-		return $new;
-	}
-
-	public static function render_admin_column($column, $post_id)
-	{
-		if ($column === 'wsh_slug') {
-			echo esc_html((string) get_post_meta($post_id, 'wsh_plugin_slug', true));
-			return;
-		}
-
-		if ($column === 'wsh_landing') {
-			$landing_id = (int) get_post_meta($post_id, '_wsh_landing_page_id', true);
-			$landing = $landing_id > 0 ? get_post($landing_id) : null;
-			if ($landing instanceof WP_Post) {
-				$landing_status = get_post_status_object($landing->post_status);
-				echo esc_html($landing_status ? $landing_status->label : $landing->post_status);
-			} else {
-				esc_html_e('Missing', 'wsh-license-manager');
-			}
-			return;
-		}
-
-		if ($column === 'wsh_zip') {
-			$count = count(WSH_Plugin_Storage::packages($post_id));
-			echo $count > 0
-				? esc_html(sprintf(_n('%d protected', '%d protected', $count, 'wsh-license-manager'), $count))
-				: esc_html__('None', 'wsh-license-manager');
-		}
+		WC_Product_Variable::sync($product_id);
+		wp_safe_redirect(get_edit_post_link($product_id, 'raw'));
+		exit;
 	}
 
 	public static function account_menu_items($items)
@@ -418,20 +351,18 @@ class WSH_Plugin_Catalog
 		echo '</tr></thead><tbody>';
 
 		foreach ($licenses as $license) {
-			$slug = (string) get_post_meta($license->ID, 'wsh_product_slug', true);
+			$products = self::products_for_license($license->ID);
+			$name = self::license_label($license->ID, $products);
 			$key = (string) get_post_meta($license->ID, 'wsh_license_key', true);
-			$plugin = self::find_by_slug($slug);
-			$name = $plugin instanceof WP_Post ? get_the_title($plugin) : $slug;
 
-			echo '<tr>';
-			echo '<td>' . esc_html($name) . '</td>';
-			echo '<td><code>' . esc_html($key) . '</code></td>';
-			echo '<td>';
-			if ($plugin instanceof WP_Post) {
-				self::render_version_links($plugin, 'free');
-				self::render_version_links($plugin, 'pro');
-			} else {
+			echo '<tr><td>' . esc_html($name) . '</td><td><code>' . esc_html($key) . '</code></td><td>';
+			if (empty($products)) {
 				esc_html_e('Not available yet', 'wsh-license-manager');
+			} else {
+				foreach ($products as $product) {
+					self::render_version_links($product, 'free');
+					self::render_version_links($product, 'pro');
+				}
 			}
 			echo '</td></tr>';
 		}
@@ -439,18 +370,162 @@ class WSH_Plugin_Catalog
 		echo '</tbody></table>';
 	}
 
-	private static function render_version_links($plugin, $channel)
+	public static function delete_private_file($post_id)
 	{
-		$packages = WSH_Plugin_Storage::packages_for_channel($plugin->ID, $channel);
-		if (empty($packages) || ! WSH_Plugin_Storage::user_can_download(get_current_user_id(), $plugin->ID, $channel)) {
+		if (get_post_type($post_id) !== 'product') {
 			return;
 		}
 
-		echo '<p style="margin:0 0 8px;"><strong>' . esc_html($channel === 'free' ? 'Free' : 'PRO') . '</strong></p>';
+		WSH_Plugin_Storage::delete_file($post_id);
+	}
+
+	private static function save_new_packages($product_id)
+	{
+		$channels = isset($_POST['wsh_new_channel']) ? (array) wp_unslash($_POST['wsh_new_channel']) : array();
+		$versions = isset($_POST['wsh_new_version']) ? (array) wp_unslash($_POST['wsh_new_version']) : array();
+		$uploads = isset($_FILES['wsh_new_zip']) && is_array($_FILES['wsh_new_zip']) ? $_FILES['wsh_new_zip'] : array();
+
+		if (empty($uploads['name']) || ! is_array($uploads['name'])) {
+			return;
+		}
+
+		foreach ($uploads['name'] as $index => $name) {
+			if ($name === '') {
+				continue;
+			}
+
+			$version = sanitize_text_field($versions[$index] ?? '');
+			if ($version === '') {
+				self::notice(__('Each ZIP needs a version number.', 'wsh-license-manager'));
+				continue;
+			}
+
+			$result = WSH_Plugin_Storage::add_package($product_id, sanitize_key($channels[$index] ?? 'pro'), $version, array(
+				'name'     => $uploads['name'][$index] ?? '',
+				'type'     => $uploads['type'][$index] ?? '',
+				'tmp_name' => $uploads['tmp_name'][$index] ?? '',
+				'error'    => $uploads['error'][$index] ?? UPLOAD_ERR_NO_FILE,
+				'size'     => $uploads['size'][$index] ?? 0,
+			));
+
+			if (is_wp_error($result)) {
+				self::notice($result->get_error_message());
+			}
+		}
+	}
+
+	private static function ensure_sites_attribute()
+	{
+		if (! wc_attribute_taxonomy_id_by_name('sites')) {
+			wc_create_attribute(array(
+				'name'         => 'Sites',
+				'slug'         => 'sites',
+				'type'         => 'select',
+				'order_by'     => 'menu_order',
+				'has_archives' => false,
+			));
+			delete_transient('wc_attribute_taxonomies');
+		}
+
+		if (! taxonomy_exists('pa_sites')) {
+			register_taxonomy('pa_sites', array('product'), array(
+				'label'        => 'Sites',
+				'public'       => false,
+				'hierarchical' => false,
+				'show_ui'      => false,
+			));
+		}
+
+		foreach (array('1-site' => '1 site', '5-sites' => '5 sites', 'unlimited' => 'Unlimited') as $slug => $name) {
+			if (! term_exists($slug, 'pa_sites')) {
+				wp_insert_term($name, 'pa_sites', array('slug' => $slug));
+			}
+		}
+	}
+
+	private static function variation_exists($product_id, $slug)
+	{
+		$children = get_posts(array(
+			'post_type'      => 'product_variation',
+			'post_parent'    => $product_id,
+			'post_status'    => array('publish', 'private'),
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		));
+
+		foreach ($children as $child_id) {
+			if ((string) get_post_meta($child_id, 'attribute_pa_sites', true) === $slug) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static function products_for_license($license_id)
+	{
+		$group = (string) get_post_meta($license_id, 'wsh_license_group', true);
+		$slug = (string) get_post_meta($license_id, 'wsh_product_slug', true);
+
+		if (in_array($group, array('news', 'ecommerce', 'all'), true)) {
+			$query = array(
+				'post_type'      => 'product',
+				'post_status'    => 'publish',
+				'post_parent'    => 0,
+				'posts_per_page' => 50,
+			);
+			if ($group !== 'all') {
+				$query['meta_key'] = 'wsh_plugin_family';
+				$query['meta_value'] = $group;
+			} else {
+				$query['meta_query'] = array(array(
+					'key'     => 'wsh_plugin_family',
+					'value'   => array('news', 'ecommerce'),
+					'compare' => 'IN',
+				));
+			}
+
+			return get_posts($query);
+		}
+
+		$product = self::find_by_slug($slug);
+
+		return $product instanceof WP_Post ? array($product) : array();
+	}
+
+	private static function license_label($license_id, $products)
+	{
+		$group = (string) get_post_meta($license_id, 'wsh_license_group', true);
+		$labels = array(
+			'news'      => __('News Suite', 'wsh-license-manager'),
+			'ecommerce' => __('Ecommerce Suite', 'wsh-license-manager'),
+			'all'       => __('All-Access', 'wsh-license-manager'),
+		);
+
+		if (isset($labels[$group])) {
+			return $labels[$group];
+		}
+
+		$product_id = (int) get_post_meta($license_id, 'wsh_product_id', true);
+		if ($product_id > 0) {
+			return get_the_title($product_id);
+		}
+
+		return ! empty($products) ? get_the_title($products[0]) : (string) get_post_meta($license_id, 'wsh_product_slug', true);
+	}
+
+	private static function render_version_links($product, $channel)
+	{
+		$packages = WSH_Plugin_Storage::packages_for_channel($product->ID, $channel);
+		if (empty($packages) || ! WSH_Plugin_Storage::user_can_download(get_current_user_id(), $product->ID, $channel)) {
+			return;
+		}
+
+		echo '<p style="margin:0 0 8px;"><strong>' . esc_html(get_the_title($product) . ' ' . ($channel === 'free' ? 'Free' : 'PRO')) . '</strong></p>';
 		echo '<ul style="margin:0 0 16px;padding-left:18px;">';
 		foreach ($packages as $package) {
-			$label = trim(get_the_title($plugin) . ' ' . $package['version']);
-			echo '<li><a href="' . esc_url(WSH_Plugin_Storage::download_url($plugin->ID, $package['id'])) . '">' . esc_html($label) . '</a></li>';
+			$label = trim(get_the_title($product) . ' ' . $package['version']);
+			echo '<li><a href="' . esc_url(WSH_Plugin_Storage::download_url($product->ID, $package['id'])) . '">' . esc_html($label) . '</a></li>';
 		}
 		echo '</ul>';
 	}
@@ -462,14 +537,28 @@ class WSH_Plugin_Catalog
 		}
 
 		$posts = get_posts(array(
-			'post_type'      => 'wsh_plugin',
+			'post_type'      => 'product',
 			'post_status'    => 'publish',
+			'post_parent'    => 0,
 			'posts_per_page' => 1,
 			'meta_key'       => 'wsh_plugin_slug',
 			'meta_value'     => $slug,
 		));
 
 		return ! empty($posts) ? $posts[0] : null;
+	}
+
+	private static function page_options($pages, $selected)
+	{
+		$options = array('0' => __('No landing page', 'wsh-license-manager'));
+		foreach ($pages as $page) {
+			$options[(string) $page->ID] = $page->post_title . ($page->post_status === 'draft' ? ' (draft)' : '');
+		}
+		if ($selected > 0 && ! isset($options[(string) $selected])) {
+			$options[(string) $selected] = get_the_title($selected);
+		}
+
+		return $options;
 	}
 
 	private static function notice($message)
@@ -488,5 +577,3 @@ class WSH_Plugin_Catalog
 		echo '<div class="notice notice-error"><p>' . esc_html($message) . '</p></div>';
 	}
 }
-
-add_filter('template_include', array('WSH_Plugin_Catalog', 'template_include'));

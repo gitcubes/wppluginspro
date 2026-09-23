@@ -141,7 +141,7 @@ function cubestheme_create_post_type()
         )
     ));
 
-    register_taxonomy('plugin_category', array('wp_plugins_pro'), array(
+    register_taxonomy('plugin_category', array('product', 'wp_plugins_pro'), array(
         'labels' => array(
             'name' => __('Plugin Categories', 'cubestheme'),
             'singular_name' => __('Plugin Category', 'cubestheme'),
