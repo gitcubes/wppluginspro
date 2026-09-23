@@ -34,6 +34,8 @@ require_once WSH_LICENSE_MANAGER_PATH . 'includes/class-wsh-license-utils.php';
 require_once WSH_LICENSE_MANAGER_PATH . 'includes/class-wsh-license-cpt.php';
 require_once WSH_LICENSE_MANAGER_PATH . 'includes/class-wsh-license-api.php';
 require_once WSH_LICENSE_MANAGER_PATH . 'includes/class-wsh-license-woocommerce.php';
+require_once WSH_LICENSE_MANAGER_PATH . 'includes/class-wsh-plugin-storage.php';
+require_once WSH_LICENSE_MANAGER_PATH . 'includes/class-wsh-plugin-catalog.php';
 
 class WSH_License_Manager {
 
@@ -41,6 +43,8 @@ class WSH_License_Manager {
 		WSH_License_CPT::init();
 		WSH_License_API::init();
 		WSH_License_WooCommerce::init();
+		WSH_Plugin_Storage::init();
+		WSH_Plugin_Catalog::init();
 	}
 }
 

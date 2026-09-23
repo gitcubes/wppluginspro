@@ -127,7 +127,7 @@ should_skip_file() {
     case "$rel" in
         .env|.env.*|*/.env|*/.env.*) return 0 ;;
         wp-config.php) return 0 ;;
-        wp-content/uploads/*|wp-content/upgrade/*|wp-content/cache/*) return 0 ;;
+        wp-content/uploads/*|wp-content/upgrade/*|wp-content/cache/*|wp-content/wsh-private/*) return 0 ;;
         debug.log|wp-content/debug.log|*/debug.log) return 0 ;;
         vendor/*|*/vendor/*) [[ "$WITH_VENDOR" -eq 1 ]] && return 1 || return 0 ;;
         node_modules/*|*/node_modules/*) return 0 ;;
@@ -240,7 +240,7 @@ if [[ ! -d "$LOCAL_DIR" ]]; then
 fi
 
 if [[ "$FULL_MIRROR" -eq 1 ]]; then
-    EXCLUDES=(-X ".git/" -X ".env" -X ".env.*" -X ".DS_Store" -X "node_modules/" -X "wp-config.php" -X "wp-content/uploads/" -X "wp-content/upgrade/" -X "wp-content/cache/" -X "debug.log" -X "wp-content/debug.log")
+    EXCLUDES=(-X ".git/" -X ".env" -X ".env.*" -X ".DS_Store" -X "node_modules/" -X "wp-config.php" -X "wp-content/uploads/" -X "wp-content/upgrade/" -X "wp-content/cache/" -X "wp-content/wsh-private/" -X "debug.log" -X "wp-content/debug.log")
     [[ "$WITH_VENDOR" -eq 0 ]] && EXCLUDES+=(-X "vendor/")
 
     echo "=========================================="
