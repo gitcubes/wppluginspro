@@ -3,11 +3,15 @@ $plugin_catalog_label = get_field('plugin_catalog_label');
 $plugin_catalog_title = get_field('plugin_catalog_title');
 
 $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+$default_category_id = (int) get_option('default_product_cat');
 
 $plugin_categories = get_terms([
-    'taxonomy'   => 'plugin_category',
+    'taxonomy'   => 'product_cat',
     'hide_empty' => true,
+    'exclude'    => $default_category_id > 0 ? [$default_category_id] : [],
 ]);
+
+$category_ids = (!is_wp_error($plugin_categories) && $plugin_categories) ? wp_list_pluck($plugin_categories, 'term_id') : [];
 
 $plugins_query = new WP_Query([
     'post_type'      => 'product',
@@ -15,8 +19,15 @@ $plugins_query = new WP_Query([
     'post_parent'    => 0,
     'posts_per_page' => 12,
     'paged'          => $paged,
-    'meta_key'       => 'wsh_show_in_catalog',
-    'meta_value'     => '1',
+    'tax_query'      => $category_ids ? [[
+        'taxonomy' => 'product_cat',
+        'field'    => 'term_id',
+        'terms'    => $category_ids,
+    ]] : [[
+        'taxonomy' => 'product_cat',
+        'field'    => 'term_id',
+        'terms'    => [0],
+    ]],
 ]);
 
 $delays = ['0.12s', '0.18s', '0.24s', '0.3s', '0.36s', '0.42s'];
@@ -61,6 +72,10 @@ $delays = ['0.12s', '0.18s', '0.24s', '0.3s', '0.36s', '0.42s'];
 
                         $plugin_icon = get_field('plugin_icon', $plugin_id);
                         $plugin_short_description = get_field('plugin_short_description', $plugin_id);
+                        if (!$plugin_short_description && function_exists('wc_get_product')) {
+                            $catalog_product = wc_get_product($plugin_id);
+                            $plugin_short_description = $catalog_product ? wp_strip_all_tags($catalog_product->get_short_description()) : '';
+                        }
                         $plugin_badges = get_field('plugin_badges', $plugin_id);
                         $plugin_features = get_field('plugin_features', $plugin_id);
                         $plugin_ideal_for = get_field('plugin_ideal_for', $plugin_id);
@@ -76,16 +91,18 @@ $delays = ['0.12s', '0.18s', '0.24s', '0.3s', '0.36s', '0.42s'];
                             $plugin_button_text = 'View plugin';
                         }
 
-                        $terms = get_the_terms($plugin_id, 'plugin_category');
-                        $term_slugs = [];
+                        $terms = get_the_terms($plugin_id, 'product_cat');
+                        $panel_value = 'uncategorized';
 
                         if ($terms && !is_wp_error($terms)) {
                             foreach ($terms as $term) {
-                                $term_slugs[] = $term->slug;
+                                if ((int) $term->term_id === $default_category_id) {
+                                    continue;
+                                }
+                                $panel_value = $term->slug;
+                                break;
                             }
                         }
-
-                        $panel_value = !empty($term_slugs) ? implode(' ', $term_slugs) : 'uncategorized';
                         $delay = isset($delays[$index]) ? $delays[$index] : '0.12s';
                         ?>
 
