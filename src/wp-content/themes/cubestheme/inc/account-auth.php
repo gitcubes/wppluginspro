@@ -75,6 +75,30 @@ function cubestheme_ensure_auth_pages()
 
 add_action('init', 'cubestheme_ensure_auth_pages');
 
+function cubestheme_ensure_marketing_pages()
+{
+    $pages = array(
+        'account-dashboard' => 'Account Dashboard',
+    );
+
+    foreach ($pages as $slug => $title) {
+        $existing = get_page_by_path($slug);
+        if ($existing instanceof WP_Post) {
+            continue;
+        }
+
+        wp_insert_post(array(
+            'post_title' => $title,
+            'post_name' => $slug,
+            'post_status' => 'publish',
+            'post_type' => 'page',
+            'post_content' => '',
+        ));
+    }
+}
+
+add_action('init', 'cubestheme_ensure_marketing_pages');
+
 function cubestheme_redirect_auth_pages()
 {
     if (is_user_logged_in() && (is_page('sign-in') || is_page('register'))) {
