@@ -279,6 +279,7 @@ require get_template_directory() . '/inc/options.php';
  */
 require get_template_directory() . '/inc/company-settings.php';
 require get_template_directory() . '/inc/account-auth.php';
+require get_template_directory() . '/inc/plugin-landing.php';
 
 /**
   Theme Widgets pagee
