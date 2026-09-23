@@ -16,7 +16,7 @@ if (!defined('_S_VERSION')) {
 
 function themeVersion()
 {
-    return  '1.0.7';
+    return  '1.0.8';
 }
 
 // INCLUDE FILES
@@ -765,3 +765,107 @@ function cubestheme_header_cart_fragment($fragments)
 }
 
 add_filter('woocommerce_add_to_cart_fragments', 'cubestheme_header_cart_fragment');
+
+function cubestheme_variation_plan_label($variation)
+{
+    if (!$variation || !method_exists($variation, 'get_variation_attributes')) {
+        return '';
+    }
+
+    $attributes = $variation->get_variation_attributes();
+    if (!$attributes) {
+        return '';
+    }
+
+    $value = (string) reset($attributes);
+    $taxonomy = str_replace('attribute_', '', (string) key($attributes));
+    if ($taxonomy !== '' && taxonomy_exists($taxonomy)) {
+        $term = get_term_by('slug', $value, $taxonomy);
+        if ($term instanceof WP_Term) {
+            return $term->name;
+        }
+    }
+
+    return $value;
+}
+
+function cubestheme_add_to_cart_message($message, $products)
+{
+    $product_id = (int) array_key_first((array) $products);
+    $variation_id = isset($_REQUEST['variation_id']) ? absint(wp_unslash($_REQUEST['variation_id'])) : 0;
+    $variation = $variation_id && function_exists('wc_get_product') ? wc_get_product($variation_id) : null;
+
+    if ($variation && $variation->is_type(array('variation', 'subscription_variation'))) {
+        $parent_id = (int) $variation->get_parent_id();
+        if ($parent_id > 0) {
+            $product_id = $parent_id;
+        }
+    }
+
+    $name = wp_strip_all_tags(get_the_title($product_id));
+    $plan = cubestheme_variation_plan_label($variation);
+    $sentence = $plan !== ''
+        ? sprintf(__('%1$s for %2$s has been added to your cart.', 'cubestheme'), $name, $plan)
+        : sprintf(__('%s has been added to your cart.', 'cubestheme'), $name);
+
+    return sprintf(
+        '<span>%s</span> <a class="cart-added-toast-action" href="%s">%s</a>',
+        esc_html($sentence),
+        esc_url(function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/')),
+        esc_html__('Checkout', 'cubestheme')
+    );
+}
+
+add_filter('wc_add_to_cart_message_html', 'cubestheme_add_to_cart_message', 10, 2);
+
+function cubestheme_cart_just_added_body_class($classes)
+{
+    if (function_exists('wc_notice_count') && !is_cart() && !is_checkout() && wc_notice_count('success') > 0) {
+        $classes[] = 'cart-just-added';
+    }
+
+    return $classes;
+}
+
+add_filter('body_class', 'cubestheme_cart_just_added_body_class');
+
+function cubestheme_cart_added_toast()
+{
+    if (!function_exists('wc_get_notices') || !function_exists('wc_set_notices') || is_cart() || is_checkout()) {
+        return;
+    }
+
+    $success = wc_get_notices('success');
+    if (!$success) {
+        return;
+    }
+
+    $notices = wc_get_notices();
+    unset($notices['success']);
+    wc_set_notices($notices);
+    ?>
+    <div class="cart-added-toast" role="status">
+        <?php foreach ($success as $notice) : ?>
+            <?php $text = is_array($notice) ? (string) ($notice['notice'] ?? '') : (string) $notice; ?>
+            <?php if ($text === '') continue; ?>
+            <div class="cart-added-toast-row">
+                <p><?php echo wp_kses($text, array('span' => array(), 'a' => array('class' => array(), 'href' => array()))); ?></p>
+                <button class="cart-added-toast-close" type="button" aria-label="<?php esc_attr_e('Dismiss', 'cubestheme'); ?>">×</button>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <script>
+        document.querySelectorAll('.cart-added-toast-close').forEach(function (button) {
+            button.addEventListener('click', function () {
+                var toast = button.closest('.cart-added-toast');
+                if (toast) {
+                    toast.remove();
+                }
+                document.body.classList.remove('cart-just-added');
+            });
+        });
+    </script>
+    <?php
+}
+
+add_action('wp_body_open', 'cubestheme_cart_added_toast', 20);
