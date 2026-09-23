@@ -365,8 +365,17 @@
   line-height: 1.15;
 }
 
-.commerce-page .wc-block-cart__totals-title {
-  font-size: 22px;
+.commerce-page .wc-block-cart .wc-block-cart__totals-title {
+  font-family: Inter, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.commerce-page .wc-block-cart__submit-button,
+.commerce-page .wc-block-cart__submit-button .wc-block-components-button__text {
+  color: #fff !important;
 }
 
 .commerce-page .wc-block-components-product-name {
