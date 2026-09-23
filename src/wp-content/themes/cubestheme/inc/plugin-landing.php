@@ -215,18 +215,35 @@ function cubestheme_landing_product_id($page_id)
         'meta_value' => (string) $page_id,
     ));
 
-    $fallback = 0;
+    $page_slug = (string) get_post_field('post_name', $page_id);
+    $best = 0;
+    $best_score = -1;
+
     foreach ($ids as $id) {
         $product = function_exists('wc_get_product') ? wc_get_product($id) : null;
-        if ($product && $product->is_type(array('variable', 'variable-subscription'))) {
-            return (int) $id;
+        if (!$product) {
+            continue;
         }
-        if ($fallback === 0) {
-            $fallback = (int) $id;
+
+        $score = 0;
+        if ($product->is_type(array('variable', 'variable-subscription'))) {
+            $score += 2;
+        }
+
+        $plugin_slug = (string) get_post_meta($id, 'wsh_plugin_slug', true);
+        $plugin_slug = str_replace('wsh-', '', $plugin_slug);
+        $product_slug = str_replace('wsh-', '', (string) $product->get_slug());
+        if ($page_slug !== '' && ($plugin_slug === $page_slug || strpos($product_slug, $page_slug) === 0)) {
+            $score += 10;
+        }
+
+        if ($score > $best_score) {
+            $best_score = $score;
+            $best = (int) $id;
         }
     }
 
-    return $fallback;
+    return $best;
 }
 
 function cubestheme_landing_variations($product_id)
