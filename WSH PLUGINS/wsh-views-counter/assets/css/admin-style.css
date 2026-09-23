@@ -1,0 +1,29 @@
+@media screen and (min-width: 900px) {
+
+	select#search-item-id-period-select, select#search-item-id-post-type-select, select#search-item-id-report-select {
+		position: absolute;
+		display: inline-block;
+		margin-top: 12px;
+	}
+
+	select#search-item-id-period-select{
+		right: 580px;
+	}
+
+	select#search-item-id-post-type-select{
+		right: 430px;
+	}
+
+	select#search-item-id-report-select {
+		right: 280px;
+	}
+
+}
+
+@media screen and (max-width: 780px) {
+
+	select#search-item-id-period-select, select#search-item-id-post-type-select, select#search-item-id-report-select {
+		width: 100%;
+	}
+
+}

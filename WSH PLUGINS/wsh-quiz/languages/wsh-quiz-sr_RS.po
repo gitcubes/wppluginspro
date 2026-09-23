@@ -1,0 +1,878 @@
+# Serbian translation for WSH Quiz
+# Copyright (C) 2026 Web Solutions Hub LLC
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: WSH Quiz 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wppluginspro.io\n"
+"POT-Creation-Date: 2026-09-21 20:00+0000\n"
+"PO-Revision-Date: 2026-09-21 20:00+0000\n"
+"Last-Translator: WSH\n"
+"Language-Team: Serbian\n"
+"Language: sr_RS\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Domain: wsh-quiz\n"
+
+msgid "Yes / No"
+msgstr "Da / Ne"
+
+msgid "Two fixed answers: Yes and No."
+msgstr "Dva fiksna odgovora: Da i Ne."
+
+msgid "Multiple choice"
+msgstr "Više ponuđenih odgovora"
+
+msgid "Text question with two to five answers."
+msgstr "Tekstualno pitanje sa dva do pet odgovora."
+
+msgid "Question with image"
+msgstr "Pitanje uz sliku"
+
+msgid "An image is part of the question. Answers stay text."
+msgstr "Slika je deo pitanja. Odgovori ostaju tekst."
+
+msgid "Question with video"
+msgstr "Pitanje uz video"
+
+msgid "A YouTube video is part of the question."
+msgstr "YouTube video je deo pitanja."
+
+msgid "Image answers"
+msgstr "Odgovori kao slike"
+
+msgid "Answers are images (A / B / C)."
+msgstr "Odgovori su slike (A / B / C)."
+
+msgid "Yes"
+msgstr "Da"
+
+msgid "No"
+msgstr "Ne"
+
+msgid "Free"
+msgstr "Besplatno"
+
+msgid "Pro"
+msgstr "Pro"
+
+msgid "Upgrade to Pro"
+msgstr "Nadogradi na Pro"
+
+msgid "Quizzes"
+msgstr "Kvizovi"
+
+msgid "Quiz"
+msgstr "Kviz"
+
+msgid "Add New"
+msgstr "Dodaj novi"
+
+msgid "Add New Quiz"
+msgstr "Dodaj novi kviz"
+
+msgid "Edit Quiz"
+msgstr "Uredi kviz"
+
+msgid "New Quiz"
+msgstr "Novi kviz"
+
+msgid "View Quiz"
+msgstr "Pogledaj kviz"
+
+msgid "Search Quizzes"
+msgstr "Pretraži kvizove"
+
+msgid "No quizzes found."
+msgstr "Nema pronađenih kvizova."
+
+msgid "No quizzes found in Trash."
+msgstr "Nema kvizova u korpi."
+
+msgid "All Quizzes"
+msgstr "Svi kvizovi"
+
+msgid "WSH Quiz"
+msgstr "WSH Quiz"
+
+msgid "Questions"
+msgstr "Pitanja"
+
+msgid "Shortcode"
+msgstr "Shortcode"
+
+msgid "License"
+msgstr "Licenca"
+
+msgid "You are on the Free plan. Image/video questions, AI generation, leaderboards, and other Pro tools stay locked until a license is active."
+msgstr "Koristite besplatni plan. Pitanja sa slikom/videom, AI generisanje, rang liste i ostali Pro alati ostaju zaključani dok se licenca ne aktivira."
+
+msgid "Quiz builder"
+msgstr "Editor kviza"
+
+msgid "Embed"
+msgstr "Ugradi"
+
+msgid "Save the quiz first to get a shortcode."
+msgstr "Prvo sačuvajte kviz da biste dobili shortcode."
+
+msgid "Paste this shortcode into any post or page."
+msgstr "Nalepite ovaj shortcode u bilo koju vest ili stranicu."
+
+msgid "Add question"
+msgstr "Dodaj pitanje"
+
+msgid "Generate with AI"
+msgstr "Generiši uz AI"
+
+msgid "Unlock AI and media questions"
+msgstr "Otključaj AI i medijska pitanja"
+
+msgid "AI generation"
+msgstr "AI generisanje"
+
+msgid "Description"
+msgstr "Opis"
+
+msgid "Timer (seconds, 0 = off)"
+msgstr "Tajmer (sekunde, 0 = isključeno)"
+
+msgid "Question"
+msgstr "Pitanje"
+
+msgid "Remove"
+msgstr "Ukloni"
+
+msgid "Type"
+msgstr "Tip"
+
+msgid "Question text"
+msgstr "Tekst pitanja"
+
+msgid "Question media"
+msgstr "Medij pitanja"
+
+msgid "None"
+msgstr "Nema"
+
+msgid "Image"
+msgstr "Slika"
+
+msgid "YouTube video"
+msgstr "YouTube video"
+
+msgid "Image URL, or YouTube URL for video questions"
+msgstr "URL slike, ili YouTube URL za video pitanja"
+
+msgid "Select image"
+msgstr "Izaberi sliku"
+
+msgid "Source / credit"
+msgstr "Izvor / potpis"
+
+msgid "Hint"
+msgstr "Hint"
+
+msgid "Explanation"
+msgstr "Objašnjenje"
+
+msgid "Score"
+msgstr "Poeni"
+
+msgid "Correct"
+msgstr "Tačno"
+
+msgid "Answer %d"
+msgstr "Odgovor %d"
+
+msgid "This question type requires an active Pro license."
+msgstr "Ovaj tip pitanja zahteva aktivnu Pro licencu."
+
+msgid "Use this image"
+msgstr "Koristi ovu sliku"
+
+msgid "Select a quiz"
+msgstr "Izaberi kviz"
+
+msgid "Embed a quiz in this post."
+msgstr "Ugradi kviz u ovu vest."
+
+msgid "Embedded quiz:"
+msgstr "Ugrađeni kviz:"
+
+msgid "Select a quiz in the block settings."
+msgstr "Izaberite kviz u podešavanjima bloka."
+
+msgid "Next"
+msgstr "Dalje"
+
+msgid "See results"
+msgstr "Pogledaj rezultat"
+
+msgid "Wrong"
+msgstr "Netačno"
+
+msgid "Your score"
+msgstr "Vaš rezultat"
+
+msgid "Play again"
+msgstr "Igraj ponovo"
+
+msgid "Share result"
+msgstr "Podeli rezultat"
+
+msgid "Could not check this answer. Please try again."
+msgstr "Odgovor nije mogao da se proveri. Pokušajte ponovo."
+
+msgid "Powered by WSH Quiz"
+msgstr "Pokreće WSH Quiz"
+
+msgid "of"
+msgstr "od"
+
+msgid "Invalid quiz question."
+msgstr "Neispravno pitanje kviza."
+
+msgid "This quiz is not available."
+msgstr "Ovaj kviz nije dostupan."
+
+msgid "Question not found."
+msgstr "Pitanje nije pronađeno."
+
+msgid "You are not allowed to manage the license."
+msgstr "Nemate dozvolu da menjate licencu."
+
+msgid "WSH Quiz — License"
+msgstr "WSH Quiz — Licenca"
+
+msgid "One plugin. Free features always work. An active license unlocks Pro."
+msgstr "Jedan plugin. Besplatne funkcije uvek rade. Aktivna licenca otključava Pro."
+
+msgid "Create quizzes by hand and embed them in posts."
+msgstr "Pravite kvizove ručno i ugradite ih u vesti."
+
+msgid "Yes / No questions"
+msgstr "Da / Ne pitanja"
+
+msgid "Multiple choice questions"
+msgstr "Pitanja sa ponuđenim odgovorima"
+
+msgid "Shortcode and Gutenberg block"
+msgstr "Shortcode i Gutenberg blok"
+
+msgid "Score screen and share text"
+msgstr "Ekran rezultata i deljenje"
+
+msgid "Unlock media questions, AI generation, and engagement tools."
+msgstr "Otključajte medijska pitanja, AI generisanje i alate za angažman."
+
+msgid "Image and video questions"
+msgstr "Pitanja sa slikom i videom"
+
+msgid "AI quiz from a topic or article"
+msgstr "AI kviz iz teme ili članka"
+
+msgid "Timer, leaderboard, daily quiz"
+msgstr "Tajmer, rang lista, dnevni kviz"
+
+msgid "Analytics and ad slots"
+msgstr "Analitika i reklamni slotovi"
+
+msgid "Current plan"
+msgstr "Trenutni plan"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "License active"
+msgstr "Licenca aktivna"
+
+msgid "License inactive"
+msgstr "Licenca nije aktivna"
+
+msgid "Expires"
+msgstr "Ističe"
+
+msgid "Last error"
+msgstr "Poslednja greška"
+
+msgid "License key"
+msgstr "Licencni ključ"
+
+msgid "Enter the key from wppluginspro.io and activate it on this site."
+msgstr "Unesite ključ sa wppluginspro.io i aktivirajte ga na ovom sajtu."
+
+msgid "Activate"
+msgstr "Aktiviraj"
+
+msgid "Verify"
+msgstr "Proveri"
+
+msgid "Deactivate"
+msgstr "Deaktiviraj"
+
+msgid "License server unavailable, using cached license temporarily."
+msgstr "Licencni server nije dostupan, privremeno se koristi keširana licenca."
+
+msgid "License server error: %s"
+msgstr "Greška licencnog servera: %s"
+
+msgid "Unexpected response from license server (HTTP %d)."
+msgstr "Neočekivan odgovor licencnog servera (HTTP %d)."
+
+msgid "Invalid JSON response from license server."
+msgstr "Neispravan JSON odgovor licencnog servera."
+
+msgid "License request successful."
+msgstr "Zahtev za licencu je uspeo."
+
+msgid "License request failed."
+msgstr "Zahtev za licencu nije uspeo."
+
+msgid "Please enter a license key."
+msgstr "Unesite licencni ključ."
+
+msgid "License cleared locally."
+msgstr "Licenca je obrisana lokalno."
+
+msgid "No license key saved."
+msgstr "Nije sačuvan licencni ključ."
+
+msgid "License status is cached."
+msgstr "Status licence je keširan."
+
+msgid "Always open"
+msgstr "Uvek otvoren"
+
+msgid "Daily"
+msgstr "Dnevni"
+
+msgid "Weekly"
+msgstr "Sedmični"
+
+msgid "Periodic"
+msgstr "Periodični"
+
+msgid "Anyone, no details"
+msgstr "Svako, bez podataka"
+
+msgid "First name, last name and email"
+msgstr "Ime, prezime i email"
+
+msgid "Registered account required"
+msgstr "Potreban je nalog"
+
+msgid "This quiz opens on %s."
+msgstr "Ovaj kviz se otvara %s."
+
+msgid "This quiz is no longer active."
+msgstr "Ovaj kviz više nije aktivan."
+
+msgid "Player"
+msgstr "Igrač"
+
+msgid "Quiz settings"
+msgstr "Podešavanja kviza"
+
+msgid "Schedule"
+msgstr "Raspored"
+
+msgid "Daily, weekly or periodic quizzes stay playable only between the dates below."
+msgstr "Dnevni, sedmični ili periodični kvizovi se igraju samo između datuma ispod."
+
+msgid "Start date"
+msgstr "Datum početka"
+
+msgid "End date"
+msgstr "Datum završetka"
+
+msgid "Play time (seconds, 0 = off)"
+msgstr "Vreme igre (sekunde, 0 = isključeno)"
+
+msgid "Who can play"
+msgstr "Ko može da igra"
+
+msgid "Show a leaderboard"
+msgstr "Prikaži rang listu"
+
+msgid "Allow play again"
+msgstr "Dozvoli ponovnu igru"
+
+msgid "Sponsor"
+msgstr "Sponzor"
+
+msgid "Sponsor name"
+msgstr "Ime sponzora"
+
+msgid "Sponsor link"
+msgstr "Link sponzora"
+
+msgid "Sponsor banner"
+msgstr "Baner sponzora"
+
+msgid "Paste a shortcode into any post or page. Use [wsh_quiz_list] for the archive."
+msgstr "Nalepite shortcode u vest ili stranicu. Za arhivu koristite [wsh_quiz_list]."
+
+msgid "You need an account to play this quiz."
+msgstr "Potreban je nalog da biste igrali ovaj kviz."
+
+msgid "Please enter your first name, last name and email."
+msgstr "Unesite ime, prezime i email."
+
+msgid "Create an account or log in to play this quiz."
+msgstr "Napravite nalog ili se prijavite da biste igrali."
+
+msgid "Log in to play"
+msgstr "Prijavi se i igraj"
+
+msgid "Enter your name and email to start."
+msgstr "Unesite ime i email da počnete."
+
+msgid "First name"
+msgstr "Ime"
+
+msgid "Last name"
+msgstr "Prezime"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Start the quiz"
+msgstr "Započni igru"
+
+msgid "Give up"
+msgstr "Odustani"
+
+msgid "Your result"
+msgstr "Tvoj rezultat"
+
+msgid "Share your result"
+msgstr "Podeli rezultat"
+
+msgid "Copy link"
+msgstr "Kopiraj link"
+
+msgid "Leaderboard"
+msgstr "Rang lista"
+
+msgid "Leaderboard: %s"
+msgstr "Rang lista: %s"
+
+msgid "No results yet. Be the first to play."
+msgstr "Još nema rezultata. Budi prvi."
+
+msgid "Give up this quiz?"
+msgstr "Odustaješ od kviza?"
+
+msgid "correct"
+msgstr "tačnih"
+
+msgid "Your rank"
+msgstr "Tvoja pozicija"
+
+msgid "1st place"
+msgstr "1. mesto"
+
+msgid "2nd place"
+msgstr "2. mesto"
+
+msgid "3rd place"
+msgstr "3. mesto"
+
+msgid "Active"
+msgstr "Aktivan"
+
+msgid "Yes / No and multiple choice"
+msgstr "Da / Ne i ponuđeni odgovori"
+
+msgid "Daily, weekly and periodic schedules"
+msgstr "Dnevni, sedmični i periodični raspored"
+
+msgid "Guest entry or required account"
+msgstr "Ulaz preko imena ili naloga"
+
+msgid "Timer, sponsor, leaderboard and share"
+msgstr "Tajmer, sponzor, rang lista i deljenje"
+
+msgid "Remove WSH branding"
+msgstr "Uklanjanje WSH brendinga"
+
+msgid "Analytics (coming next)"
+msgstr "Analitika (sledeće)"
+
+msgid "You are on the Free plan. Image/video questions and AI generation stay locked until a license is active."
+msgstr "Koristite besplatni plan. Pitanja sa slikom/videom i AI generisanje ostaju zaključani dok se licenca ne aktivira."
+
+msgid "WSH Quiz promo"
+msgstr "WSH Quiz promo"
+
+msgid "Promote a quiz in the sidebar with a slogan and a play link."
+msgstr "Promoviši kviz u sidebaru sa sloganom i linkom za igru."
+
+msgid "View results"
+msgstr "Vidi rezultate"
+
+msgid "All quizzes"
+msgstr "Svi kvizovi"
+
+msgid "Back to quiz list"
+msgstr "Nazad na kviz listu"
+
+msgid "Slogan"
+msgstr "Slogan"
+
+msgid "Button text"
+msgstr "Tekst dugmeta"
+
+msgid "Latest playable quiz"
+msgstr "Poslednji aktuelni kviz"
+
+msgid "This quiz has no public leaderboard."
+msgstr "Ovaj kviz nema javnu rang listu."
+
+msgid "This quiz cannot be played yet."
+msgstr "Ovaj kviz još nije spreman za igru."
+
+msgid "Results: %s"
+msgstr "Rezultati: %s"
+
+msgid "Public play page"
+msgstr "Javna stranica za igru"
+
+msgid "Public results page"
+msgstr "Javna stranica rezultata"
+
+msgid "The plugin also creates a Quiz page with the current list."
+msgstr "Plugin takođe pravi stranicu Quiz sa listom aktuelnih kvizova."
+
+msgid "Title"
+msgstr "Naslov"
+
+msgid "Public Quiz page:"
+msgstr "Javna Quiz stranica:"
+
+msgid "Settings"
+msgstr "Podešavanja"
+
+msgid "WSH Quiz settings"
+msgstr "WSH Quiz podešavanja"
+
+msgid "These defaults apply to new quizzes and to the public Quiz branding."
+msgstr "Ove vrednosti važe za nove kvizove i za javni izgled kviza."
+
+msgid "Branding"
+msgstr "Brending"
+
+msgid "Shown above the quiz list and in the player."
+msgstr "Prikazuje se iznad liste kvizova i u igri."
+
+msgid "Quiz logo"
+msgstr "Logo kviza"
+
+msgid "Accent color"
+msgstr "Akcentna boja"
+
+msgid "Text color"
+msgstr "Boja teksta"
+
+msgid "Background color"
+msgstr "Boja pozadine"
+
+msgid "Font"
+msgstr "Font"
+
+msgid "Theme default"
+msgstr "Podrazumevani font teme"
+
+msgid "System UI"
+msgstr "Sistemski font"
+
+msgid "Arial"
+msgstr "Arial"
+
+msgid "Georgia"
+msgstr "Georgia"
+
+msgid "Times New Roman"
+msgstr "Times New Roman"
+
+msgid "Default quiz rules"
+msgstr "Podrazumevana pravila kviza"
+
+msgid "Used when an editor creates a new quiz. Each quiz can still override these."
+msgstr "Koristi se kada urednik napravi novi kviz. Svaki kviz i dalje može da promeni ova pravila."
+
+msgid "Show a leaderboard by default"
+msgstr "Podrazumevano prikaži rang listu"
+
+msgid "Allow play again by default"
+msgstr "Podrazumevano dozvoli ponovnu igru"
+
+msgid "Public pages"
+msgstr "Javne stranice"
+
+msgid "Quiz list:"
+msgstr "Lista kvizova:"
+
+msgid "The Quiz page will be created automatically."
+msgstr "Stranica Quiz biće napravljena automatski."
+
+msgid "Save settings"
+msgstr "Sačuvaj podešavanja"
+
+msgid "Settings saved."
+msgstr "Podešavanja su sačuvana."
+
+msgid "You are not allowed to change quiz settings."
+msgstr "Nemate dozvolu da menjate podešavanja kviza."
+
+msgid "About"
+msgstr "O kvizu"
+
+msgid "Play rules"
+msgstr "Pravila igre"
+
+msgid "Slogan, logo, colors and default rules are in %s."
+msgstr "Slogan, logo, boje i podrazumevana pravila su u %s."
+
+msgid "Remove logo"
+msgstr "Ukloni logo"
+
+msgid "Quiz sponsor"
+msgstr "Sponzor kviza"
+
+msgid "Set a featured image in the sidebar. It is the leading image on the Quiz page."
+msgstr "U sidebaru postavi istaknutu sliku. To je vodeća slika na stranici kviza."
+
+msgid "Players"
+msgstr "Igrači"
+
+msgid "Actions"
+msgstr "Akcije"
+
+msgid "Quiz actions"
+msgstr "Akcije kviza"
+
+msgid "Save the quiz first to manage games and results."
+msgstr "Prvo sačuvaj kviz da bi upravljao igrama i rezultatima."
+
+msgid "%s player"
+msgid_plural "%s players"
+msgstr[0] "%s igrač"
+msgstr[1] "%s igrača"
+msgstr[2] "%s igrača"
+
+msgid "Delete all games"
+msgstr "Obriši sve igre"
+
+msgid "Delete quiz"
+msgstr "Obriši kviz"
+
+msgid "Quiz results"
+msgstr "Rezultati kviza"
+
+msgid "Close"
+msgstr "Zatvori"
+
+msgid "You are not allowed to do this."
+msgstr "Nemaš dozvolu za ovu akciju."
+
+msgid "Quiz not found."
+msgstr "Kviz nije pronađen."
+
+msgid "All games and results were deleted."
+msgstr "Sve igre i rezultati su obrisani."
+
+msgid "Delete this quiz and all its games? This cannot be undone."
+msgstr "Obrisati ovaj kviz i sve njegove igre? Ovo se ne može poništiti."
+
+msgid "Delete all games and results for this quiz? The quiz itself will stay."
+msgstr "Obrisati sve igre i rezultate ovog kviza? Sam kviz ostaje."
+
+msgid "No results yet."
+msgstr "Još nema rezultata."
+
+msgid "Name"
+msgstr "Ime"
+
+msgid "Time"
+msgstr "Vreme"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Could not complete this action. Please try again."
+msgstr "Akcija nije uspela. Pokušaj ponovo."
+
+msgid "Skip question"
+msgstr "Preskoči pitanje"
+
+msgid "AI generation requires an active Pro license."
+msgstr "AI generisanje zahteva aktivnu Pro licencu."
+
+msgid "Add an OpenAI API key in WSH Quiz → Settings."
+msgstr "Dodajte OpenAI API ključ u WSH Quiz → Podešavanja."
+
+msgid "Enter a topic or an article URL."
+msgstr "Unesite temu ili URL članka."
+
+msgid "Unexpected response from OpenAI."
+msgstr "Neočekivan odgovor od OpenAI."
+
+msgid "AI response is not valid JSON."
+msgstr "AI odgovor nije ispravan JSON."
+
+msgid "The article URL is not valid."
+msgstr "URL članka nije ispravan."
+
+msgid "Could not read that article URL."
+msgstr "Nisam mogao da pročitam taj URL članka."
+
+msgid "That URL had no readable text."
+msgstr "Taj URL nije imao čitljiv tekst."
+
+msgid "Used to fill a quiz from a topic or article. Requires an active Pro license."
+msgstr "Služi da popuni kviz iz teme ili članka. Zahteva aktivnu Pro licencu."
+
+msgid "OpenAI API key"
+msgstr "OpenAI API ključ"
+
+msgid "A key is already saved. Leave this blank to keep it."
+msgstr "Ključ je već sačuvan. Ostavite prazno da ostane isti."
+
+msgid "Use your own OpenAI key. It is stored only in this plugin and is never shared with other products."
+msgstr "Koristite sopstveni OpenAI ključ. Čuva se samo u ovom dodatku i ne deli se sa drugim proizvodima."
+
+msgid "Model"
+msgstr "Model"
+
+msgid "Default: gpt-4.1-mini."
+msgstr "Podrazumevano: gpt-4.1-mini."
+
+msgid "Topic or article text"
+msgstr "Tema ili tekst članka"
+
+msgid "Article URL"
+msgstr "URL članka"
+
+msgid "Number of questions"
+msgstr "Broj pitanja"
+
+msgid "Question type"
+msgstr "Tip pitanja"
+
+msgid "Mixed"
+msgstr "Mešovito"
+
+msgid "Replace existing questions"
+msgstr "Zameni postojeća pitanja"
+
+msgid "Generate questions"
+msgstr "Generiši pitanja"
+
+msgid "Generating questions…"
+msgstr "Generišem pitanja…"
+
+msgid "AI did not return any questions."
+msgstr "AI nije vratio nijedno pitanje."
+
+msgid "Questions generated. Review them, then save the quiz."
+msgstr "Pitanja su generisana. Pregledajte ih, pa sačuvajte kviz."
+
+msgid "Remove this question?"
+msgstr "Obrisati ovo pitanje?"
+
+msgid "Questions cannot be removed after players have already played this quiz."
+msgstr "Pitanja se ne mogu brisati ako je kviz već odigran."
+
+msgid "Questions cannot be removed after players have already played this quiz. Delete all games first if you need to change the question list."
+msgstr "Pitanja se ne mogu brisati ako je kviz već odigran. Prvo obrišite sve igre ako treba da menjate listu pitanja."
+
+msgid "A quiz needs at least one question."
+msgstr "Kviz mora da ima bar jedno pitanje."
+
+msgid "Difficulty"
+msgstr "Težina"
+
+msgid "Easy"
+msgstr "Lako"
+
+msgid "Medium"
+msgstr "Srednje"
+
+msgid "Hard"
+msgstr "Teško"
+
+msgid "Suggested play time (seconds)"
+msgstr "Predloženo vreme igre (sekunde)"
+
+msgid "Calculated from the number of questions and the difficulty. You can change it."
+msgstr "Računa se iz broja pitanja i težine. Možete da ga promenite."
+
+msgid "Quiz description"
+msgstr "Opis kviza"
+
+msgid "Question mix"
+msgstr "Raspored pitanja"
+
+msgid "Set how many questions of each type. The total above follows this mix."
+msgstr "Unesite koliko želite pitanja kog tipa. Ukupan broj gore prati ovaj raspored."
+
+msgid "Photo questions"
+msgstr "Foto pitanja"
+
+msgid "Video questions"
+msgstr "Video pitanja"
+
+msgid "Photo and video questions get text and a media hint. Add the image or YouTube link after generation."
+msgstr "Foto i video pitanja dobijaju tekst i napomenu za medij. Sliku ili YouTube link dodajte posle generisanja."
+
+msgid "Enter a quiz description or an article URL."
+msgstr "Unesite opis kviza ili URL članka."
+
+msgid "Quiz language"
+msgstr "Jezik kviza"
+
+msgid "Time is calculated from the number of questions and the difficulty. You can change it."
+msgstr "Vreme se računa iz broja pitanja i težine. Možete da ga promenite."
+
+msgid "Prompt"
+msgstr "Prompt"
+
+msgid "Prepared from the quiz title and description. You can edit it before generating."
+msgstr "Pripremljen iz naslova i opisa kviza. Možete da ga izmenite pre generisanja."
+
+msgid "No questions yet. Add a question or generate with AI."
+msgstr "Još nema pitanja. Dodajte pitanje ili generišite uz AI."
+
+msgid "View image"
+msgstr "Pogledaj sliku"
+
+msgid "You have already played this quiz."
+msgstr "Već ste odigrali ovaj kviz."
+
+msgid "This quiz can be played only once. Logged-in players are recognized by their account. Guests are recognized by the email they entered and this browser."
+msgstr "Ovaj kviz može da se igra samo jednom. Prijavljene igrače prepoznajemo po nalogu, a goste po unetom e-mailu i ovom pregledaču."
+
+msgid "Remove banner"
+msgstr "Ukloni baner"
+
+msgid "%1$s question / %2$s"
+msgid_plural "%1$s questions / %2$s"
+msgstr[0] "%1$s pitanje / %2$s"
+msgstr[1] "%1$s pitanja / %2$s"
+msgstr[2] "%1$s pitanja / %2$s"
+
+msgid "If this is off, a player can play only once. Logged-in players are recognized by account, guests by email and this browser."
+msgstr "Ako je isključeno, igrač može da igra samo jednom. Ulogovani se prepoznaju po nalogu, gosti po emailu i ovom pregledaču."
+
+msgid "Remove game"
+msgstr "Ukloni igru"
+
+msgid "Remove this player's game and result? They will be able to play again."
+msgstr "Ukloniti igru ovog igrača i njegov rezultat? Moći će da igra ponovo."
+
+msgid "Game not found."
+msgstr "Igra nije pronađena."

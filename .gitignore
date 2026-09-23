@@ -1,0 +1,13 @@
+.DS_Store
+.deploy-ftp.env
+.deploy-ftp.last
+
+sql/
+**/wp-config.php
+src/wp-content/uploads/
+src/wp-content/upgrade/
+src/wp-content/cache/
+src/wp-content/debug.log
+src/wp-content/litespeed/
+src/wp-content/ai1wm-backups/
+src/wp-content/webp-express/webp-images/

@@ -1,0 +1,33 @@
+.all-blog-posts {
+    padding: 50px 0 80px 0;
+
+    @media(min-width: 768px) {
+        padding: 72px 0 130px 0;
+    }
+
+    .blog-categories {
+        margin-bottom: 40px;
+
+        @media(min-width: 768px) {
+            margin-bottom: 64px;
+        }
+
+        .categories-tab-nav {
+            margin: 0 auto;
+        }
+    }
+
+    .blog-posts {
+        display: grid;
+        gap: 24px;
+
+        @media(min-width: $breakpoint-lg) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media(min-width: $breakpoint-xl) {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+    }
+}

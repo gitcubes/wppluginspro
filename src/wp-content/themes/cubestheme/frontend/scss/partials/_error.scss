@@ -1,0 +1,31 @@
+.error-page {
+    text-align: center;
+    padding: 150px 0 100px 0;
+
+    @media(min-width: 768px) {
+        padding: 200px 0 200px 0;
+    }
+
+    h1 {
+        font-size: 100px;
+        font-weight: 700;
+        color: #192a3d;
+        margin-bottom: 30px;
+
+        @media(min-width: 768px) {
+            font-size: 250px;
+        }
+    }
+
+    p {
+        font-weight: 400;
+        color: #3a4f66;
+        margin-bottom: 30px;
+    }
+
+    a {
+        font-size: 16px;
+        display: inline-block;
+        transition: all .3s;
+    }
+}

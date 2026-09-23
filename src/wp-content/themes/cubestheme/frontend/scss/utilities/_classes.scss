@@ -1,0 +1,230 @@
+@use "sass:map";
+@import "../variable";
+
+.fixed-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.text-uppercase {
+    text-transform: uppercase !important;
+}
+
+.list-unstyled {
+    list-style: none;
+    padding-left: 0;
+}
+
+@each $element in $text-aligment {
+    .text-#{$element} {
+        text-align: $element;
+    }
+}
+
+@each $element in $position {
+    .position-#{$element} {
+        position: $element;
+    }
+}
+
+%btn {
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s linear;
+    font-size: 1.4rem;
+    line-height: 1.8rem;
+    letter-spacing: 0.19px;
+    border-radius: 3rem;
+}
+
+.btn-block {
+    display: block;
+}
+
+// @each $key, $value in $colors {
+//     .btn-#{$key} {
+//         @extend %btn;
+//         background-color: $value;
+//         color: colorYiq($value) !important;
+//         &:hover {
+//             background-color: darken($value, 10%);
+//             color: colorYiq(darken($value, 10%)) !important;
+//         }
+//     }
+
+//     .bg-#{$key} {
+//         background-color: $value;
+//     }
+//     .text-#{$key} {
+//         color: $value !important;
+//     }
+// }
+
+.row {
+    margin-left: - calc($gutter/2);
+    margin-right: - calc($gutter/2);
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    >[class*="col-"] {
+        width: 100%;
+        padding-left: calc($gutter/2);
+        padding-right: calc($gutter/2);
+    }
+
+    &.no-gutters {
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+
+        >[class*="col-"] {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+    }
+}
+
+@each $breakpoint-key, $breakpoint-value in $breakpoints {
+
+    // if scope remove breakpoint name for
+    @if ($breakpoint-value ==0px) {
+
+        .container,
+        .container-fluid {
+            width: 100%;
+            max-width: 100%;
+            padding-left: calc($gutter/2);
+            padding-right: calc($gutter/2);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @for $i from 1 to ($column + 1) {
+            .col-#{$i} {
+                flex: 0 0 calc(100% / ($column/$i));
+                max-width: calc(100% / ($column/$i));
+            }
+        }
+
+        @each $d in $display {
+            .d-#{$d} {
+                display: $d !important;
+            }
+        }
+
+        // @each end
+
+        @each $wrap in $flex-wrap {
+            .flex-#{$wrap} {
+                flex-wrap: $wrap;
+            }
+        }
+
+        // @each end
+
+        @each $direction in $flex-direction {
+            .flex-#{$direction} {
+                flex-direction: $direction;
+            }
+        }
+
+        // @each end
+
+        @each $align-key, $align-value in $align-items {
+            .align-items-#{$align-key} {
+                align-items: $align-value;
+            }
+        }
+
+        // @each end
+
+        @each $align-key, $align-value in $align-content {
+            .align-content-#{$align-key} {
+                align-content: $align-value;
+            }
+        }
+
+        // @each end
+
+        @each $justify-key, $justify-value in $justify-content {
+            .justify-content-#{$justify-key} {
+                justify-content: $justify-value;
+            }
+        }
+
+        // @each end
+    }
+
+    @else {
+        @media (min-width: #{$breakpoint-value}) {
+            .container {
+                max-width: map.get($container, $breakpoint-key);
+            }
+
+            @for $i from 1 to ($column + 1) {
+                .col-#{$breakpoint-key}-#{$i} {
+                    flex: 0 0 calc(100% / ($column/$i));
+                    max-width: calc(100% / ($column/$i));
+                }
+            }
+
+            @each $d in $display {
+                .d-#{$breakpoint-key}-#{$d} {
+                    display: $d !important;
+                }
+            }
+
+            // @each end
+
+            @each $wrap in $flex-wrap {
+                .flex-#{$breakpoint-key}-#{$wrap} {
+                    flex-wrap: $wrap;
+                }
+            }
+
+            // @each end
+
+            @each $direction in $flex-direction {
+                .flex-#{$breakpoint-key}-#{$direction} {
+                    flex-direction: $direction;
+                }
+            }
+
+            // @each end
+
+            @each $align-key, $align-value in $align-items {
+                .align-items-#{$breakpoint-key}-#{$align-key} {
+                    align-items: $align-value;
+                }
+            }
+
+            // @each end
+
+            @each $align-key, $align-value in $align-content {
+                .align-content-#{$breakpoint-key}-#{$align-key} {
+                    align-content: $align-value;
+                }
+            }
+
+            // @each end
+
+            @each $justify-key, $justify-value in $justify-content {
+                .justify-content-#{$breakpoint-key}-#{$justify-key} {
+                    justify-content: $justify-value;
+                }
+            }
+
+            // @each end
+        }
+
+        // @media end
+    }
+}

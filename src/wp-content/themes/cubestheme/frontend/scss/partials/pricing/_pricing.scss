@@ -1,0 +1,197 @@
+.hero-section.pricing-hero {
+    .plan-grid {
+        padding-top: 50px;
+        display: grid;
+        gap: 24px;
+        align-items: center;
+
+        @media(min-width: 768px) {
+            padding-top: 96px;
+        }
+
+        @media(min-width: 1200px) {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .plan-card {
+            padding: 12px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.30);
+            background: rgba(255, 255, 255, 0.20);
+            transition: .3s ease;
+
+            &:hover {
+                border: 1px solid #fff;
+            }
+
+            .pricing-holder {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 24px;
+                background-color: rgba(255, 255, 255, 0.15);
+                border-radius: 16px;
+            }
+
+
+            .plan-card-header {
+                margin-bottom: 24px;
+                gap: 16px;
+
+                h4 {
+                    margin: 0;
+                }
+
+                .border {
+                    flex-shrink: 0;
+                    background-color: #fff;
+                    width: 48px;
+                    height: 48px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: rgba(24, 111, 255, 0.10);
+
+                    .image-holder {
+                        border-radius: 999px;
+                        background: linear-gradient(180deg, #034DD3 0%, #3C8AFE 100%);
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        img {
+                            width: 24px;
+                            height: 24px;
+
+                        }
+                    }
+                }
+            }
+
+            h3 {
+                margin-bottom: 20px;
+
+                span {
+                    color: #000;
+                    font-family: Inter;
+                    font-size: 18px;
+                    font-weight: 500;
+                    letter-spacing: -0.36px;
+                }
+            }
+
+            p {
+                margin-bottom: 32px;
+                width: auto;
+                color: rgba(0, 0, 0, 0.7);
+                text-align: left;
+            }
+
+            .plan-recommendation {
+                padding: 8px 12px;
+                border-radius: 8px;
+                background: rgba(24, 111, 255, 0.05);
+                color: #000;
+                font-size: 14px;
+            }
+
+            .plan-inclusions {
+                border-top: 1px solid rgba(0, 0, 0, 0.2);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+                padding: 24px 0;
+                margin-bottom: 32px;
+
+                p {
+                    margin-bottom: 24px;
+                    color: #000;
+                    font-weight: 500;
+                    letter-spacing: -0.32px;
+                }
+
+                li {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    margin-bottom: 12px;
+                    font-weight: 500;
+
+                    &:last-of-type {
+                        margin-bottom: 0;
+                    }
+
+                    img {
+                        flex-shrink: 0;
+                    }
+                }
+            }
+
+            strong {
+                color: #000;
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: -0.12px;
+                border-radius: 4px;
+                background: #FFD208;
+                padding: 4px 8px;
+                display: inline-block;
+                margin-bottom: 32px;
+            }
+
+            .btn {
+                text-align: center;
+                padding: 24px 32px;
+                font-weight: 500;
+            }
+
+            .btn-white {
+                border: 2px solid rgba(3, 77, 211, 0.30);
+            }
+
+            .analytics {
+                color: #37ACFF;
+                font-size: 14px;
+                text-transform: uppercase;
+            }
+        }
+    }
+}
+
+
+.plan-comparison {
+    padding: 50px 0 50px 0;
+
+    @media(min-width: 768px) {
+        padding: 76px 0 95px 0;
+    }
+
+    .top-section {
+        margin-bottom: 42px;
+
+        .label {
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            max-width: 752px;
+            margin: 0 auto;
+            margin-bottom: 16px;
+            text-wrap: balance;
+        }
+
+        p {
+            text-align: center;
+            margin: 0 auto;
+        }
+    }
+
+
+}
+
+.faq {
+    padding-top: 0;
+}

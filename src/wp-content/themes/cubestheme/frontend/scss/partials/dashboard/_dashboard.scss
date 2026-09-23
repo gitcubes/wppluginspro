@@ -1,0 +1,362 @@
+.dashboard-directory {
+    min-height: 420px;
+    padding-top: 200px;
+    display: flex;
+    position: relative;
+    padding-bottom: 40px;
+
+    .container {
+        margin-top: auto;
+    }
+
+    .dashboard-hero,
+    .dashboard-section-header {
+        display: grid;
+        gap: 32px;
+        justify-content: space-between;
+        margin-bottom: 42px;
+
+        @media(min-width: 992px) {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        span {
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            margin-bottom: 24px;
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .dashboard-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+
+        @media(min-width: 576px) {
+            flex-direction: row;
+        }
+
+        @media(min-width: 992px) {
+            justify-self: end;
+            align-self: flex-end;
+        }
+
+        .btn {
+            padding: 20px 32px;
+        }
+
+        .btn-white {
+            border: 2px solid #034DD3;
+        }
+    }
+
+    .dashboard-section-header {
+        margin-bottom: 32px;
+
+        h3 {
+            margin-bottom: 16px;
+        }
+    }
+
+    .dashboard-metrics {
+        display: grid;
+        gap: 24px;
+        margin-bottom: 42px;
+
+        @media(min-width: 768px) {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        @media(min-width: 1200px) {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .single-box {
+            padding: 8px;
+
+            h2 {
+                span {
+                    font-size: 16px;
+                }
+            }
+
+            p {
+                margin: 0;
+                font-size: 14px;
+            }
+        }
+    }
+
+    .license-overview {
+        padding: 42px 0 40px 0;
+        border-bottom: 1px solid rgba(3, 77, 211, 0.20);
+        border-top: 1px solid rgba(3, 77, 211, 0.20);
+
+        @media(min-width: 992px) {
+            padding: 42px 0 72px 0;
+            margin-bottom: 42px;
+        }
+    }
+
+    .license-table,
+    .site-license-table {
+        table {
+            table-layout: fixed;
+        }
+
+        h4,
+        p {
+            margin: 0;
+        }
+
+        a {
+            color: #034DD3;
+            font-size: 12px;
+            font-weight: 500;
+            text-decoration-line: underline;
+            text-decoration-style: solid;
+            text-decoration-skip-ink: none;
+            text-decoration-thickness: auto;
+            text-underline-offset: auto;
+            text-underline-position: from-font;
+            width: fit-content;
+        }
+    }
+
+    .license-table {
+        margin-bottom: 72px;
+
+        th,
+        td {
+            vertical-align: top;
+            width: calc(100% / 7);
+        }
+
+        thead {
+            th {
+                width: calc(100% / 7);
+                white-space: nowrap;
+                font-size: 16px;
+                padding: 20px 6px;
+
+                &:first-child {
+                    width: calc(100% / 7);
+                }
+            }
+        }
+
+        tbody {
+            td {
+                width: calc(100% / 7);
+                padding: 18px 6px;
+                font-size: 14px;
+                line-height: 1.45;
+            }
+        }
+    }
+
+    .license-product {
+        min-width: 130px;
+
+        strong {
+            color: #1B1B21;
+            font-size: 14px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        p {
+            color: #1B1B21;
+            font-size: 12px;
+            line-height: 16px;
+        }
+    }
+
+    .license-plan,
+    .license-key-block,
+    .license-state,
+    .license-validity,
+    .license-sites,
+    .license-actions-list {
+        display: grid;
+        gap: 4px;
+    }
+
+    .license-pill {
+        border-radius: 4px;
+        background: linear-gradient(180deg, #034DD3 0%, #3C8AFE 100%);
+        color: #FFF;
+        font-family: "Roboto Mono";
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: -0.12px;
+        text-transform: uppercase;
+        padding: 4px 8px;
+        width: fit-content;
+    }
+
+    .license-plan {
+        p {
+            color: #1B1B21;
+            font-size: 12px;
+            font-weight: 500;
+        }
+    }
+
+    .license-key {
+        color: #1B1B21;
+        font-size: 12px;
+        border-radius: 4px;
+        background: rgba(24, 111, 255, 0.05);
+        width: fit-content;
+        font-weight: 500;
+        padding: 4px 8px;
+    }
+
+    .status-badge {
+        color: #FFF;
+        font-family: "Roboto Mono";
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: -0.12px;
+        text-transform: uppercase;
+        padding: 4px 8px;
+        border-radius: 4px;
+        width: fit-content;
+
+        &.is-active {
+            background: #10B981;
+            color: #FFF;
+        }
+
+        &.is-expiring {
+            background: #FACC15;
+            color: #000;
+        }
+
+        &.is-expired {
+            background: #FFF0F0;
+            color: #FF2727;
+        }
+    }
+
+    .license-state,
+    .license-validity {
+        p {
+            color: #1B1B21;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        span {
+            color: rgba(0, 0, 0, 0.72);
+            font-weight: 500;
+        }
+    }
+
+    .site-pill {
+        color: #1B1B21;
+        font-size: 12px;
+        border-radius: 4px;
+        background: rgba(24, 111, 255, 0.05);
+        font-weight: 500;
+        padding: 4px 8px;
+    }
+
+    .license-actions-list {
+        a {
+            width: fit-content;
+            white-space: nowrap;
+        }
+    }
+
+    .site-license-map {
+        .dashboard-section-header {
+            margin-bottom: 24px;
+        }
+    }
+
+    .site-license-table {
+
+        th,
+        td {
+            vertical-align: top;
+            width: 25%;
+        }
+
+        thead {
+            th {
+                width: 25%;
+                white-space: nowrap;
+                font-size: 16px;
+                padding: 20px 6px;
+
+                &:first-child {
+                    width: 25%;
+                }
+            }
+        }
+
+        tbody {
+            td {
+                width: 25%;
+                padding: 18px 6px;
+                font-size: 14px;
+                line-height: 1.45;
+            }
+        }
+    }
+
+    .site-record,
+    .license-origin,
+    .checkin-meta {
+        display: grid;
+        gap: 4px;
+
+        strong {
+            color: #1B1B21;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        p {
+            color: #1B1B21;
+            font-size: 12px;
+            line-height: 16px;
+        }
+    }
+
+    .plugin-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .plugin-badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 24px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        background: rgba(24, 111, 255, 0.05);
+        color: #1B1B21;
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .checkin-meta {
+        p {
+            font-size: 13px;
+        }
+    }
+}

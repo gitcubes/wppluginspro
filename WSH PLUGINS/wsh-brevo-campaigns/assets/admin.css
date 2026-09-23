@@ -1,0 +1,440 @@
+/* ===== Brevo admin styles (full-page builder) ===== */
+
+/* Layout wrapper */
+#brevo-builder-form {
+    max-width: 1120px;
+    margin: 12px 0 56px;
+    /* prostor za sticky actions */
+}
+
+/* Generic fields (name/subject/lists) */
+#brevo-builder-form .field {
+    margin: 0 0 14px;
+}
+
+#brevo-builder-form .field label {
+    display: block;
+    font-weight: 600;
+    margin: 0 0 6px;
+}
+
+#brevo-builder-form input[type="text"],
+#brevo-builder-form input[type="url"],
+#brevo-builder-form input[type="number"],
+#brevo-builder-form input[type="email"],
+#brevo-builder-form select,
+#brevo-builder-form textarea {
+    width: 100%;
+    max-width: 560px;
+    box-sizing: border-box;
+}
+
+#brevo-builder-form select[multiple] {
+    min-height: 140px;
+}
+
+/* Sections wrapper */
+#brevo-builder-form fieldset.sections {
+    margin-top: 18px;
+    border: 0;
+    padding: 0;
+}
+
+#brevo-builder-form fieldset.sections>legend {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #1d2327;
+}
+
+/* Single section as card */
+#brevo-builder-form .section {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 8px;
+    padding: 14px;
+    margin: 12px 0;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px 16px;
+}
+
+#brevo-builder-form .section h3 {
+    grid-column: 1 / -1;
+    margin: 4px 0 4px;
+    font-size: 16px;
+}
+
+#brevo-builder-form .section label {
+    display: block;
+    margin: 0;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+#brevo-builder-form .section label input[type="text"],
+#brevo-builder-form .section label input[type="url"],
+#brevo-builder-form .section label input[type="number"],
+#brevo-builder-form .section label select {
+    width: 100%;
+    margin-top: 6px;
+    font-weight: 400;
+}
+
+/* Upload button – stani ispod "Lead image (URL)" inputa */
+#brevo-builder-form .section .select-image {
+    align-self: end;
+    justify-self: start;
+}
+
+/* Helper text */
+#brevo-builder-form .description {
+    color: #646970;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+/* Sticky actions bar */
+#brevo-builder-form .actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 30;
+    background: #f6f7f7;
+    border-top: 1px solid #dcdcde;
+    padding: 10px 12px;
+    margin-top: 18px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+#brevo-builder-form .actions .button {
+    height: 32px;
+    line-height: 30px;
+    padding: 0 12px;
+}
+
+/* Invalid highlight (shared sa JS-om) */
+.brevo-invalid {
+    outline: 2px solid #d63638 !important;
+    background: #fff7f7 !important;
+}
+
+/* Fine-tuning spacing za prvu grupu polja */
+#brevo-builder-form .field:first-of-type,
+#brevo-builder-form .field:nth-of-type(2),
+#brevo-builder-form .field:nth-of-type(3) {
+    max-width: 800px;
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+    #brevo-builder-form {
+        margin: 6px 0 56px;
+    }
+
+    #brevo-builder-form .section {
+        padding: 12px;
+        gap: 10px 12px;
+    }
+
+    #brevo-builder-form .actions {
+        padding: 8px;
+    }
+}
+
+/* (Ako ti je ostao CSS iz modal varijante, ne smeta; drži ga ispod za svaki slučaj) */
+#brevo-builder-modal {
+    display: none;
+}
+
+/* Post Picker */
+.post-picker {
+    grid-column: 1 / -1;
+}
+
+.post-picker .post-results {
+    margin-top: 8px;
+    border: 1px solid #dcdcde;
+    border-radius: 6px;
+    background: #fff;
+    padding: 8px;
+    max-height: 260px;
+    overflow: auto;
+}
+
+.post-picker .pp-row {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.post-picker .pp-row:last-child {
+    border-bottom: 0;
+}
+
+.post-picker .pp-row img,
+.pp-thumb-fallback {
+    width: 64px;
+    height: 48px;
+    object-fit: cover;
+    background: #f6f7f7;
+    border: 1px solid #eee;
+    border-radius: 4px;
+}
+
+.post-picker .pp-meta {
+    font-size: 13px;
+}
+
+.post-picker .pp-excerpt {
+    color: #646970;
+    margin-top: 2px;
+}
+
+.post-picker .post-selected {
+    margin-top: 10px;
+}
+
+.post-picker .post-selected-list {
+    margin: 8px 0 0;
+    padding-left: 18px;
+}
+
+.post-picker .pp-chip {
+    display: inline-block;
+    background: #f0f0f1;
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 12px;
+    margin-right: 8px;
+}
+
+/* Dodatno */
+/* Hide results box by default, pa ga JS pokazuje kad ima termina */
+.post-picker .post-results {
+    display: none;
+}
+
+/* Selected preview cards */
+.post-picker .post-selected {
+    margin-top: 10px;
+}
+
+.post-picker .post-selected-list {
+    margin: 8px 0 0;
+    padding-left: 0;
+    list-style: none;
+    width: 100%;
+    /*display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 10px;*/
+}
+
+.post-picker .pp-card {
+    border: 1px solid #dcdcde;
+    border-radius: 6px;
+    background: #fff;
+    padding: 8px;
+    width: 98%;
+    /*display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 10px;*/
+}
+
+.post-picker .pp-card .ppc-thumb img {
+    width: 96px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #eee;
+}
+
+.post-picker .pp-card .ppc-body {
+    font-size: 13px;
+}
+
+.post-picker .pp-card .ppc-title {
+    margin-bottom: 4px;
+}
+
+.post-picker .pp-card .ppc-excerpt {
+    color: #646970;
+    margin: 2px 0 6px;
+}
+
+.post-picker .pp-card .ppc-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #646970;
+    font-size: 12px;
+}
+
+/* D&D hints */
+.post-picker .post-selected-list .pp-card {
+    cursor: move;
+}
+
+.post-picker .post-selected-list .pp-card.dragging {
+    opacity: .6;
+}
+
+
+/* Button loading state + spinner */
+.brevo-btn-loading {
+    position: relative;
+}
+
+.brevo-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+    vertical-align: -2px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    animation: brevo-spin 0.8s linear infinite;
+}
+
+@keyframes brevo-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.button-link-delete.brevo-remove-campaign {
+    color: #b32d2e;
+}
+
+.button-link-delete.brevo-remove-campaign:hover {
+    color: #8a2425;
+}
+
+
+/* ---- Brevo stats modal ---- */
+.brevo-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .35);
+    z-index: 100000;
+}
+
+.brevo-modal {
+    position: fixed;
+    z-index: 100001;
+    inset: auto auto 5% 50%;
+    transform: translateX(-50%);
+    width: min(920px, 92vw);
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 10px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .18);
+}
+
+.brevo-modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid #ececec;
+}
+
+.brevo-modal-head h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.brevo-modal-body {
+    padding: 14px 16px 18px;
+    max-height: 70vh;
+    overflow: auto;
+}
+
+.brevo-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.brevo-kpi {
+    border: 1px solid #ececec;
+    border-radius: 8px;
+    background: #fff;
+    padding: 10px 12px;
+}
+
+.brevo-kpi-label {
+    font-size: 12px;
+    color: #646970;
+}
+
+.brevo-kpi-value {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-top: 2px;
+}
+
+.brevo-kpi-sub {
+    font-size: 12px;
+    color: #646970;
+    margin-top: 2px;
+}
+
+.brevo-links {
+    margin-top: 8px;
+}
+
+.brevo-link-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.brevo-link-row:last-child {
+    border-bottom: 0;
+}
+
+.brevo-link-count {
+    display: inline-block;
+    min-width: 36px;
+    text-align: center;
+    font-weight: 600;
+    background: #f6f7f7;
+    border: 1px solid #ececec;
+    border-radius: 999px;
+    padding: 2px 8px;
+}
+
+/* modal više ne koristimo */
+
+.banner-item label span{
+    width: 200px;
+    display: inline-block;
+}
+
+.banner-item label input {
+    width: 350px !important;
+    display: inline-block;
+}
+
+.banner-item label input.position {
+    width: 50px !important;
+    display: inline-block;
+}
+
+.banner-item label button.select-image {
+    margin-left: 20px;
+    margin-top: 5px;
+    display: inline-block;
+}

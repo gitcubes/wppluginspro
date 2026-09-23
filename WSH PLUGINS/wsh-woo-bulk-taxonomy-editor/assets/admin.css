@@ -1,0 +1,190 @@
+#wsh-wcbte-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    z-index: 100000;
+}
+
+#wsh-wcbte-modal {
+    position: fixed;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(900px, calc(100% - 40px));
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, .25);
+    z-index: 100001;
+    overflow: hidden;
+}
+
+.wsh-wcbte-modal__header,
+.wsh-wcbte-modal__footer {
+    padding: 14px 16px;
+    background: #f6f7f7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wsh-wcbte-modal__header h2 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.wsh-wcbte-modal__body {
+    padding: 16px;
+}
+
+.wsh-wcbte-muted {
+    color: #646970;
+    margin-top: 0;
+}
+
+.wsh-wcbte-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.wsh-wcbte-col {
+    flex: 1;
+}
+
+.wsh-wcbte-col--sm {
+    width: 280px;
+    flex: 0 0 280px;
+}
+
+.wsh-wcbte-locked {
+    border: 1px dashed #c3c4c7;
+    border-radius: 10px;
+    padding: 12px 12px 12px 54px;
+    position: relative;
+    background: #fcfcfc;
+}
+
+.wsh-wcbte-locked__badge {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    background: #2271b1;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 999px;
+}
+
+.wsh-wcbte-locked h3 {
+    margin: 0 0 6px 0;
+}
+
+.wsh-wcbte-status {
+    margin-top: 14px;
+}
+
+.wsh-wcbte-progress {
+    height: 10px;
+    background: #e5e5e5;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.wsh-wcbte-progress__bar {
+    height: 10px;
+    background: #46b450;
+}
+
+.wsh-wcbte-log {
+    margin-top: 10px;
+    background: #111;
+    color: #d6ffd6;
+    padding: 10px;
+    border-radius: 8px;
+    max-height: 200px;
+    overflow: auto;
+    font-size: 12px;
+}
+
+.wsh-wcbte-close {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.wsh-wcbte-preview__tablewrap {
+    max-height: 260px;
+    overflow: auto;
+    border: 1px solid #c3c4c7;
+    border-radius: 10px;
+}
+
+.wsh-wcbte-preview table {
+    margin: 0;
+}
+
+.wsh-wcbte-catbox__inner {
+    border: 1px solid #c3c4c7;
+    border-radius: 10px;
+    background: #fff;
+    padding: 8px 10px;
+    max-height: 260px;
+    overflow: auto;
+}
+
+#wsh-wcbte-cat-checklist .categorychecklist {
+    margin: 0;
+}
+
+#wsh-wcbte-cat-checklist .categorychecklist ul {
+    margin-left: 18px;
+    /* dodatno uvlačenje za child */
+}
+
+.wsh-wcbte-cat-search {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+#wsh-wcbte-cat-search {
+    width: 100%;
+    max-width: 420px;
+}
+
+/* WP-style hierarchical indentation for checklists inside our modal */
+#wsh-wcbte-modal ul.categorychecklist,
+#wsh-wcbte-modal ul.categorychecklist ul {
+    margin: 0;
+    padding: 0;
+}
+
+#wsh-wcbte-modal ul.categorychecklist li {
+    list-style: none;
+    margin: 6px 0;
+}
+
+/* WordPress uses .children ul for nested terms */
+#wsh-wcbte-modal ul.categorychecklist ul.children {
+    margin-left: 22px;
+    /* indentation */
+    padding-left: 0;
+}
+
+/* Some walkers output plain nested UL without .children */
+#wsh-wcbte-modal ul.categorychecklist ul ul {
+    margin-left: 22px;
+}
+
+/* Align checkbox + label similar to WP */
+#wsh-wcbte-modal ul.categorychecklist label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.2;
+}
+
+#wsh-wcbte-modal ul.categorychecklist input[type="checkbox"] {
+    margin: 0;
+}

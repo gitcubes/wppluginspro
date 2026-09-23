@@ -1,0 +1,50 @@
+@font-face {
+    font-family: 'Neue Haas Grotesk Display Pro';
+    src: url('fonts/NeueHaasDisplay-Black/NeueHaasDisplay-Black.eot');
+    src: url('fonts/NeueHaasDisplay-Black/NeueHaasDisplay-Black.eot?#iefix') format('embedded-opentype'),
+        url('fonts/NeueHaasDisplay-Black/NeueHaasDisplay-Black.woff2') format('woff2'),
+        url('fonts/NeueHaasDisplay-Black/NeueHaasDisplay-Black.woff') format('woff'),
+        url('fonts/NeueHaasDisplay-Black/NeueHaasDisplay-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Neue Haas Grotesk Display Pro light';
+    src: url('fonts/NeueHaasDisplay-Light/NeueHaasDisplay-Light.eot');
+    src: url('fonts/NeueHaasDisplay-Light/NeueHaasDisplay-Light.eot?#iefix') format('embedded-opentype'),
+        url('fonts/NeueHaasDisplay-Light/NeueHaasDisplay-Light.woff2') format('woff2'),
+        url('fonts/NeueHaasDisplay-Light/NeueHaasDisplay-Light.woff') format('woff'),
+        url('fonts/NeueHaasDisplay-Light/NeueHaasDisplay-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Neue Haas Grotesk Display Pro';
+    src: url('fonts/NeueHaasDisplay-Roman/NeueHaasDisplay-Roman.eot');
+    src: url('fonts/NeueHaasDisplay-RomanNeueHaasDisplay-Roman.eot?#iefix') format('embedded-opentype'),
+        url('fonts/NeueHaasDisplay-RomanNeueHaasDisplay-Roman.woff2') format('woff2'),
+        url('fonts/NeueHaasDisplay-RomanNeueHaasDisplay-Roman.woff') format('woff'),
+        url('fonts/NeueHaasDisplay-RomanNeueHaasDisplay-Roman.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Neue Haas Grotesk Display Pro norm';
+    src: url('fonts/NeueHaasDisplay-Mediu/NeueHaasDisplay-Mediu.eot');
+    src: url('fonts/NeueHaasDisplay-Mediu/NeueHaasDisplay-Mediu.eot?#iefix') format('embedded-opentype'),
+        url('fonts/NeueHaasDisplay-Mediu/NeueHaasDisplay-Mediu.woff2') format('woff2'),
+        url('fonts/NeueHaasDisplay-Mediu/NeueHaasDisplay-Mediu.woff') format('woff'),
+        url('fonts/NeueHaasDisplay-Mediu/NeueHaasDisplay-Mediu.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+$haas: 'Neue Haas Grotesk Display Pro norm';
+$haasLight: 'Neue Haas Grotesk Display Pro light';

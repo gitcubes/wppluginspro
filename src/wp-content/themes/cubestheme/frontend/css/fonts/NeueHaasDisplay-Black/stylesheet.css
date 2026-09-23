@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Neue Haas Grotesk Display Pro';
+    src: url('NeueHaasDisplay-Black.eot');
+    src: url('NeueHaasDisplay-Black.eot?#iefix') format('embedded-opentype'),
+        url('NeueHaasDisplay-Black.woff2') format('woff2'),
+        url('NeueHaasDisplay-Black.woff') format('woff'),
+        url('NeueHaasDisplay-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+

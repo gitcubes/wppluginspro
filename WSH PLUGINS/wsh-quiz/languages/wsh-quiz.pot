@@ -1,0 +1,747 @@
+# Copyright (C) 2026 Web Solutions Hub LLC
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: WSH Quiz 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wppluginspro.io\n"
+"POT-Creation-Date: 2026-09-21 20:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: wsh-quiz\n"
+
+msgid "Yes / No"
+msgstr ""
+
+msgid "Two fixed answers: Yes and No."
+msgstr ""
+
+msgid "Multiple choice"
+msgstr ""
+
+msgid "Text question with two to five answers."
+msgstr ""
+
+msgid "Question with image"
+msgstr ""
+
+msgid "An image is part of the question. Answers stay text."
+msgstr ""
+
+msgid "Question with video"
+msgstr ""
+
+msgid "A YouTube video is part of the question."
+msgstr ""
+
+msgid "Image answers"
+msgstr ""
+
+msgid "Answers are images (A / B / C)."
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "Free"
+msgstr ""
+
+msgid "Pro"
+msgstr ""
+
+msgid "Upgrade to Pro"
+msgstr ""
+
+msgid "Quizzes"
+msgstr ""
+
+msgid "Quiz"
+msgstr ""
+
+msgid "Add New"
+msgstr ""
+
+msgid "Add New Quiz"
+msgstr ""
+
+msgid "Edit Quiz"
+msgstr ""
+
+msgid "New Quiz"
+msgstr ""
+
+msgid "View Quiz"
+msgstr ""
+
+msgid "Search Quizzes"
+msgstr ""
+
+msgid "No quizzes found."
+msgstr ""
+
+msgid "No quizzes found in Trash."
+msgstr ""
+
+msgid "All Quizzes"
+msgstr ""
+
+msgid "WSH Quiz"
+msgstr ""
+
+msgid "Questions"
+msgstr ""
+
+msgid "Shortcode"
+msgstr ""
+
+msgid "License"
+msgstr ""
+
+msgid "You are on the Free plan. Image/video questions, AI generation, leaderboards, and other Pro tools stay locked until a license is active."
+msgstr ""
+
+msgid "Quiz builder"
+msgstr ""
+
+msgid "Embed"
+msgstr ""
+
+msgid "Save the quiz first to get a shortcode."
+msgstr ""
+
+msgid "Paste this shortcode into any post or page."
+msgstr ""
+
+msgid "Add question"
+msgstr ""
+
+msgid "Generate with AI"
+msgstr ""
+
+msgid "Unlock AI and media questions"
+msgstr ""
+
+msgid "AI generation"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Timer (seconds, 0 = off)"
+msgstr ""
+
+msgid "Question"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Question text"
+msgstr ""
+
+msgid "Question media"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Image"
+msgstr ""
+
+msgid "YouTube video"
+msgstr ""
+
+msgid "Image URL, or YouTube URL for video questions"
+msgstr ""
+
+msgid "Select image"
+msgstr ""
+
+msgid "Source / credit"
+msgstr ""
+
+msgid "Hint"
+msgstr ""
+
+msgid "Explanation"
+msgstr ""
+
+msgid "Score"
+msgstr ""
+
+msgid "Correct"
+msgstr ""
+
+msgid "Answer %d"
+msgstr ""
+
+msgid "This question type requires an active Pro license."
+msgstr ""
+
+msgid "Use this image"
+msgstr ""
+
+msgid "Select a quiz"
+msgstr ""
+
+msgid "Embed a quiz in this post."
+msgstr ""
+
+msgid "Embedded quiz:"
+msgstr ""
+
+msgid "Select a quiz in the block settings."
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "See results"
+msgstr ""
+
+msgid "Wrong"
+msgstr ""
+
+msgid "Your score"
+msgstr ""
+
+msgid "Play again"
+msgstr ""
+
+msgid "Share result"
+msgstr ""
+
+msgid "Could not check this answer. Please try again."
+msgstr ""
+
+msgid "Powered by WSH Quiz"
+msgstr ""
+
+msgid "of"
+msgstr ""
+
+msgid "Invalid quiz question."
+msgstr ""
+
+msgid "This quiz is not available."
+msgstr ""
+
+msgid "Question not found."
+msgstr ""
+
+msgid "You are not allowed to manage the license."
+msgstr ""
+
+msgid "WSH Quiz — License"
+msgstr ""
+
+msgid "One plugin. Free features always work. An active license unlocks Pro."
+msgstr ""
+
+msgid "Create quizzes by hand and embed them in posts."
+msgstr ""
+
+msgid "Yes / No questions"
+msgstr ""
+
+msgid "Multiple choice questions"
+msgstr ""
+
+msgid "Shortcode and Gutenberg block"
+msgstr ""
+
+msgid "Score screen and share text"
+msgstr ""
+
+msgid "Unlock media questions, AI generation, and engagement tools."
+msgstr ""
+
+msgid "Image and video questions"
+msgstr ""
+
+msgid "AI quiz from a topic or article"
+msgstr ""
+
+msgid "Timer, leaderboard, daily quiz"
+msgstr ""
+
+msgid "Analytics and ad slots"
+msgstr ""
+
+msgid "Current plan"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "License active"
+msgstr ""
+
+msgid "License inactive"
+msgstr ""
+
+msgid "Expires"
+msgstr ""
+
+msgid "Last error"
+msgstr ""
+
+msgid "License key"
+msgstr ""
+
+msgid "Enter the key from wppluginspro.io and activate it on this site."
+msgstr ""
+
+msgid "Activate"
+msgstr ""
+
+msgid "Verify"
+msgstr ""
+
+msgid "Deactivate"
+msgstr ""
+
+msgid "License server unavailable, using cached license temporarily."
+msgstr ""
+
+msgid "License server error: %s"
+msgstr ""
+
+msgid "Unexpected response from license server (HTTP %d)."
+msgstr ""
+
+msgid "Invalid JSON response from license server."
+msgstr ""
+
+msgid "License request successful."
+msgstr ""
+
+msgid "License request failed."
+msgstr ""
+
+msgid "Please enter a license key."
+msgstr ""
+
+msgid "License cleared locally."
+msgstr ""
+
+msgid "No license key saved."
+msgstr ""
+
+msgid "License status is cached."
+msgstr ""
+
+msgid "Always open"
+msgstr ""
+
+msgid "Daily"
+msgstr ""
+
+msgid "Weekly"
+msgstr ""
+
+msgid "Periodic"
+msgstr ""
+
+msgid "Anyone, no details"
+msgstr ""
+
+msgid "First name, last name and email"
+msgstr ""
+
+msgid "Registered account required"
+msgstr ""
+
+msgid "This quiz opens on %s."
+msgstr ""
+
+msgid "This quiz is no longer active."
+msgstr ""
+
+msgid "Player"
+msgstr ""
+
+msgid "Quiz settings"
+msgstr ""
+
+msgid "Schedule"
+msgstr ""
+
+msgid "Start date"
+msgstr ""
+
+msgid "End date"
+msgstr ""
+
+msgid "Play time (seconds, 0 = off)"
+msgstr ""
+
+msgid "Who can play"
+msgstr ""
+
+msgid "Show a leaderboard"
+msgstr ""
+
+msgid "Allow play again"
+msgstr ""
+
+msgid "Sponsor"
+msgstr ""
+
+msgid "Sponsor banner"
+msgstr ""
+
+msgid "Remove banner"
+msgstr ""
+
+msgid "Start the quiz"
+msgstr ""
+
+msgid "Your result"
+msgstr ""
+
+msgid "Back to quiz list"
+msgstr ""
+
+msgid "1st place"
+msgstr ""
+
+msgid "2nd place"
+msgstr ""
+
+msgid "3rd place"
+msgstr ""
+
+msgid "Leaderboard"
+msgstr ""
+
+msgid "Give up"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "WSH Quiz settings"
+msgstr ""
+
+msgid "These defaults apply to new quizzes and to the public Quiz branding."
+msgstr ""
+
+msgid "Branding"
+msgstr ""
+
+msgid "Shown above the quiz list and in the player."
+msgstr ""
+
+msgid "Quiz logo"
+msgstr ""
+
+msgid "Accent color"
+msgstr ""
+
+msgid "Text color"
+msgstr ""
+
+msgid "Background color"
+msgstr ""
+
+msgid "Font"
+msgstr ""
+
+msgid "Theme default"
+msgstr ""
+
+msgid "System UI"
+msgstr ""
+
+msgid "Arial"
+msgstr ""
+
+msgid "Georgia"
+msgstr ""
+
+msgid "Times New Roman"
+msgstr ""
+
+msgid "Default quiz rules"
+msgstr ""
+
+msgid "Used when an editor creates a new quiz. Each quiz can still override these."
+msgstr ""
+
+msgid "Show a leaderboard by default"
+msgstr ""
+
+msgid "Allow play again by default"
+msgstr ""
+
+msgid "Public pages"
+msgstr ""
+
+msgid "Quiz list:"
+msgstr ""
+
+msgid "The Quiz page will be created automatically."
+msgstr ""
+
+msgid "Save settings"
+msgstr ""
+
+msgid "Settings saved."
+msgstr ""
+
+msgid "You are not allowed to change quiz settings."
+msgstr ""
+
+msgid "About"
+msgstr ""
+
+msgid "Play rules"
+msgstr ""
+
+msgid "Slogan, logo, colors and default rules are in %s."
+msgstr ""
+
+msgid "Remove logo"
+msgstr ""
+
+msgid "Quiz sponsor"
+msgstr ""
+
+msgid "Set a featured image in the sidebar. It is the leading image on the Quiz page."
+msgstr ""
+
+msgid "Players"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Quiz actions"
+msgstr ""
+
+msgid "Save the quiz first to manage games and results."
+msgstr ""
+
+msgid "%s player"
+msgid_plural "%s players"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Delete all games"
+msgstr ""
+
+msgid "Delete quiz"
+msgstr ""
+
+msgid "Quiz results"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "You are not allowed to do this."
+msgstr ""
+
+msgid "Quiz not found."
+msgstr ""
+
+msgid "All games and results were deleted."
+msgstr ""
+
+msgid "Delete this quiz and all its games? This cannot be undone."
+msgstr ""
+
+msgid "Delete all games and results for this quiz? The quiz itself will stay."
+msgstr ""
+
+msgid "Remove game"
+msgstr ""
+
+msgid "Remove this player's game and result? They will be able to play again."
+msgstr ""
+
+msgid "Game not found."
+msgstr ""
+
+msgid "No results yet."
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Score"
+msgstr ""
+
+msgid "Time"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Could not complete this action. Please try again."
+msgstr ""
+
+msgid "Skip question"
+msgstr ""
+
+msgid "AI generation requires an active Pro license."
+msgstr ""
+
+msgid "Add an OpenAI API key in WSH Quiz → Settings."
+msgstr ""
+
+msgid "Enter a topic or an article URL."
+msgstr ""
+
+msgid "Unexpected response from OpenAI."
+msgstr ""
+
+msgid "AI response is not valid JSON."
+msgstr ""
+
+msgid "The article URL is not valid."
+msgstr ""
+
+msgid "Could not read that article URL."
+msgstr ""
+
+msgid "That URL had no readable text."
+msgstr ""
+
+msgid "Used to fill a quiz from a topic or article. Requires an active Pro license."
+msgstr ""
+
+msgid "OpenAI API key"
+msgstr ""
+
+msgid "A key is already saved. Leave this blank to keep it."
+msgstr ""
+
+msgid "Use your own OpenAI key. It is stored only in this plugin and is never shared with other products."
+msgstr ""
+
+msgid "Model"
+msgstr ""
+
+msgid "Default: gpt-4.1-mini."
+msgstr ""
+
+msgid "Topic or article text"
+msgstr ""
+
+msgid "Article URL"
+msgstr ""
+
+msgid "Number of questions"
+msgstr ""
+
+msgid "Question type"
+msgstr ""
+
+msgid "Mixed"
+msgstr ""
+
+msgid "Replace existing questions"
+msgstr ""
+
+msgid "Generate questions"
+msgstr ""
+
+msgid "Generating questions…"
+msgstr ""
+
+msgid "AI did not return any questions."
+msgstr ""
+
+msgid "Questions generated. Review them, then save the quiz."
+msgstr ""
+
+msgid "Remove this question?"
+msgstr ""
+
+msgid "Questions cannot be removed after players have already played this quiz."
+msgstr ""
+
+msgid "Questions cannot be removed after players have already played this quiz. Delete all games first if you need to change the question list."
+msgstr ""
+
+msgid "A quiz needs at least one question."
+msgstr ""
+
+msgid "Difficulty"
+msgstr ""
+
+msgid "Easy"
+msgstr ""
+
+msgid "Medium"
+msgstr ""
+
+msgid "Hard"
+msgstr ""
+
+msgid "Suggested play time (seconds)"
+msgstr ""
+
+msgid "Calculated from the number of questions and the difficulty. You can change it."
+msgstr ""
+
+msgid "Quiz description"
+msgstr ""
+
+msgid "Question mix"
+msgstr ""
+
+msgid "Set how many questions of each type. The total above follows this mix."
+msgstr ""
+
+msgid "Photo questions"
+msgstr ""
+
+msgid "Video questions"
+msgstr ""
+
+msgid "Photo and video questions get text and a media hint. Add the image or YouTube link after generation."
+msgstr ""
+
+msgid "Enter a quiz description or an article URL."
+msgstr ""
+
+msgid "Quiz language"
+msgstr ""
+
+msgid "Time is calculated from the number of questions and the difficulty. You can change it."
+msgstr ""
+
+msgid "Prompt"
+msgstr ""
+
+msgid "Prepared from the quiz title and description. You can edit it before generating."
+msgstr ""
+
+msgid "No questions yet. Add a question or generate with AI."
+msgstr ""
+
+msgid "View image"
+msgstr ""
+
+msgid "You have already played this quiz."
+msgstr ""
+
+msgid "This quiz can be played only once. Logged-in players are recognized by their account. Guests are recognized by the email they entered and this browser."
+msgstr ""
+
+msgid "%1$s question / %2$s"
+msgid_plural "%1$s questions / %2$s"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "If this is off, a player can play only once. Logged-in players are recognized by account, guests by email and this browser."
+msgstr ""

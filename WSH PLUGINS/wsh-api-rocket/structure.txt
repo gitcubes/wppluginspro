@@ -1,0 +1,66 @@
+wsh-api-rocket/
+├─ wsh-api-rocket.php
+├─ readme.txt
+├─ uninstall.php
+├─ composer.json               (opciono, ako želiš PSR-4 autoload)
+├─ assets/
+│  └─ admin/
+│     ├─ admin.js
+│     └─ admin.css
+└─ includes/
+   ├─ Core/
+   │  ├─ Plugin.php
+   │  ├─ Activator.php
+   │  ├─ Deactivator.php
+   │  └─ Autoloader.php        (ako ne koristiš composer)
+   ├─ Support/
+   │  ├─ Helpers.php
+   │  ├─ Security.php
+   │  ├─ Cache.php
+   │  └─ Logger.php
+   ├─ Licensing/
+   │  ├─ License.php           (tvoja klasa, blago adaptirana)
+   │  └─ Features.php          (feature flags + gating)
+   ├─ Admin/
+   │  ├─ Admin.php
+   │  ├─ Menu.php
+   │  ├─ Settings/
+   │  │  ├─ Settings.php       (Settings API registracija)
+   │  │  ├─ Page.php           (render tabova)
+   │  │  ├─ Tabs/
+   │  │  │  ├─ TabLicense.php
+   │  │  │  ├─ TabApi.php
+   │  │  │  ├─ TabHome.php     (FREE osnovni builder)
+   │  │  │  ├─ TabHomePro.php  (PRO drag&drop + advanced)
+   │  │  │  ├─ TabFcmPro.php
+   │  │  │  └─ TabWooPro.php
+   │  └─ Ajax/
+   │     └─ HomePreview.php
+   ├─ Rest/
+   │  ├─ Rest.php
+   │  ├─ Auth/
+   │  │  ├─ ApiKeyAuth.php
+   │  │  └─ Permissions.php
+   │  ├─ Controllers/
+   │  │  ├─ HomeController.php
+   │  │  ├─ ContentController.php
+   │  │  ├─ PushControllerPro.php
+   │  │  └─ WooControllerPro.php
+   │  └─ Routes.php
+   ├─ Home/
+   │  ├─ HomeLayoutService.php
+   │  ├─ LayoutRepository.php   (option read/write + validate)
+   │  ├─ SectionFactory.php
+   │  └─ Sections/
+   │     ├─ SectionInterface.php
+   │     ├─ LatestSection.php
+   │     ├─ CategoryLatestSection.php
+   │     ├─ ManualPostsSection.php
+   │     ├─ MostPopularSectionPro.php
+   │     ├─ TagLatestSectionPro.php
+   │     ├─ CptLatestSectionPro.php
+   │     └─ MoreNewsSection.php
+   ├─ Woo/
+   │  └─ WooServicePro.php
+   └─ Push/
+      └─ FcmServicePro.php

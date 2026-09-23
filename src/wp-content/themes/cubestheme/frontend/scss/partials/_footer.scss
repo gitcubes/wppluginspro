@@ -1,0 +1,159 @@
+footer {
+    margin-bottom: 32px;
+
+    .box {
+        padding: 12px;
+
+        .content {
+            padding: 25px 25px 0 25px;
+
+            @media(min-width: 992px) {
+                padding: 64px 64px 0 64px;
+            }
+
+            .footer-top {
+                margin-bottom: 56px;
+                display: grid;
+
+                gap: 32px;
+                justify-content: space-between;
+
+                @media(min-width: 992px) {
+                    grid-template-columns: 1fr 1fr;
+                }
+
+                @media(min-width: 1440px) {
+                    grid-template-columns: 570px 570px;
+                }
+
+                // Avoid `cta` class names here because cosmetic filters can hide them.
+                .footer-callout {
+                    display: block !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    transform: none !important;
+
+                    h2 {
+                        color: #034DD3;
+                        margin-bottom: 32px;
+                        text-wrap: balance;
+                    }
+
+                    a {
+                        display: inline-block;
+                    }
+                }
+
+                .footer-nav {
+                    display: grid;
+                    gap: 32px;
+
+                    @media(min-width: 576px) {
+                        grid-template-columns: repeat(3, 1fr);
+                    }
+
+                    .footer-nav-item {
+                        .label {
+                            font-family: "Roboto", sans-serif;
+                            color: #034DD3;
+                            -webkit-text-fill-color: #034DD3;
+                            margin-bottom: 10px;
+
+                            @media(min-width: 992px) {
+                                margin-bottom: 32px;
+                            }
+                        }
+
+                        ul {
+                            display: grid;
+                            gap: 10px;
+
+                            @media(min-width: 992px) {
+                                gap: 32px;
+                            }
+
+                            li {
+                                a {
+                                    color: rgba(0, 0, 0, 0.70);
+                                    font-family: "Host Grotesk";
+                                    font-size: 18px;
+                                    font-weight: 500;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .footer-bottom {
+                padding: 32px 0 42px 0;
+                border-top: 1px solid rgba(3, 77, 211, 0.20);
+                display: grid;
+                gap: 10px;
+
+                @media(min-width: 992px) {
+                    grid-template-columns: 1fr 1fr;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+
+                .copyright {
+                    text-align: center;
+                    font-family: "Host Grotesk";
+                    color: rgba(0, 0, 0, 0.70);
+                    font-size: 14px;
+                    gap: 20px;
+
+                    @media(min-width: 992px) {
+                        gap: 10px;
+                        display: flex;
+                        text-align: left;
+                    }
+
+                    @media(min-width: 1440px) {
+                        gap: 42px;
+                    }
+
+                    p {
+                        color: rgba(0, 0, 0, 0.50);
+                        font-family: "Host Grotesk";
+                        font-size: 14px;
+                        font-weight: 500;
+                        margin: 0;
+
+                        a {
+                            color: rgba(0, 0, 0, 0.50);
+                            font-family: "Host Grotesk";
+                            font-weight: 700;
+                            text-decoration-line: underline;
+                            text-decoration-style: solid;
+                            text-decoration-skip-ink: auto;
+                            text-decoration-thickness: auto;
+                            text-underline-offset: auto;
+                            text-underline-position: from-font;
+                        }
+                    }
+                }
+
+                .footer-links {
+                    text-align: center;
+
+                    @media(min-width: 992px) {
+                        justify-content: flex-end;
+                        gap: 42px;
+                        display: flex;
+                        text-align: left;
+                    }
+
+                    a {
+                        color: rgba(0, 0, 0, 0.50);
+                        font-family: "Host Grotesk";
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+                }
+
+            }
+        }
+    }
+}

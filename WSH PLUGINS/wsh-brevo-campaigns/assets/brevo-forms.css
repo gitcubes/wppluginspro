@@ -1,0 +1,39 @@
+.brevo-form {
+    border: 1px solid #eee;
+    padding: 16px;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.bf-row {
+    margin-bottom: 10px;
+}
+
+.bf-row label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.bf-row input,
+.bf-row select {
+    width: 100%;
+    max-width: 480px;
+}
+
+.bf-submit.loading {
+    opacity: .6;
+}
+
+.bf-msg {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.bf-msg.ok {
+    color: #1e7e34;
+}
+
+.bf-msg.err {
+    color: #b32d2e;
+}

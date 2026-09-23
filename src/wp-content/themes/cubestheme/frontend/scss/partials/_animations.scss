@@ -1,0 +1,404 @@
+/*ANIMACIJJE*/
+
+.animation {
+    opacity: 0;
+    position: relative;
+    animation-fill-mode: forwards;
+}
+
+.animation-wrapper {
+    overflow: hidden;
+}
+
+.to-up-item {
+    transform: translate(0, 100%);
+    display: block;
+}
+
+@keyframes slideLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(50%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slideLeft {
+    animation-name: slideLeft;
+    animation-duration: 1.5s;
+}
+
+@keyframes slideRight {
+    0% {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slideRight {
+    animation-name: slideRight;
+    animation-duration: 1.5s;
+}
+
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slideUp {
+    animation-name: slideUp;
+    animation-duration: 1s;
+}
+
+@keyframes slideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slideDown {
+    animation-name: slideDown;
+    animation-duration: 1s;
+}
+
+@keyframes fadeIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.fadeIn {
+    animation-name: fadeIn;
+    animation-duration: 1s;
+}
+
+@keyframes toUp {
+    0% {
+        transform: translate(0, 100%);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(50%);
+        opacity: 1;
+    }
+}
+
+.toUp {
+    animation: toUp 0.6s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes toDown {
+    0% {
+        transform: translate(0, -100%);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(0);
+        opacity: 1;
+    }
+}
+
+.toDown {
+    animation: toDown 1s ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes toDownSlow {
+    0% {
+        transform: translate(0, -100%);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(0);
+        opacity: 1;
+    }
+}
+
+.toDownSlow {
+    animation: toDownSlow 2s ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes scaleAnimation {
+    from {
+        transform: scale(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.scaleAnimation {
+    animation: scaleAnimation 1s ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes opacityAnimation {
+    from {
+        opacity: 0;
+        transform: scale(.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.opacityAnimation {
+    animation: opacityAnimation .5s ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes preloaderToBottom {
+    0% {
+        height: 100%;
+        opacity: 1;
+    }
+
+    15% {
+        bottom: 20px;
+        height: 100%;
+    }
+
+    30% {
+        bottom: 0px;
+        height: 100%;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        height: 0;
+        display: none;
+        opacity: 0;
+    }
+}
+
+@keyframes preloaderToLeft {
+    0% {
+        width: 100%;
+        opacity: 1;
+    }
+
+    15% {
+        left: 20px;
+        width: 100%;
+    }
+
+    30% {
+        left: 0px;
+        width: 100%;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        width: 0;
+        display: none;
+        opacity: 0;
+    }
+}
+
+@keyframes preloaderToRight {
+    0% {
+        width: 100%;
+        opacity: 1;
+    }
+
+    15% {
+        right: 20px;
+        width: 100%;
+    }
+
+    30% {
+        right: 0px;
+        width: 100%;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        width: 0;
+        display: none;
+        opacity: 0;
+    }
+}
+
+@keyframes preloaderCircleIn {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        border-radius: 50%;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0);
+        border-radius: 50%;
+    }
+}
+
+@keyframes preloaderCircleOut {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+        border-radius: 50%;
+    }
+
+    99% {
+        transform: scale(1);
+        border-radius: 50%;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1);
+        border-radius: 50%;
+    }
+}
+
+@keyframes preloaderToTop {
+    0% {
+        height: 100%;
+        opacity: 1;
+    }
+
+    15% {
+        top: 20px;
+        height: 100%;
+    }
+
+    30% {
+        top: 0px;
+        height: 100%;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        height: 0;
+        display: none;
+        opacity: 0;
+    }
+}
+
+@keyframes toRight {
+    0% {
+        width: 0%;
+        opacity: 1;
+    }
+
+    100% {
+        width: 100%;
+        opacity: 1;
+    }
+}
+
+.toRight {
+    animation: toRight 1s ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes hidePreloader {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        height: 0;
+    }
+}
+
+
+@keyframes build {
+    0% {
+        transform: translateY(-40px);
+        height: 0px;
+        opacity: 1;
+        background: $danger;
+    }
+
+    60% {
+        height: auto;
+    }
+
+    100% {
+        opacity: 1;
+        background: none;
+    }
+}
+
+@keyframes build-inner {
+    0% {
+        transform: scale(1.4);
+    }
+
+    0%,
+    20% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.build {
+    background: $danger;
+    animation: build cubic-bezier(.19, 1, .22, 1) 2.3s;
+    animation-fill-mode: forwards;
+    overflow: hidden;
+
+    img {
+        animation: build-inner cubic-bezier(.19, 1, .22, 1) 2.3s;
+    }
+}

@@ -1,0 +1,528 @@
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --editor-text: rgba(0, 0, 0, 0.7);
+    --editor-heading: #000;
+    --editor-link: #034dd3;
+    --editor-primary: #034dd3;
+    --editor-secondary: #ffffff;
+    --editor-danger: #E84C14;
+    --editor-border: #d0d5dd;
+}
+
+body#tinymce.wp-editor {
+    max-width: 928px;
+    padding: 24px;
+    font-size: 16px;
+    border-right: 1px solid var(--editor-border);
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    color: var(--editor-text);
+    background: #fff;
+}
+
+body#tinymce.wp-editor h2,
+body#tinymce.wp-editor h3,
+body#tinymce.wp-editor h4,
+body#tinymce.wp-editor h5,
+body#tinymce.wp-editor h6 {
+    font-family: "Funnel Display", sans-serif;
+    color: var(--editor-heading);
+    line-height: 111%;
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+@media (min-width: 768px) {
+    body#tinymce.wp-editor h2,
+    body#tinymce.wp-editor h3,
+    body#tinymce.wp-editor h4,
+    body#tinymce.wp-editor h5,
+    body#tinymce.wp-editor h6 {
+        line-height: 111%;
+        margin-bottom: 29px;
+    }
+}
+
+body#tinymce.wp-editor h2 {
+    font-size: 30px;
+}
+
+body#tinymce.wp-editor h3 {
+    font-size: 24px;
+}
+
+body#tinymce.wp-editor h4 {
+    font-size: 22px;
+}
+
+body#tinymce.wp-editor h5 {
+    font-size: 20px;
+}
+
+body#tinymce.wp-editor h6 {
+    font-size: 18px;
+}
+
+@media (min-width: 768px) {
+    body#tinymce.wp-editor h2 {
+        font-size: 44px;
+    }
+
+    body#tinymce.wp-editor h3 {
+        font-size: 30px;
+    }
+
+    body#tinymce.wp-editor h4 {
+        font-size: 28px;
+    }
+
+    body#tinymce.wp-editor h5 {
+        font-size: 25px;
+    }
+
+    body#tinymce.wp-editor h6 {
+        font-size: 22px;
+    }
+}
+
+body#tinymce.wp-editor p {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 38px;
+    color: var(--editor-text);
+    letter-spacing: -0.32px;
+}
+
+@media (min-width: 768px) {
+    body#tinymce.wp-editor p {
+        line-height: 162%;
+        font-size: 18px;
+        margin-bottom: 43px;
+    }
+}
+
+body#tinymce.wp-editor p strong,
+body#tinymce.wp-editor strong {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+}
+
+body#tinymce.wp-editor em {
+    font-style: italic;
+}
+
+body#tinymce.wp-editor a {
+    color: var(--editor-link);
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    text-decoration: underline;
+    font-size: 16px;
+}
+
+@media (min-width: 768px) {
+    body#tinymce.wp-editor a {
+        font-size: 18px;
+    }
+}
+
+body#tinymce.wp-editor blockquote {
+    padding: 40px 23px;
+    background: var(--editor-primary);
+    border-radius: 25px;
+    margin: 0 0 45px;
+    color: var(--editor-secondary);
+    font-size: 20px;
+    line-height: 141%;
+}
+
+@media (min-width: 768px) {
+    body#tinymce.wp-editor blockquote {
+        padding: 47px;
+        margin-bottom: 57px;
+        font-size: 24px;
+    }
+}
+
+body#tinymce.wp-editor blockquote p {
+    color: var(--editor-secondary);
+    font-size: 20px;
+    line-height: 141%;
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    body#tinymce.wp-editor blockquote p {
+        font-size: 24px;
+    }
+}
+
+body#tinymce.wp-editor ul,
+body#tinymce.wp-editor ol {
+    padding-left: 15px;
+    margin-top: 0;
+    margin-bottom: 47px;
+}
+
+body#tinymce.wp-editor ul li,
+body#tinymce.wp-editor ol li {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 136%;
+    margin-bottom: 15px;
+    color: var(--editor-text);
+}
+
+@media (min-width: 768px) {
+    body#tinymce.wp-editor ul li,
+    body#tinymce.wp-editor ol li {
+        margin-bottom: 0;
+        font-size: 20px;
+        line-height: 191%;
+    }
+}
+
+body#tinymce.wp-editor ul li::marker,
+body#tinymce.wp-editor ol li::marker {
+    color: var(--editor-primary);
+    font-size: 1.4rem;
+}
+
+@media (min-width: 576px) {
+    body#tinymce.wp-editor ul li::marker,
+    body#tinymce.wp-editor ol li::marker {
+        font-size: 1.6rem;
+    }
+}
+
+body#tinymce.wp-editor .mce-object-iframe {
+    display: block;
+}
+
+body#tinymce.wp-editor iframe {
+    max-width: 100%;
+}
+
+body#tinymce.wp-editor iframe[src*="youtube"],
+body#tinymce.wp-editor iframe[src*="vimeo"] {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    margin: 0 auto 30px !important;
+}
+
+body#tinymce.wp-editor iframe[src*="facebook"],
+body#tinymce.wp-editor iframe[src*="linkedin"] {
+    display: block;
+    margin: 0 auto 30px !important;
+}
+
+body#tinymce.wp-editor .instagram-media {
+    max-width: 70% !important;
+    min-width: 300px !important;
+    margin: 0 auto 20px !important;
+}
+
+body#tinymce.wp-editor .twitter-tweet {
+    margin-inline: auto;
+    margin-bottom: 2rem !important;
+}
+
+body#tinymce.wp-editor .wp-video {
+    margin-bottom: 3rem;
+}
+
+body#tinymce.wp-editor .image-wrapper {
+    margin-bottom: 25px;
+}
+
+@media (min-width: 576px) {
+    body#tinymce.wp-editor .image-wrapper {
+        margin-bottom: 34px;
+    }
+}
+
+@media (min-width: 768px) {
+    body#tinymce.wp-editor .image-wrapper {
+        margin-bottom: 42px;
+    }
+}
+
+body#tinymce.wp-editor .image-wrapper img {
+    display: block;
+    border-radius: 16px;
+}
+
+body#tinymce.wp-editor .gallery .wp-caption-text {
+    display: none;
+}
+
+body#tinymce.wp-editor .wp-caption,
+body#tinymce.wp-editor .image-wrapper .wp-caption {
+    margin: 0;
+    position: relative;
+}
+
+body#tinymce.wp-editor .wp-caption.alignnone {
+    text-align: left;
+    width: 100% !important;
+}
+
+body#tinymce.wp-editor .wp-caption.aligncenter {
+    margin: 0 auto;
+}
+
+body#tinymce.wp-editor .wp-caption.alignleft,
+body#tinymce.wp-editor .wp-caption.alignright {
+    width: 50% !important;
+}
+
+body#tinymce.wp-editor .wp-caption-dt {
+    padding: 30px;
+    text-align: center;
+}
+
+body#tinymce.wp-editor .wp-caption.alignnone .wp-caption-dt {
+    text-align: left;
+}
+
+body#tinymce.wp-editor .wp-caption-dd,
+body#tinymce.wp-editor .wp-caption-text,
+body#tinymce.wp-editor caption {
+    font-size: 14px;
+    text-align: center;
+    position: relative;
+    margin-top: 10px;
+    font-family: "Inter", sans-serif;
+    color: var(--editor-text);
+}
+
+body#tinymce.wp-editor .wp-caption-text a {
+    font-size: 14px;
+}
+
+body#tinymce.wp-editor .img-source,
+body#tinymce.wp-editor source {
+    font-size: 15px;
+    position: absolute;
+    bottom: calc(100% + 13px);
+    display: block;
+    letter-spacing: 1px;
+    text-transform: none;
+    right: 0;
+    background-color: var(--editor-danger);
+    color: #fff;
+    padding: 10px 15px;
+    font-family: "Inter", sans-serif;
+}
+
+body#tinymce.wp-editor p > img.alignnone {
+    display: block;
+    clear: both;
+}
+
+body#tinymce.wp-editor p > img.aligncenter {
+    max-width: 100%;
+    display: block;
+    margin-inline: auto;
+}
+
+body#tinymce.wp-editor p > img.alignright {
+    padding: 30px;
+    width: 50%;
+    float: right;
+}
+
+body#tinymce.wp-editor p > img.alignleft {
+    padding: 30px;
+    width: 50%;
+    float: left;
+}
+
+body#tinymce.wp-editor .gallery-wrapper {
+    margin-bottom: 2.5rem;
+    clear: both;
+}
+
+@media (min-width: 768px) {
+    body#tinymce.wp-editor .gallery-wrapper {
+        margin-bottom: 3.3rem;
+    }
+}
+
+body#tinymce.wp-editor .gallery-wrapper .gallery-item {
+    display: none !important;
+    width: 100%;
+    position: relative;
+}
+
+body#tinymce.wp-editor .gallery-wrapper .gallery-item:first-of-type {
+    display: block !important;
+}
+
+body#tinymce.wp-editor .gallery-wrapper .gallery-item figure {
+    margin-bottom: 0;
+}
+
+body#tinymce.wp-editor .gallery-wrapper .gallery-item img {
+    width: 100%;
+    display: block;
+}
+
+body#tinymce.wp-editor .gallery-wrapper .gallery-item .figcaption {
+    margin-top: 1.3rem;
+    font-size: 1.4rem;
+    letter-spacing: 1.4px;
+    line-height: 115%;
+    color: var(--editor-danger);
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 5px;
+}
+
+@media (min-width: 992px) {
+    body#tinymce.wp-editor .gallery-wrapper .gallery-item .figcaption {
+        margin-bottom: 4.2rem;
+    }
+}
+
+body#tinymce.wp-editor .gallery-wrapper .gallery-item .image-source {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: #fff;
+    line-height: normal;
+    font-size: 1.5rem;
+    padding: 10px 15px;
+    letter-spacing: 1px;
+    margin-bottom: 0;
+    background-color: var(--editor-danger);
+}
+
+body#tinymce.wp-editor .gallery-wrapper .gallery-item .display-gallery {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 5px 10px;
+    background-color: var(--editor-primary);
+    color: var(--editor-secondary);
+    border-radius: 5%;
+}
+
+body#tinymce.wp-editor .gallery-wrapper .gallery-item .display-gallery span {
+    font-size: 1.6rem;
+    font-weight: 400;
+    font-style: italic;
+}
+
+body#tinymce.wp-editor .wpview {
+    position: relative;
+    margin-bottom: 35px;
+}
+
+body#tinymce.wp-editor .wpview:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #ccc;
+    z-index: 5;
+}
+
+body#tinymce.wp-editor .wpview:before {
+    content: "Galerija";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    line-height: 17px;
+    color: #000;
+    z-index: 8;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    padding: 15px 18px;
+}
+
+body#tinymce.wp-editor .wpview[data-wpview-type="video"]:before {
+    content: "Video";
+}
+
+body#tinymce.wp-editor .single-news-box {
+    position: relative;
+    margin-bottom: 35px;
+    height: 150px;
+}
+
+body#tinymce.wp-editor .single-news-box:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    height: 150px;
+    background-color: #ccc;
+    z-index: 5;
+}
+
+body#tinymce.wp-editor .single-news-box:before {
+    content: "Intext News";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    line-height: 17px;
+    color: #000;
+    z-index: 8;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+}
+
+body#tinymce.wp-editor .anterfile {
+    border: none;
+    padding: 15px;
+    margin-bottom: 5px;
+    margin-left: -6px;
+    margin-right: -6px;
+    font-size: 21px;
+    line-height: 26px;
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+}
+
+body#tinymce.wp-editor .anterfile.pull-left {
+    width: 50%;
+    margin-right: auto;
+    float: left;
+}
+
+body#tinymce.wp-editor .anterfile.pull-right {
+    width: 50%;
+    margin-left: auto;
+    float: right;
+}
+
+body#tinymce.wp-editor .anterfile p {
+    font-size: 21px;
+    line-height: 26px;
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+body#tinymce.wp-editor .anterfile p:last-of-type {
+    margin-bottom: 0;
+}
+
+body#tinymce.wp-editor .anterfile h1,
+body#tinymce.wp-editor .anterfile h2,
+body#tinymce.wp-editor .anterfile h3,
+body#tinymce.wp-editor .anterfile h4,
+body#tinymce.wp-editor .anterfile h5,
+body#tinymce.wp-editor .anterfile h6 {
+    font-size: 30px;
+    line-height: 33px;
+    font-family: "Funnel Display", sans-serif;
+}

@@ -1,0 +1,550 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: brevo-campaigns 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-11 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: brevo-campaigns\n"
+"X-Generator: manual-extract\n"
+
+#: admin menu / pages
+msgid "Brevo"
+msgstr ""
+
+msgid "Campaigns"
+msgstr ""
+
+msgid "Lists"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Create Campaign"
+msgstr ""
+
+msgid "Create campaign"
+msgstr ""
+
+msgid "Forms"
+msgstr ""
+
+#: campaigns page
+msgid "Brevo → Campaigns"
+msgstr ""
+
+msgid "Create campaign"
+msgstr ""
+
+msgid "No campaigns found."
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Subject"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Scheduled At"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "View stats"
+msgstr ""
+
+msgid "Duplicate"
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+#: lists page
+msgid "Brevo → Lists"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "Total Contacts"
+msgstr ""
+
+msgid "Subscribers"
+msgstr ""
+
+msgid "Blacklisted"
+msgstr ""
+
+#: settings page chrome
+msgid "Brevo → Settings"
+msgstr ""
+
+msgid "Save Settings"
+msgstr ""
+
+#: settings sections / fields
+msgid "Brevo API Settings"
+msgstr ""
+
+msgid "Enter the API key and default sender."
+msgstr ""
+
+msgid "Brevo API Key"
+msgstr ""
+
+msgid "Settings → SMTP & API u Brevo nalogu."
+msgstr ""
+
+msgid "Sender Email"
+msgstr ""
+
+msgid "Sender Name"
+msgstr ""
+
+msgid "Preheader text"
+msgstr ""
+
+msgid "Short summary shown in inbox"
+msgstr ""
+
+msgid "Sender slogan"
+msgstr ""
+
+msgid "npr. Your weekly energy news"
+msgstr ""
+
+msgid "Header logo URL"
+msgstr ""
+
+msgid "https://.../logo.png"
+msgstr ""
+
+msgid "URL to the logo that will be displayed in the header of the newsletter."
+msgstr ""
+
+msgid "CTA button color"
+msgstr ""
+
+msgid "CTA border radius (px)"
+msgstr ""
+
+msgid "Default Test List ID"
+msgstr ""
+
+msgid "Optional: List ID in Brevo to be used as fallback for test addresses."
+msgstr ""
+
+msgid "CTA button text"
+msgstr ""
+
+msgid "Read more →"
+msgstr ""
+
+msgid "Facebook URL"
+msgstr ""
+
+msgid "https://facebook.com/yourpage"
+msgstr ""
+
+msgid "YouTube URL"
+msgstr ""
+
+msgid "https://youtube.com/@yourchannel"
+msgstr ""
+
+msgid "X (Twitter) URL"
+msgstr ""
+
+msgid "https://x.com/yourhandle"
+msgstr ""
+
+msgid "Instagram URL"
+msgstr ""
+
+msgid "https://instagram.com/yourprofile"
+msgstr ""
+
+msgid "TikTok URL"
+msgstr ""
+
+msgid "https://tiktok.com/@yourprofile"
+msgstr ""
+
+msgid "LinkedIn URL"
+msgstr ""
+
+msgid "https://linkedin.com/company/yourcompany"
+msgstr ""
+
+msgid "Enable UTM builder"
+msgstr ""
+
+msgid "Turn on UTM appending to all links"
+msgstr ""
+
+msgid "If enabled, UTM parameters will be added to all links in the email."
+msgstr ""
+
+msgid "UTM Source"
+msgstr ""
+
+msgid "newsletter"
+msgstr ""
+
+msgid "UTM Medium"
+msgstr ""
+
+msgid "email"
+msgstr ""
+
+msgid "UTM Campaign (optional)"
+msgstr ""
+
+msgid "(blank => use Subject)"
+msgstr ""
+
+msgid "Ako ostane prazno, koristi se Subject kao vrednost kampanje."
+msgstr ""
+
+msgid "UTM Term (optional)"
+msgstr ""
+
+msgid "UTM Content (optional)"
+msgstr ""
+
+msgid "(blank => use item/section title)"
+msgstr ""
+
+msgid "Use Brevo for WP Mail"
+msgstr ""
+
+msgid "Route all wp_mail() via Brevo SMTP"
+msgstr ""
+
+msgid "Requires a Brevo API key (used as SMTP password) and a verified sending domain in Brevo."
+msgstr ""
+
+msgid "From email"
+msgstr ""
+
+msgid "no-reply@yourdomain.com"
+msgstr ""
+
+msgid "From name"
+msgstr ""
+
+msgid "Your Site"
+msgstr ""
+
+msgid "Reply-To (optional)"
+msgstr ""
+
+msgid "support@yourdomain.com"
+msgstr ""
+
+msgid "SMTP Username"
+msgstr ""
+
+msgid "apikey or your-account@email"
+msgstr ""
+
+msgid "Brevo obično koristi apikey kao username. Ako tvoj nalog zahteva e-mail kao username, unesi ga ovde."
+msgstr ""
+
+msgid "Transport"
+msgstr ""
+
+msgid "SMTP (klasično)"
+msgstr ""
+
+msgid "Brevo API (preporučeno)"
+msgstr ""
+
+msgid "Ako SMTP pravi probleme sa autentikacijom – koristi API."
+msgstr ""
+
+msgid "SMTP options"
+msgstr ""
+
+msgid "Default: smtp-relay.brevo.com"
+msgstr ""
+
+msgid "Port:"
+msgstr ""
+
+msgid "587 (TLS)"
+msgstr ""
+
+msgid "465 (SSL)"
+msgstr ""
+
+msgid "Encryption:"
+msgstr ""
+
+msgid "TLS"
+msgstr ""
+
+msgid "SSL"
+msgstr ""
+
+msgid "Send test email"
+msgstr ""
+
+msgid "Webhook secret"
+msgstr ""
+
+msgid "Sačuvaj, pa iskopiraj URL ispod."
+msgstr ""
+
+msgid "Webhook URL"
+msgstr ""
+
+msgid "Ovaj URL upiši u Brevo → Webhooks → “URL to call”."
+msgstr ""
+
+#: forms page
+msgid "Brevo → Forms"
+msgstr ""
+
+msgid "Sastavi subscribe formu i klikni \"Generate shortcode\". Taj kod nalepi u stranicu/posta, blok/Widget itd."
+msgstr ""
+
+msgid "Form title"
+msgstr ""
+
+msgid "npr. Prijava na newsletter"
+msgstr ""
+
+msgid "Intro text"
+msgstr ""
+
+msgid "Kratak tekst iznad forme (opciono)"
+msgstr ""
+
+msgid "Fields"
+msgstr ""
+
+msgid "Ime"
+msgstr ""
+
+msgid "Prezime"
+msgstr ""
+
+msgid "Telefon"
+msgstr ""
+
+msgid "Email (obavezno)"
+msgstr ""
+
+msgid "Email je uvek uključen."
+msgstr ""
+
+msgid "List options (select)"
+msgstr ""
+
+msgid "Option label (vidljivo u formi)"
+msgstr ""
+
+msgid "Brevo List ID (value)"
+msgstr ""
+
+msgid "+ Add option"
+msgstr ""
+
+msgid "Pomoć: tvoje Brevo liste:"
+msgstr ""
+
+msgid "Button label"
+msgstr ""
+
+msgid "Subscribe"
+msgstr ""
+
+msgid "Success message"
+msgstr ""
+
+msgid "Hvala! Proverite inbox."
+msgstr ""
+
+msgid "Error message"
+msgstr ""
+
+msgid "Došlo je do greške. Pokušajte ponovo."
+msgstr ""
+
+msgid "Generate shortcode"
+msgstr ""
+
+msgid "[ovde će se pojaviti shortcode]"
+msgstr ""
+
+#: forms page (JS alerts / placeholders)
+msgid "Remove"
+msgstr ""
+
+msgid "npr. Engleski newsletter"
+msgstr ""
+
+msgid "List ID"
+msgstr ""
+
+msgid "Dodaj bar jednu listu (label + list ID)."
+msgstr ""
+
+msgid "Thanks!"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+#: create page
+msgid "Brevo → Create Campaign"
+msgstr ""
+
+msgid "Popunite podatke i generišite preview HTML. Zatim snimite kao draft, pošaljite test, zakažite ili pošaljite."
+msgstr ""
+
+msgid "← Back to Campaigns"
+msgstr ""
+
+msgid "Dupliciraš kampanju #%s. Polja su popunjena; obavezno ponovo generiši preview."
+msgstr ""
+
+#: generic ajax/messages
+msgid "Forbidden"
+msgstr ""
+
+msgid "Campaign name is required."
+msgstr ""
+
+msgid "Subject is required."
+msgstr ""
+
+msgid "Select at least one recipients list."
+msgstr ""
+
+msgid "Generate preview before saving."
+msgstr ""
+
+msgid "No content"
+msgstr ""
+
+msgid "Invalid campaign ID"
+msgstr ""
+
+msgid "Provide at least one test email"
+msgstr ""
+
+msgid "Make sure test emails exist as contacts in Brevo, are not blacklisted, and (if required) belong to a contact list."
+msgstr ""
+
+msgid "Only draft campaigns can be removed."
+msgstr ""
+
+msgid "Missing id"
+msgstr ""
+
+msgid "Preview is not available for this campaign yet."
+msgstr ""
+
+msgid "Permission denied"
+msgstr ""
+
+#: SMTP test / errors
+msgid "Brevo SMTP routing is OFF. Enable \"Use Brevo for WP Mail\" and save settings."
+msgstr ""
+
+msgid "Missing Brevo API key (used as SMTP password)."
+msgstr ""
+
+msgid "From email is empty. Set a verified sender/domain in Settings."
+msgstr ""
+
+msgid "Brevo SMTP test"
+msgstr ""
+
+msgid "If you received this, WP is sending via Brevo SMTP."
+msgstr ""
+
+msgid "wp_mail() returned false"
+msgstr ""
+
+msgid "Hints: check host/port (smtp-relay.brevo.com, 587 TLS or 465 SSL), API key, verified sending domain, and that your hosting allows outbound SMTP."
+msgstr ""
+
+#: webhook
+msgid "Unauthorized"
+msgstr ""
+
+msgid "Bad payload"
+msgstr ""
+
+#: front ajax subscribe (admin-ajax)
+msgid "Unesite ispravan email."
+msgstr ""
+
+msgid "Izaberite listu."
+msgstr ""
+
+msgid "Greška: %s"
+msgstr ""
+
+#: shortcode [brevo_form]
+msgid "No lists configured."
+msgstr ""
+
+msgid "Lista"
+msgstr ""
+
+msgid "— izaberi —"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Please enter a valid email address."
+msgstr ""
+
+msgid "Please select at least one list."
+msgstr ""
+
+msgid "Please check your inbox to confirm subscription."
+msgstr ""
+
+msgid "Welcome!"
+msgstr ""
+
+msgid "Thanks for subscribing!"
+msgstr ""
+
+msgid "You are subscribed."
+msgstr ""
+
+#: REST errors
+msgid "Brevo API error: %s"
+msgstr ""
+
+msgid "Brevo error: %s"
+msgstr ""
+
+msgid "Brevo API send failed: %s"
+msgstr ""
+
+#: settings values defaults
+msgid "Welcome to our newsletter!"
+msgstr ""

@@ -1,0 +1,127 @@
+@use "sass:map";
+$green: #1A7341;
+$red: #FF4B51;
+$orange: #FD7944;
+$yellow: #FFD77F;
+$purple: #7969E6;
+$gray: #939393;
+$gray-light: #D8D8D8;
+$white: #fff;
+$dark: #000;
+$blue: #034DD3;
+
+
+$primary: $blue;
+$danger: $red;
+$warning: $orange;
+$warning-light: $yellow;
+$info: $purple;
+$light: $gray-light;
+$secondary: $white;
+
+
+
+$colors: (
+    primary: $primary,
+    danger: $danger,
+    warning: $warning,
+    warning-light: $warning-light,
+    info: $purple,
+    'white': $white,
+    dark: $dark,
+    light: $light,
+    secondary: $secondary
+);
+
+
+$font-size-base: 1.6rem;
+
+// text-colors
+$link-color: #000;
+$link-decoration: none;
+
+
+$gutter: 30px;
+$column: 12;
+
+$rounded: false;
+$breakpoints: (
+    xs: 0px,
+    xm: 450px,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1300px,
+    xxl: 1440px
+);
+
+$breakpoint-xs: map.get($breakpoints, xs);
+$breakpoint-xm: map.get($breakpoints, xm);
+$breakpoint-sm: map.get($breakpoints, sm);
+$breakpoint-md: map.get($breakpoints, md);
+$breakpoint-lg: map.get($breakpoints, lg);
+$breakpoint-xl: map.get($breakpoints, xl);
+$breakpoint-xxl: map.get($breakpoints, xxl);
+
+$container: (
+    //xs: 100%,
+    //xm: 100%,
+    //sm: 100%,
+    md: 740px,
+    lg: 1000px,
+    xl: 1170px,
+    xxl: 1438px,
+);
+
+$display: none, block, flex, inline-block, inline-flex;
+
+$flex-wrap: wrap, nowrap;
+
+$flex-direction: row, column;
+
+$align-items: (
+    start:flex-start,
+    end: flex-end,
+    center: center,
+    stretch: stretch
+);
+
+$align-content: (
+    start:flex-start,
+    end: flex-end,
+    center: center,
+    stretch: stretch,
+    between: space-between
+);
+
+$justify-content: (
+    start:flex-start,
+    end: flex-end,
+    center: center,
+    between: space-between,
+    around: space-around
+);
+
+$text-aligment :left,
+right,
+justify,
+center;
+$position :relative,
+absolute,
+static,
+fixed;
+
+@function colorYiq($color) {
+    $r: red($color);
+    $g: green($color);
+    $b: blue($color);
+    $yiq : $r*0.299 + $g*0.587 + $b*0.114;
+
+    @if($yiq < 150) {
+        @return #fff;
+    }
+
+    @else {
+        @return #000;
+    }
+}

@@ -1,0 +1,1302 @@
+﻿{
+    "key":  "group_cubestheme_homepage_content",
+    "title":  "Homepage Content",
+    "fields":  [
+                   {
+                       "key":  "field_cubestheme_homepage_hero_tab",
+                       "label":  "Hero",
+                       "name":  "",
+                       "aria-label":  "",
+                       "type":  "tab",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "placement":  "top",
+                       "endpoint":  0,
+                       "selected":  1
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_hero_section",
+                       "label":  "Hero Section",
+                       "name":  "hero_section",
+                       "aria-label":  "",
+                       "type":  "group",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "layout":  "block",
+                       "sub_fields":  [
+                                          {
+                                              "key":  "field_cubestheme_homepage_hero_visual",
+                                              "label":  "Hero Visual",
+                                              "name":  "hero_visual",
+                                              "aria-label":  "",
+                                              "type":  "image",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "return_format":  "id",
+                                              "library":  "all",
+                                              "preview_size":  "medium",
+                                              "min_width":  "",
+                                              "min_height":  "",
+                                              "min_size":  "",
+                                              "max_width":  "",
+                                              "max_height":  "",
+                                              "max_size":  "",
+                                              "mime_types":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_hero_title",
+                                              "label":  "Title",
+                                              "name":  "title",
+                                              "aria-label":  "",
+                                              "type":  "textarea",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "rows":  3,
+                                              "placeholder":  "",
+                                              "new_lines":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_hero_description",
+                                              "label":  "Description",
+                                              "name":  "description",
+                                              "aria-label":  "",
+                                              "type":  "textarea",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "rows":  4,
+                                              "placeholder":  "",
+                                              "new_lines":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_hero_primary_button",
+                                              "label":  "Primary Button",
+                                              "name":  "primary_button",
+                                              "aria-label":  "",
+                                              "type":  "link",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "return_format":  "array"
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_hero_secondary_button",
+                                              "label":  "Secondary Button",
+                                              "name":  "secondary_button",
+                                              "aria-label":  "",
+                                              "type":  "link",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "return_format":  "array"
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_hero_endorsement_text",
+                                              "label":  "Endorsement Text",
+                                              "name":  "endorsement_text",
+                                              "aria-label":  "",
+                                              "type":  "text",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "placeholder":  "",
+                                              "prepend":  "",
+                                              "append":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_hero_endorsement_logo",
+                                              "label":  "Endorsement Logo",
+                                              "name":  "endorsement_logo",
+                                              "aria-label":  "",
+                                              "type":  "image",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "return_format":  "id",
+                                              "library":  "all",
+                                              "preview_size":  "medium",
+                                              "min_width":  "",
+                                              "min_height":  "",
+                                              "min_size":  "",
+                                              "max_width":  "",
+                                              "max_height":  "",
+                                              "max_size":  "",
+                                              "mime_types":  ""
+                                          }
+                                      ]
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_expertise_tab",
+                       "label":  "Expertise",
+                       "name":  "",
+                       "aria-label":  "",
+                       "type":  "tab",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "placement":  "top",
+                       "endpoint":  0
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_expertise_section",
+                       "label":  "Expertise Section",
+                       "name":  "expertise_section",
+                       "aria-label":  "",
+                       "type":  "group",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "layout":  "block",
+                       "sub_fields":  [
+                                          {
+                                              "key":  "field_cubestheme_homepage_expertise_label",
+                                              "label":  "Label",
+                                              "name":  "label",
+                                              "aria-label":  "",
+                                              "type":  "text",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "placeholder":  "",
+                                              "prepend":  "",
+                                              "append":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_expertise_title",
+                                              "label":  "Title",
+                                              "name":  "title",
+                                              "aria-label":  "",
+                                              "type":  "textarea",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "rows":  3,
+                                              "placeholder":  "",
+                                              "new_lines":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_expertise_description",
+                                              "label":  "Description",
+                                              "name":  "description",
+                                              "aria-label":  "",
+                                              "type":  "textarea",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "rows":  4,
+                                              "placeholder":  "",
+                                              "new_lines":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_expertise_button",
+                                              "label":  "Button",
+                                              "name":  "button",
+                                              "aria-label":  "",
+                                              "type":  "link",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "return_format":  "array"
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_expertise_items",
+                                              "label":  "Items",
+                                              "name":  "items",
+                                              "aria-label":  "",
+                                              "type":  "repeater",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "layout":  "table",
+                                              "pagination":  0,
+                                              "min":  0,
+                                              "max":  0,
+                                              "collapsed":  "",
+                                              "button_label":  "Add Item",
+                                              "rows_per_page":  20,
+                                              "sub_fields":  [
+                                                                 {
+                                                                     "key":  "field_cubestheme_homepage_expertise_item_title",
+                                                                     "label":  "Title",
+                                                                     "name":  "title",
+                                                                     "aria-label":  "",
+                                                                     "type":  "text",
+                                                                     "instructions":  "",
+                                                                     "required":  0,
+                                                                     "conditional_logic":  0,
+                                                                     "wrapper":  {
+                                                                                     "width":  "",
+                                                                                     "class":  "",
+                                                                                     "id":  ""
+                                                                                 },
+                                                                     "default_value":  "",
+                                                                     "maxlength":  "",
+                                                                     "placeholder":  "",
+                                                                     "prepend":  "",
+                                                                     "append":  ""
+                                                                 },
+                                                                 {
+                                                                     "key":  "field_cubestheme_homepage_expertise_item_description",
+                                                                     "label":  "Description",
+                                                                     "name":  "description",
+                                                                     "aria-label":  "",
+                                                                     "type":  "textarea",
+                                                                     "instructions":  "",
+                                                                     "required":  0,
+                                                                     "conditional_logic":  0,
+                                                                     "wrapper":  {
+                                                                                     "width":  "",
+                                                                                     "class":  "",
+                                                                                     "id":  ""
+                                                                                 },
+                                                                     "default_value":  "",
+                                                                     "maxlength":  "",
+                                                                     "rows":  3,
+                                                                     "placeholder":  "",
+                                                                     "new_lines":  ""
+                                                                 }
+                                                             ]
+                                          }
+                                      ]
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_featured_plugins_tab",
+                       "label":  "Featured Plugins",
+                       "name":  "",
+                       "aria-label":  "",
+                       "type":  "tab",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "placement":  "top",
+                       "endpoint":  0
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_featured_plugins_section",
+                       "label":  "Featured Plugins Section",
+                       "name":  "featured_plugins_section",
+                       "aria-label":  "",
+                       "type":  "group",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "layout":  "block",
+                       "sub_fields":  [
+                                          {
+                                              "key":  "field_cubestheme_homepage_featured_plugins_label",
+                                              "label":  "Label",
+                                              "name":  "label",
+                                              "aria-label":  "",
+                                              "type":  "text",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "placeholder":  "",
+                                              "prepend":  "",
+                                              "append":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_featured_plugins_title",
+                                              "label":  "Title",
+                                              "name":  "title",
+                                              "aria-label":  "",
+                                              "type":  "textarea",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "rows":  3,
+                                              "placeholder":  "",
+                                              "new_lines":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_featured_plugins_description",
+                                              "label":  "Description",
+                                              "name":  "description",
+                                              "aria-label":  "",
+                                              "type":  "textarea",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "rows":  4,
+                                              "placeholder":  "",
+                                              "new_lines":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_featured_plugins_button",
+                                              "label":  "Button",
+                                              "name":  "button",
+                                              "aria-label":  "",
+                                              "type":  "link",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "return_format":  "array"
+                                          }
+                                      ]
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_suites_tab",
+                       "label":  "Suites",
+                       "name":  "",
+                       "aria-label":  "",
+                       "type":  "tab",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "placement":  "top",
+                       "endpoint":  0
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_suites_section",
+                       "label":  "Suites Section",
+                       "name":  "suites_section",
+                       "aria-label":  "",
+                       "type":  "group",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "layout":  "block",
+                       "sub_fields":  [
+                                          {
+                                              "key":  "field_cubestheme_homepage_suites_label",
+                                              "label":  "Label",
+                                              "name":  "label",
+                                              "aria-label":  "",
+                                              "type":  "text",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "placeholder":  "",
+                                              "prepend":  "",
+                                              "append":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_suites_title",
+                                              "label":  "Title",
+                                              "name":  "title",
+                                              "aria-label":  "",
+                                              "type":  "textarea",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "rows":  3,
+                                              "placeholder":  "",
+                                              "new_lines":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_suites_description",
+                                              "label":  "Description",
+                                              "name":  "description",
+                                              "aria-label":  "",
+                                              "type":  "textarea",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "rows":  4,
+                                              "placeholder":  "",
+                                              "new_lines":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_suites_list_icon",
+                                              "label":  "List Icon",
+                                              "name":  "list_icon",
+                                              "aria-label":  "",
+                                              "type":  "image",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "return_format":  "id",
+                                              "library":  "all",
+                                              "preview_size":  "medium",
+                                              "min_width":  "",
+                                              "min_height":  "",
+                                              "min_size":  "",
+                                              "max_width":  "",
+                                              "max_height":  "",
+                                              "max_size":  "",
+                                              "mime_types":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_suites_panels",
+                                              "label":  "Panels",
+                                              "name":  "panels",
+                                              "aria-label":  "",
+                                              "type":  "repeater",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "layout":  "table",
+                                              "pagination":  0,
+                                              "min":  0,
+                                              "max":  0,
+                                              "collapsed":  "",
+                                              "button_label":  "Add Panel",
+                                              "rows_per_page":  20,
+                                              "sub_fields":  [
+                                                                 {
+                                                                     "key":  "field_cubestheme_homepage_suite_panel_slug",
+                                                                     "label":  "Panel Slug",
+                                                                     "name":  "panel_slug",
+                                                                     "aria-label":  "",
+                                                                     "type":  "text",
+                                                                     "instructions":  "",
+                                                                     "required":  0,
+                                                                     "conditional_logic":  0,
+                                                                     "wrapper":  {
+                                                                                     "width":  "",
+                                                                                     "class":  "",
+                                                                                     "id":  ""
+                                                                                 },
+                                                                     "default_value":  "",
+                                                                     "maxlength":  "",
+                                                                     "placeholder":  "",
+                                                                     "prepend":  "",
+                                                                     "append":  ""
+                                                                 },
+                                                                 {
+                                                                     "key":  "field_cubestheme_homepage_suite_panel_tab_label",
+                                                                     "label":  "Tab Label",
+                                                                     "name":  "tab_label",
+                                                                     "aria-label":  "",
+                                                                     "type":  "text",
+                                                                     "instructions":  "",
+                                                                     "required":  0,
+                                                                     "conditional_logic":  0,
+                                                                     "wrapper":  {
+                                                                                     "width":  "",
+                                                                                     "class":  "",
+                                                                                     "id":  ""
+                                                                                 },
+                                                                     "default_value":  "",
+                                                                     "maxlength":  "",
+                                                                     "placeholder":  "",
+                                                                     "prepend":  "",
+                                                                     "append":  ""
+                                                                 },
+                                                                 {
+                                                                     "key":  "field_cubestheme_homepage_suite_panel_title",
+                                                                     "label":  "Title",
+                                                                     "name":  "title",
+                                                                     "aria-label":  "",
+                                                                     "type":  "text",
+                                                                     "instructions":  "",
+                                                                     "required":  0,
+                                                                     "conditional_logic":  0,
+                                                                     "wrapper":  {
+                                                                                     "width":  "",
+                                                                                     "class":  "",
+                                                                                     "id":  ""
+                                                                                 },
+                                                                     "default_value":  "",
+                                                                     "maxlength":  "",
+                                                                     "placeholder":  "",
+                                                                     "prepend":  "",
+                                                                     "append":  ""
+                                                                 },
+                                                                 {
+                                                                     "key":  "field_cubestheme_homepage_suite_panel_description",
+                                                                     "label":  "Description",
+                                                                     "name":  "description",
+                                                                     "aria-label":  "",
+                                                                     "type":  "textarea",
+                                                                     "instructions":  "",
+                                                                     "required":  0,
+                                                                     "conditional_logic":  0,
+                                                                     "wrapper":  {
+                                                                                     "width":  "",
+                                                                                     "class":  "",
+                                                                                     "id":  ""
+                                                                                 },
+                                                                     "default_value":  "",
+                                                                     "maxlength":  "",
+                                                                     "rows":  4,
+                                                                     "placeholder":  "",
+                                                                     "new_lines":  ""
+                                                                 },
+                                                                 {
+                                                                     "key":  "field_cubestheme_homepage_suite_panel_items",
+                                                                     "label":  "Items",
+                                                                     "name":  "items",
+                                                                     "aria-label":  "",
+                                                                     "type":  "repeater",
+                                                                     "instructions":  "",
+                                                                     "required":  0,
+                                                                     "conditional_logic":  0,
+                                                                     "wrapper":  {
+                                                                                     "width":  "",
+                                                                                     "class":  "",
+                                                                                     "id":  ""
+                                                                                 },
+                                                                     "layout":  "table",
+                                                                     "pagination":  0,
+                                                                     "min":  0,
+                                                                     "max":  0,
+                                                                     "collapsed":  "",
+                                                                     "button_label":  "Add Item",
+                                                                     "rows_per_page":  20,
+                                                                     "sub_fields":  [
+                                                                                        {
+                                                                                            "key":  "field_cubestheme_homepage_suite_panel_item_title",
+                                                                                            "label":  "Title",
+                                                                                            "name":  "title",
+                                                                                            "aria-label":  "",
+                                                                                            "type":  "text",
+                                                                                            "instructions":  "",
+                                                                                            "required":  0,
+                                                                                            "conditional_logic":  0,
+                                                                                            "wrapper":  {
+                                                                                                            "width":  "",
+                                                                                                            "class":  "",
+                                                                                                            "id":  ""
+                                                                                                        },
+                                                                                            "default_value":  "",
+                                                                                            "maxlength":  "",
+                                                                                            "placeholder":  "",
+                                                                                            "prepend":  "",
+                                                                                            "append":  ""
+                                                                                        },
+                                                                                        {
+                                                                                            "key":  "field_cubestheme_homepage_suite_panel_item_description",
+                                                                                            "label":  "Description",
+                                                                                            "name":  "description",
+                                                                                            "aria-label":  "",
+                                                                                            "type":  "text",
+                                                                                            "instructions":  "",
+                                                                                            "required":  0,
+                                                                                            "conditional_logic":  0,
+                                                                                            "wrapper":  {
+                                                                                                            "width":  "",
+                                                                                                            "class":  "",
+                                                                                                            "id":  ""
+                                                                                                        },
+                                                                                            "default_value":  "",
+                                                                                            "maxlength":  "",
+                                                                                            "placeholder":  "",
+                                                                                            "prepend":  "",
+                                                                                            "append":  ""
+                                                                                        }
+                                                                                    ]
+                                                                 },
+                                                                 {
+                                                                     "key":  "field_cubestheme_homepage_suite_panel_button",
+                                                                     "label":  "Button",
+                                                                     "name":  "button",
+                                                                     "aria-label":  "",
+                                                                     "type":  "link",
+                                                                     "instructions":  "",
+                                                                     "required":  0,
+                                                                     "conditional_logic":  0,
+                                                                     "wrapper":  {
+                                                                                     "width":  "",
+                                                                                     "class":  "",
+                                                                                     "id":  ""
+                                                                                 },
+                                                                     "return_format":  "array"
+                                                                 },
+                                                                 {
+                                                                     "key":  "field_cubestheme_homepage_suite_panel_image",
+                                                                     "label":  "Image",
+                                                                     "name":  "image",
+                                                                     "aria-label":  "",
+                                                                     "type":  "image",
+                                                                     "instructions":  "",
+                                                                     "required":  0,
+                                                                     "conditional_logic":  0,
+                                                                     "wrapper":  {
+                                                                                     "width":  "",
+                                                                                     "class":  "",
+                                                                                     "id":  ""
+                                                                                 },
+                                                                     "return_format":  "id",
+                                                                     "library":  "all",
+                                                                     "preview_size":  "medium",
+                                                                     "min_width":  "",
+                                                                     "min_height":  "",
+                                                                     "min_size":  "",
+                                                                     "max_width":  "",
+                                                                     "max_height":  "",
+                                                                     "max_size":  "",
+                                                                     "mime_types":  ""
+                                                                 }
+                                                             ]
+                                          }
+                                      ]
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_why_choose_tab",
+                       "label":  "Why Choose Us",
+                       "name":  "",
+                       "aria-label":  "",
+                       "type":  "tab",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "placement":  "top",
+                       "endpoint":  0
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_why_choose_section",
+                       "label":  "Why Choose Us Section",
+                       "name":  "why_choose_us_section",
+                       "aria-label":  "",
+                       "type":  "group",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "layout":  "block",
+                       "sub_fields":  [
+                                          {
+                                              "key":  "field_cubestheme_homepage_why_choose_image",
+                                              "label":  "Image",
+                                              "name":  "image",
+                                              "aria-label":  "",
+                                              "type":  "image",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "return_format":  "id",
+                                              "library":  "all",
+                                              "preview_size":  "medium",
+                                              "min_width":  "",
+                                              "min_height":  "",
+                                              "min_size":  "",
+                                              "max_width":  "",
+                                              "max_height":  "",
+                                              "max_size":  "",
+                                              "mime_types":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_why_choose_label",
+                                              "label":  "Label",
+                                              "name":  "label",
+                                              "aria-label":  "",
+                                              "type":  "text",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "placeholder":  "",
+                                              "prepend":  "",
+                                              "append":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_why_choose_title",
+                                              "label":  "Title",
+                                              "name":  "title",
+                                              "aria-label":  "",
+                                              "type":  "textarea",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "rows":  3,
+                                              "placeholder":  "",
+                                              "new_lines":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_why_choose_items",
+                                              "label":  "Items",
+                                              "name":  "items",
+                                              "aria-label":  "",
+                                              "type":  "repeater",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "layout":  "table",
+                                              "pagination":  0,
+                                              "min":  0,
+                                              "max":  0,
+                                              "collapsed":  "",
+                                              "button_label":  "Add Item",
+                                              "rows_per_page":  20,
+                                              "sub_fields":  [
+                                                                 {
+                                                                     "key":  "field_cubestheme_homepage_why_choose_item_title",
+                                                                     "label":  "Title",
+                                                                     "name":  "title",
+                                                                     "aria-label":  "",
+                                                                     "type":  "text",
+                                                                     "instructions":  "",
+                                                                     "required":  0,
+                                                                     "conditional_logic":  0,
+                                                                     "wrapper":  {
+                                                                                     "width":  "",
+                                                                                     "class":  "",
+                                                                                     "id":  ""
+                                                                                 },
+                                                                     "default_value":  "",
+                                                                     "maxlength":  "",
+                                                                     "placeholder":  "",
+                                                                     "prepend":  "",
+                                                                     "append":  ""
+                                                                 },
+                                                                 {
+                                                                     "key":  "field_cubestheme_homepage_why_choose_item_description",
+                                                                     "label":  "Description",
+                                                                     "name":  "description",
+                                                                     "aria-label":  "",
+                                                                     "type":  "textarea",
+                                                                     "instructions":  "",
+                                                                     "required":  0,
+                                                                     "conditional_logic":  0,
+                                                                     "wrapper":  {
+                                                                                     "width":  "",
+                                                                                     "class":  "",
+                                                                                     "id":  ""
+                                                                                 },
+                                                                     "default_value":  "",
+                                                                     "maxlength":  "",
+                                                                     "rows":  3,
+                                                                     "placeholder":  "",
+                                                                     "new_lines":  ""
+                                                                 }
+                                                             ]
+                                          }
+                                      ]
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_pricing_tab",
+                       "label":  "Pricing",
+                       "name":  "",
+                       "aria-label":  "",
+                       "type":  "tab",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "placement":  "top",
+                       "endpoint":  0
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_pricing_notice",
+                       "label":  "Static Pricing",
+                       "name":  "",
+                       "aria-label":  "",
+                       "type":  "message",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "message":  "\u003cp\u003eThis section stays static until the WooCommerce pricing implementation is ready.\u003c/p\u003e",
+                       "new_lines":  "wpautop",
+                       "esc_html":  0
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_faq_tab",
+                       "label":  "FAQ",
+                       "name":  "",
+                       "aria-label":  "",
+                       "type":  "tab",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "placement":  "top",
+                       "endpoint":  0
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_faq_section",
+                       "label":  "FAQ Section",
+                       "name":  "faq_section",
+                       "aria-label":  "",
+                       "type":  "group",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "layout":  "block",
+                       "sub_fields":  [
+                                          {
+                                              "key":  "field_cubestheme_homepage_faq_label",
+                                              "label":  "Label",
+                                              "name":  "label",
+                                              "aria-label":  "",
+                                              "type":  "text",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "placeholder":  "",
+                                              "prepend":  "",
+                                              "append":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_faq_title",
+                                              "label":  "Title",
+                                              "name":  "title",
+                                              "aria-label":  "",
+                                              "type":  "textarea",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "rows":  3,
+                                              "placeholder":  "",
+                                              "new_lines":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_faq_items",
+                                              "label":  "Items",
+                                              "name":  "items",
+                                              "aria-label":  "",
+                                              "type":  "repeater",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "layout":  "table",
+                                              "pagination":  0,
+                                              "min":  0,
+                                              "max":  0,
+                                              "collapsed":  "",
+                                              "button_label":  "Add Item",
+                                              "rows_per_page":  20,
+                                              "sub_fields":  [
+                                                                 {
+                                                                     "key":  "field_cubestheme_homepage_faq_item_question",
+                                                                     "label":  "Question",
+                                                                     "name":  "question",
+                                                                     "aria-label":  "",
+                                                                     "type":  "text",
+                                                                     "instructions":  "",
+                                                                     "required":  0,
+                                                                     "conditional_logic":  0,
+                                                                     "wrapper":  {
+                                                                                     "width":  "",
+                                                                                     "class":  "",
+                                                                                     "id":  ""
+                                                                                 },
+                                                                     "default_value":  "",
+                                                                     "maxlength":  "",
+                                                                     "placeholder":  "",
+                                                                     "prepend":  "",
+                                                                     "append":  ""
+                                                                 },
+                                                                 {
+                                                                     "key":  "field_cubestheme_homepage_faq_item_answer",
+                                                                     "label":  "Answer",
+                                                                     "name":  "answer",
+                                                                     "aria-label":  "",
+                                                                     "type":  "textarea",
+                                                                     "instructions":  "",
+                                                                     "required":  0,
+                                                                     "conditional_logic":  0,
+                                                                     "wrapper":  {
+                                                                                     "width":  "",
+                                                                                     "class":  "",
+                                                                                     "id":  ""
+                                                                                 },
+                                                                     "default_value":  "",
+                                                                     "maxlength":  "",
+                                                                     "rows":  4,
+                                                                     "placeholder":  "",
+                                                                     "new_lines":  ""
+                                                                 }
+                                                             ]
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_faq_button",
+                                              "label":  "Button",
+                                              "name":  "button",
+                                              "aria-label":  "",
+                                              "type":  "link",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "return_format":  "array"
+                                          }
+                                      ]
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_newsletter_tab",
+                       "label":  "Newsletter",
+                       "name":  "",
+                       "aria-label":  "",
+                       "type":  "tab",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "placement":  "top",
+                       "endpoint":  0
+                   },
+                   {
+                       "key":  "field_cubestheme_homepage_newsletter_section",
+                       "label":  "Newsletter Section",
+                       "name":  "newsletter_section",
+                       "aria-label":  "",
+                       "type":  "group",
+                       "instructions":  "",
+                       "required":  0,
+                       "conditional_logic":  0,
+                       "wrapper":  {
+                                       "width":  "",
+                                       "class":  "",
+                                       "id":  ""
+                                   },
+                       "layout":  "block",
+                       "sub_fields":  [
+                                          {
+                                              "key":  "field_cubestheme_homepage_newsletter_label",
+                                              "label":  "Label",
+                                              "name":  "label",
+                                              "aria-label":  "",
+                                              "type":  "text",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "placeholder":  "",
+                                              "prepend":  "",
+                                              "append":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_newsletter_title",
+                                              "label":  "Title",
+                                              "name":  "title",
+                                              "aria-label":  "",
+                                              "type":  "textarea",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "rows":  3,
+                                              "placeholder":  "",
+                                              "new_lines":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_newsletter_email_placeholder",
+                                              "label":  "Email Placeholder",
+                                              "name":  "email_placeholder",
+                                              "aria-label":  "",
+                                              "type":  "text",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "placeholder":  "",
+                                              "prepend":  "",
+                                              "append":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_newsletter_button_text",
+                                              "label":  "Button Text",
+                                              "name":  "button_text",
+                                              "aria-label":  "",
+                                              "type":  "text",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "maxlength":  "",
+                                              "placeholder":  "",
+                                              "prepend":  "",
+                                              "append":  ""
+                                          },
+                                          {
+                                              "key":  "field_cubestheme_homepage_newsletter_animation_url",
+                                              "label":  "Animation URL",
+                                              "name":  "animation_url",
+                                              "aria-label":  "",
+                                              "type":  "url",
+                                              "instructions":  "",
+                                              "required":  0,
+                                              "conditional_logic":  0,
+                                              "wrapper":  {
+                                                              "width":  "",
+                                                              "class":  "",
+                                                              "id":  ""
+                                                          },
+                                              "default_value":  "",
+                                              "placeholder":  ""
+                                          }
+                                      ]
+                   }
+               ],
+    "location":  [
+                     {
+                         "param":  "page_type",
+                         "operator":  "==",
+                         "value":  "front_page"
+                     }
+                 ],
+    "menu_order":  0,
+    "position":  "normal",
+    "style":  "default",
+    "label_placement":  "top",
+    "instruction_placement":  "label",
+    "hide_on_screen":  "",
+    "active":  true,
+    "description":  "",
+    "show_in_rest":  0,
+    "modified":  1776423722
+}

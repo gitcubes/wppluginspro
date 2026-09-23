@@ -1,0 +1,364 @@
+.docs-overview {
+    padding: 50px 0 50px 0;
+
+    @media(min-width: 768px) {
+        padding: 76px 0 95px 0;
+    }
+
+    .top-section {
+        margin-bottom: 42px;
+
+        .label {
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            max-width: 752px;
+            margin: 0 auto;
+            margin-bottom: 16px;
+        }
+
+    }
+
+    .docs-areas {
+        margin-bottom: 32px;
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+
+.docs-start {
+    margin-bottom: 50px;
+
+    @media(min-width: 768px) {
+        margin-bottom: 96px;
+    }
+
+    .docs-start-layout {
+        display: grid;
+        gap: 32px;
+        position: relative;
+
+        @media(min-width: $breakpoint-xl) {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .docs-start-intro {
+            height: 100%;
+
+            .content {
+                position: sticky;
+                top: 150px;
+            }
+
+            .label,
+            h2 {
+                margin-bottom: 16px;
+            }
+        }
+
+        .docs-start-guides {
+            display: grid;
+            gap: 32px;
+
+            .single-box {
+                padding: 8px;
+
+                .content {
+                    padding: 32px;
+                }
+
+                .label,
+                h3 {
+                    margin-bottom: 16px;
+                }
+
+                p {
+                    margin-bottom: 32px;
+                }
+            }
+
+            .doc-links {
+                ul {
+                    display: grid;
+                    gap: 16px;
+
+                    li {
+                        display: flex;
+                        gap: 12px;
+                        align-items: center;
+
+                        a {
+                            color: #034DD3;
+                            font-weight: 500;
+                            letter-spacing: -0.32px;
+                            text-decoration-line: underline;
+                            text-decoration-style: solid;
+                            text-decoration-skip-ink: auto;
+                            text-decoration-thickness: auto;
+                            text-underline-offset: auto;
+                            text-underline-position: from-font;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+.docs-by-plugin {
+    margin-bottom: 50px;
+
+    @media(min-width: 768px) {
+        margin-bottom: 96px;
+    }
+
+    .top-section {
+        margin-bottom: 42px;
+
+        .label {
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            max-width: 752px;
+            margin: 0 auto;
+            margin-bottom: 16px;
+        }
+
+        p {
+            text-align: center;
+            margin: 0 auto;
+        }
+    }
+
+
+
+    .guide-grid {
+        display: grid;
+        gap: 24px;
+
+        @media(min-width: $breakpoint-lg) {
+            gap: 32px;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media(min-width: $breakpoint-xxl) {
+            gap: 32px;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .single-box {
+            padding: 8px;
+
+            .content {
+                padding: 32px;
+            }
+
+            .label,
+            h3 {
+                margin-bottom: 16px;
+            }
+
+            p {
+                margin-bottom: 32px;
+            }
+        }
+
+        .doc-links {
+            ul {
+                display: grid;
+                gap: 16px;
+                margin-bottom: 32px;
+
+                li {
+                    display: flex;
+                    gap: 12px;
+                    align-items: center;
+
+                    a {
+                        color: #034DD3;
+                        font-weight: 500;
+                        letter-spacing: -0.32px;
+                        text-decoration-line: underline;
+                        text-decoration-style: solid;
+                        text-decoration-skip-ink: auto;
+                        text-decoration-thickness: auto;
+                        text-underline-offset: auto;
+                        text-underline-position: from-font;
+                    }
+                }
+            }
+
+            .btn {
+                display: inline-block;
+            }
+        }
+    }
+}
+
+
+.developer-reference {
+    margin-bottom: 50px;
+
+    @media(min-width: 768px) {
+        margin-bottom: 96px;
+    }
+
+    .top-section {
+        margin-bottom: 42px;
+
+        .label {
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            max-width: 752px;
+            margin: 0 auto;
+            margin-bottom: 16px;
+        }
+
+        p {
+            text-align: center;
+            margin: 0 auto;
+            max-width: 752px;
+        }
+    }
+
+
+    .guide-grid {
+        display: grid;
+        gap: 32px;
+
+        @media(min-width: $breakpoint-lg) {
+            gap: 32px;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media(min-width: $breakpoint-xxl) {
+            gap: 32px;
+            grid-template-columns: 8fr 4fr;
+
+        }
+
+        .single-box {
+            padding: 8px;
+
+            .content {
+                padding: 32px;
+            }
+
+            .label,
+            h3 {
+                margin-bottom: 16px;
+            }
+
+            p {
+                margin-bottom: 32px;
+            }
+        }
+
+        .doc-links {
+            ul {
+                display: grid;
+                gap: 16px;
+                margin-bottom: 32px;
+
+                li {
+                    display: flex;
+                    gap: 12px;
+                    align-items: center;
+
+                    a {
+                        color: #034DD3;
+                        font-weight: 500;
+                        letter-spacing: -0.32px;
+                        text-decoration-line: underline;
+                        text-decoration-style: solid;
+                        text-decoration-skip-ink: auto;
+                        text-decoration-thickness: auto;
+                        text-underline-offset: auto;
+                        text-underline-position: from-font;
+                    }
+                }
+            }
+
+            .btn {
+                display: inline-block;
+            }
+        }
+    }
+
+}
+
+.docs-contact {
+    padding: 0 5px;
+    margin-bottom: 50px;
+
+    @media(min-width: 768px) {
+        padding: 0 20px;
+        margin-bottom: 96px;
+    }
+
+    .support-callout {
+        border-radius: 32px;
+        background: linear-gradient(180deg, #002A75 0%, #1154B6 50%, #002A75 100%);
+        max-width: 1170px;
+        margin: 0 auto;
+        padding: 30px;
+
+        @media(min-width: $breakpoint-md) {
+            padding: 72px 64px;
+        }
+
+        .top-section {
+            max-width: 752px;
+            margin: 0 auto;
+
+            .label {
+                color: #fff;
+                -webkit-text-fill-color: #fff;
+                margin-bottom: 16px;
+                text-align: center;
+            }
+
+            h2 {
+                margin-bottom: 16px;
+                text-align: center;
+                color: #fff;
+                text-wrap: balance;
+            }
+
+            p {
+                text-align: center;
+                color: #fff;
+                margin-bottom: 42px;
+            }
+
+            .callout-actions {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 20px;
+                flex-direction: column;
+                text-align: center;
+
+                @media(min-width: $breakpoint-sm) {
+                    flex-direction: row;
+                }
+
+                .btn {
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+}

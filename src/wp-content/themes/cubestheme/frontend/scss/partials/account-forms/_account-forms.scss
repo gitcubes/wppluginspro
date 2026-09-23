@@ -1,0 +1,235 @@
+.hero-section {
+    margin-bottom: 56px;
+    padding-top: 150px;
+
+    @media(min-width: 992px) {
+        padding-top: 250px;
+    }
+
+    .lead-content-holder {
+        margin-bottom: 42px;
+
+        .lead-description {
+            a {
+                color: #fff;
+                font-weight: 600;
+                letter-spacing: -0.32px;
+                text-decoration-line: underline;
+                text-decoration-style: solid;
+                text-decoration-skip-ink: auto;
+                text-decoration-thickness: auto;
+                text-underline-offset: auto;
+                text-underline-position: from-font;
+            }
+        }
+    }
+
+    form {
+        max-width: 632px;
+        margin: 0 auto;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.2);
+        padding: 12px;
+
+        .form-group.flex-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+
+            @media(min-width: 576px) {
+                flex-direction: row;
+            }
+
+            >* {
+                flex: 1;
+            }
+        }
+
+        .form-group {
+            span {
+                color: rgba(27, 27, 33, 0.70);
+                font-size: 14px;
+                font-weight: 500;
+            }
+        }
+
+        label {
+            display: block;
+            color: #1b1b21;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        input {
+            width: 100%;
+            border-radius: 6px;
+            border: 1px solid rgba(24, 111, 255, 0.1);
+            background: #f8faff;
+            padding: 14px 16px;
+
+            &::placeholder {
+                color: rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        .login-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+
+            .remember,
+            .accept-terms {
+                cursor: pointer;
+                margin-bottom: 0;
+
+                input[type="checkbox"] {
+                    display: none;
+                }
+            }
+
+            .remember {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                color: rgba(27, 27, 33, 0.7);
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 1.4;
+
+                input[type="checkbox"] {
+                    &:checked+.remember-checkbox {
+                        background-color: #186fff;
+                        border-color: #186fff;
+
+                        svg {
+                            opacity: 1;
+                            transform: scale(1);
+                        }
+                    }
+                }
+
+                .remember-checkbox {
+                    width: 20px;
+                    height: 20px;
+                    min-width: 20px;
+                    border-radius: 50%;
+                    border: 1px solid #186fff;
+                    background-color: #fff;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: 0.2s ease;
+
+                    svg {
+                        opacity: 0;
+                        transform: scale(0.8);
+                        transition: 0.2s ease;
+                    }
+                }
+
+                .remember-text {
+                    color: #5f6b7a;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+            }
+
+            .accept-terms {
+                display: inline-flex;
+                align-items: flex-start;
+                gap: 10px;
+                color: rgba(27, 27, 33, 0.7);
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 1.45;
+
+                input[type="checkbox"] {
+                    &:checked+.accept-terms-checkbox {
+                        background-color: #186fff;
+                        border-color: #186fff;
+
+                        svg {
+                            opacity: 1;
+                            transform: scale(1);
+                        }
+                    }
+                }
+
+                .accept-terms-checkbox {
+                    width: 20px;
+                    height: 20px;
+                    min-width: 20px;
+                    margin-top: 2px;
+                    border-radius: 50%;
+                    border: 1px solid #186fff;
+                    background-color: #fff;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: 0.2s ease;
+
+                    svg {
+                        opacity: 0;
+                        transform: scale(0.8);
+                        transition: 0.2s ease;
+                    }
+                }
+
+                .accept-terms-text {
+                    color: #5f6b7a;
+                    font-size: 14px;
+                    font-weight: 400;
+                    line-height: 1.45;
+                }
+            }
+
+            .forgot-password {
+                color: #034dd3;
+                font-size: 14px;
+                font-weight: 600;
+                letter-spacing: -0.28px;
+                text-decoration-line: underline;
+                text-decoration-style: solid;
+                text-decoration-skip-ink: auto;
+                text-decoration-thickness: auto;
+                text-underline-offset: auto;
+                text-underline-position: from-font;
+            }
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            border: none;
+            font-size: 16px;
+            margin-bottom: 24px;
+            font-weight: 500;
+            font-family: "Host Grotesk";
+            cursor: pointer;
+        }
+
+        p {
+            margin: 0;
+            color: rgba(27, 27, 33, 0.70);
+            font-size: 14px;
+            font-weight: 500;
+
+            a {
+                color: #034dd3;
+                font-size: 14px;
+                font-weight: 600;
+                letter-spacing: -0.28px;
+                text-decoration-line: underline;
+                text-decoration-style: solid;
+                text-decoration-skip-ink: auto;
+                text-decoration-thickness: auto;
+                text-underline-offset: auto;
+                text-underline-position: from-font;
+            }
+        }
+    }
+}

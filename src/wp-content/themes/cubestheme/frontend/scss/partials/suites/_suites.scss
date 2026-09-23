@@ -1,0 +1,313 @@
+.suite-benefits {
+    padding: 50px 0 50px 0;
+
+    @media(min-width: 768px) {
+        padding: 76px 0 95px 0;
+    }
+
+    .top-section {
+        margin-bottom: 42px;
+
+        .label {
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            max-width: 590px;
+            margin: 0 auto;
+            margin-bottom: 16px;
+        }
+
+        p {
+            text-align: center;
+            margin: 0 auto;
+            margin-bottom: 56px;
+            max-width: 752px;
+        }
+    }
+
+    .benefit-grid {
+        margin-bottom: 32px;
+    }
+}
+
+.suite-plans {
+    margin-bottom: 50px;
+
+    @media(min-width: 768px) {
+        margin-bottom: 95px;
+    }
+
+
+    .top-section {
+        margin-bottom: 42px;
+
+        .label {
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            max-width: 590px;
+            margin: 0 auto;
+            margin-bottom: 16px;
+        }
+
+        p {
+            text-align: center;
+            margin: 0 auto;
+            margin-bottom: 56px;
+            max-width: 752px;
+        }
+    }
+
+    .suite-plan-grid {
+        display: grid;
+        gap: 24px;
+        align-items: stretch;
+
+        @media(min-width: 1200px) {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        @media(min-width: $breakpoint-xl) {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .suite-plan-card {
+            padding: 12px;
+            border-radius: 24px;
+
+            .pricing-holder {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 24px;
+                background-color: rgba(255, 255, 255, 0.15);
+                border-radius: 16px;
+            }
+
+            h4 {
+                margin-bottom: 16px;
+            }
+
+            .plan-audience {
+                color: #034DD3;
+                font-family: "Roboto Mono";
+                font-size: 14px;
+                font-weight: 500;
+                text-transform: uppercase;
+                margin-bottom: 20px;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.20);
+                padding-bottom: 20px;
+            }
+
+            h3 {
+                margin-bottom: 20px;
+
+                span {
+                    color: #000;
+                    font-family: Inter;
+                    font-size: 18px;
+                    font-weight: 500;
+                    letter-spacing: -0.36px;
+                }
+            }
+
+            p {
+                margin-bottom: 20px;
+                width: auto;
+                color: rgba(0, 0, 0, 0.7);
+                text-align: left;
+            }
+
+            .plan-guidance {
+                padding: 8px 12px;
+                border-radius: 8px;
+                background: rgba(24, 111, 255, 0.05);
+                color: #000;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .included-plugins {
+                border-top: 1px solid rgba(0, 0, 0, 0.2);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+                padding: 24px 0;
+                margin-bottom: 32px;
+
+                p {
+                    margin-bottom: 24px;
+                    color: #000;
+                    font-weight: 500;
+                    letter-spacing: -0.32px;
+                }
+
+                li {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    margin-bottom: 12px;
+                    font-weight: 500;
+
+                    &:last-of-type {
+                        margin-bottom: 0;
+                    }
+
+                    img {
+                        flex-shrink: 0;
+                    }
+                }
+            }
+
+            .cta {
+                display: flex;
+                gap: 12px;
+                flex-direction: column;
+
+                @media(min-width: $breakpoint-xxl) {
+                    flex-direction: row;
+                }
+            }
+
+            .btn {
+                flex: 1;
+                text-align: center;
+                font-weight: 500;
+            }
+
+            .btn-white {
+                border: 2px solid rgba(3, 77, 211, 0.30);
+            }
+
+            .analytics {
+                color: #37ACFF;
+                font-size: 14px;
+                text-transform: uppercase;
+            }
+        }
+    }
+
+}
+
+.suite-comparison {
+    margin-bottom: 50px;
+
+    @media(min-width: 768px) {
+        margin-bottom: 95px;
+    }
+
+    .top-section {
+        margin-bottom: 42px;
+
+        .label {
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            max-width: 752px;
+            margin: 0 auto;
+            margin-bottom: 16px;
+        }
+
+        p {
+            text-align: center;
+            margin: 0 auto;
+        }
+    }
+
+
+}
+
+
+.suite-licensing {
+    .licensing-layout {
+        display: grid;
+        gap: 40px;
+
+        @media(min-width: 1200px) {
+            grid-template-columns: 1fr 1fr;
+            gap: 72px;
+            align-items: flex-start;
+        }
+
+        @media(min-width: $breakpoint-xl) {
+            align-items: center;
+        }
+
+        >.box {
+            padding: 16px;
+
+            img {
+                width: 100%;
+                border-radius: 16px;
+            }
+        }
+
+        .licensing-copy {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .label {
+                margin-bottom: 16px;
+                font-weight: 700;
+            }
+
+            h2 {
+                margin-bottom: 16px;
+            }
+
+            p {
+                margin-bottom: 48px;
+            }
+
+            .single-box {
+
+                &.box {
+                    padding: 8px;
+                }
+
+                .licensing-details {
+                    h4 {
+                        margin-bottom: 16px;
+                    }
+
+                    p {
+                        color: #000;
+                        font-size: 16px;
+                        letter-spacing: -0.32px;
+                        margin-bottom: 32px;
+                    }
+
+                    li {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        margin-bottom: 16px;
+
+                        &:last-of-type {
+                            margin-bottom: 0;
+                        }
+
+                        img {
+                            flex-shrink: 0;
+                        }
+
+                        span {
+                            font-weight: 500;
+                            line-height: 150%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

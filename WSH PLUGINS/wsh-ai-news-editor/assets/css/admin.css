@@ -1,0 +1,730 @@
+.wsh-aine-card {
+	background: #fff;
+	border: 1px solid #ddd;
+	padding: 16px;
+	margin-top: 16px;
+}
+
+.wsh-aine-accordion {
+	margin-top: 20px;
+	display: grid;
+	gap: 14px;
+}
+
+.wsh-aine-accordion-item {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.wsh-aine-accordion-toggle {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px 18px;
+	border: 0;
+	background: #fff;
+	cursor: pointer;
+	font-size: 15px;
+	font-weight: 600;
+	text-align: left;
+}
+
+.wsh-aine-accordion-toggle:hover {
+	background: #f6f7f7;
+}
+
+.wsh-aine-accordion-meta {
+	font-size: 12px;
+	font-weight: 500;
+	color: #50575e;
+}
+
+.wsh-aine-accordion-panel {
+	padding: 16px 18px 20px;
+	border-top: 1px solid #eee;
+	background: #fcfcfc;
+}
+
+.wsh-aine-empty-state {
+	padding: 14px;
+	background: #fff;
+	border: 1px dashed #c3c4c7;
+	border-radius: 6px;
+	color: #50575e;
+}
+
+.wsh-aine-news-list {
+	display: grid;
+	gap: 16px;
+}
+
+.wsh-aine-news-card {
+	display: grid;
+	grid-template-columns: 180px 1fr;
+	gap: 16px;
+	background: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 10px;
+	padding: 14px;
+}
+
+.wsh-aine-news-card--match {
+	grid-template-columns: 1fr;
+}
+
+.wsh-aine-news-card__media img {
+	display: block;
+	width: 100%;
+	height: 120px;
+	object-fit: cover;
+	border-radius: 8px;
+	background: #f0f0f1;
+}
+
+.wsh-aine-news-card__noimage {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 120px;
+	border-radius: 8px;
+	background: #f0f0f1;
+	color: #6b7280;
+	font-size: 13px;
+}
+
+.wsh-aine-news-card__body {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.wsh-aine-news-card__top {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.wsh-aine-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 4px 10px;
+	border-radius: 999px;
+	background: #2271b1;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.wsh-aine-date {
+	color: #646970;
+	font-size: 12px;
+}
+
+.wsh-aine-news-card__title {
+	margin: 0;
+	font-size: 18px;
+	line-height: 1.35;
+}
+
+.wsh-aine-news-card__excerpt {
+	margin: 0;
+	color: #3c434a;
+	line-height: 1.5;
+}
+
+.wsh-aine-news-card__actions {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	margin-top: auto;
+}
+
+.wsh-aine-news-card__linkmeta {
+	font-size: 12px;
+	color: #646970;
+	word-break: break-word;
+}
+
+@media (max-width: 782px) {
+	.wsh-aine-news-card {
+		grid-template-columns: 1fr;
+	}
+}
+
+.wsh-aine-editor-layout {
+	display: grid;
+	grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
+	gap: 20px;
+	margin-top: 20px;
+	align-items: start;
+}
+
+.wsh-aine-panel {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 10px;
+	padding: 18px;
+}
+
+.wsh-aine-panel h2 {
+	margin-top: 0;
+	margin-bottom: 16px;
+}
+
+.wsh-aine-category-box {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 10px;
+	max-height: 240px;
+	overflow: auto;
+	padding: 12px;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	background: #fff;
+}
+
+.wsh-aine-category-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+@media (max-width: 1100px) {
+	.wsh-aine-editor-layout {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 782px) {
+	.wsh-aine-category-box {
+		grid-template-columns: 1fr;
+	}
+}
+
+.wsh-aine-image-actions {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	margin-bottom: 8px;
+}
+
+.wsh-aine-ai-quick-actions {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+.wsh-aine-settings-page {
+	max-width: 1400px;
+}
+
+.wsh-aine-settings-layout {
+	display: grid;
+	grid-template-columns: 240px minmax(0, 1fr);
+	gap: 20px;
+	margin-top: 20px;
+	align-items: start;
+}
+
+.wsh-aine-settings-sidebar {
+	position: sticky;
+	top: 32px;
+}
+
+.wsh-aine-settings-nav {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 12px;
+	padding: 10px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.wsh-aine-settings-tab {
+	display: block;
+	width: 100%;
+	padding: 11px 14px;
+	margin: 0;
+	border: 0;
+	border-radius: 8px;
+	background: transparent;
+	text-align: left;
+	cursor: pointer;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.wsh-aine-settings-tab:hover {
+	background: #f6f7f7;
+}
+
+.wsh-aine-settings-tab.is-active {
+	background: #2271b1;
+	color: #fff;
+}
+
+.wsh-aine-settings-panel {
+	display: none;
+}
+
+.wsh-aine-settings-panel.is-active {
+	display: block;
+}
+
+.wsh-aine-settings-card {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 12px;
+	padding: 22px;
+	margin-bottom: 20px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.wsh-aine-settings-card h2 {
+	margin-top: 0;
+	margin-bottom: 8px;
+}
+
+.wsh-aine-settings-actions {
+	position: sticky;
+	bottom: 0;
+	background: rgba(255, 255, 255, 0.96);
+	border-top: 1px solid #dcdcde;
+	padding: 10px 10px;
+	margin-top: 10px;
+	max-width: 110px;
+}
+
+.wsh-aine-repeater-rows {
+	display: grid;
+	gap: 14px;
+	margin-top: 16px;
+}
+
+.wsh-aine-repeater-row {
+	border: 1px solid #dcdcde;
+	border-radius: 10px;
+	padding: 16px;
+	background: #fcfcfd;
+}
+
+.wsh-aine-repeater-grid {
+	display: grid;
+	grid-template-columns: minmax(180px, 1fr) minmax(260px, 2fr) 120px 80px;
+	gap: 14px;
+	align-items: end;
+}
+
+.wsh-aine-repeater-grid label {
+	display: block;
+	margin-bottom: 6px;
+	font-weight: 600;
+}
+
+.wsh-aine-repeater-grid input {
+	max-width: 260px;
+}
+
+.wsh-aine-repeater-grid input.code {
+	max-width: 460px;
+}
+
+.wsh-aine-repeater-toggle {
+	padding-bottom: 8px;
+}
+
+.wsh-aine-repeater-toggle label {
+	margin: 0;
+	font-weight: 500;
+}
+
+.wsh-aine-repeater-actions {
+	padding-bottom: 8px;
+	text-align: right;
+}
+
+@media (max-width: 980px) {
+	.wsh-aine-settings-layout {
+		grid-template-columns: 1fr;
+	}
+
+	.wsh-aine-settings-sidebar {
+		position: static;
+	}
+
+	.wsh-aine-settings-nav {
+		display: flex;
+		gap: 8px;
+		overflow: auto;
+	}
+
+	.wsh-aine-settings-tab {
+		min-width: max-content;
+	}
+
+	.wsh-aine-repeater-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.wsh-aine-repeater-actions {
+		text-align: left;
+	}
+}
+
+
+
+.wsh-aine-overline {
+	font-size: 11px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #646970;
+	font-weight: 700;
+	margin-bottom: 8px;
+}
+
+.wsh-aine-plan-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 6px 12px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.wsh-aine-plan-badge--free {
+	background: #e7f1ff;
+	color: #0a4b78;
+}
+
+.wsh-aine-plan-badge--pro {
+	background: #f3e8ff;
+	color: #6b21a8;
+}
+
+.wsh-aine-plan-badge--agency {
+	background: #fff1db;
+	color: #9a3412;
+}
+
+.wsh-aine-plan-hero {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	padding: 24px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background: linear-gradient(135deg, #ffffff 0%, #f6f7fb 100%);
+	border: 1px solid #dcdcde;
+	border-radius: 16px;
+	max-width: 1150px;
+}
+
+.wsh-aine-plan-hero__title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+	font-size: 22px;
+	font-weight: 700;
+	color: #1d2327;
+}
+
+.wsh-aine-plan-hero__text {
+	margin: 10px 0 0;
+	max-width: 760px;
+	color: #50575e;
+}
+
+.wsh-aine-plan-hero__actions {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.wsh-aine-kpi-grid,
+.wsh-aine-module-grid,
+.wsh-aine-pricing-grid {
+	display: grid;
+	gap: 16px;
+	max-width: 1200px;
+}
+
+.wsh-aine-kpi-grid {
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	margin-top: 20px;
+}
+
+.wsh-aine-kpi-card,
+.wsh-aine-module-card,
+.wsh-aine-pricing-card,
+.wsh-aine-lock-screen,
+.wsh-aine-settings-summary,
+.wsh-aine-upsell-box {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 14px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.wsh-aine-kpi-card {
+	padding: 18px;
+}
+
+.wsh-aine-kpi-label {
+	font-size: 13px;
+	font-weight: 600;
+	color: #50575e;
+}
+
+.wsh-aine-kpi-value {
+	margin-top: 8px;
+	font-size: 28px;
+	font-weight: 700;
+	line-height: 1.1;
+}
+
+.wsh-aine-kpi-meta {
+	margin-top: 6px;
+	color: #646970;
+}
+
+.wsh-aine-module-grid,
+.wsh-aine-pricing-grid {
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.wsh-aine-module-card,
+.wsh-aine-pricing-card {
+	padding: 18px;
+}
+
+.wsh-aine-module-card p.desc {
+	display: inline-block;
+	min-height: 40px;
+}
+
+.wsh-aine-settings-card {
+	margin-top: 20px;
+	max-width: 1150px !important;
+
+}
+
+.wsh-aine-module-card__top,
+.wsh-aine-pricing-card__top,
+.wsh-aine-section-head,
+.wsh-aine-settings-summary__plan,
+.wsh-aine-upsell-box,
+.wsh-aine-lock-screen__meta,
+.wsh-aine-lock-screen__actions {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.wsh-aine-module-card__top h3,
+.wsh-aine-pricing-card h3 {
+	margin: 0;
+}
+
+.wsh-aine-module-card p,
+.wsh-aine-pricing-card p {
+	color: #50575e;
+}
+
+.wsh-aine-module-card__meta {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+	margin-top: 14px;
+	color: #646970;
+	font-size: 13px;
+}
+
+.wsh-aine-module-card__actions {
+	margin-top: 16px;
+}
+
+.wsh-aine-status-pill {
+	display: inline-flex;
+	align-items: center;
+	padding: 4px 10px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 700;
+}
+
+.wsh-aine-status-pill.is-available {
+	background: #ecf9f0;
+	color: #146c2e;
+}
+
+.wsh-aine-status-pill.is-locked {
+	background: #fff1f0;
+	color: #b42318;
+}
+
+.wsh-aine-lock-screen {
+	padding: 28px;
+	max-width: 760px;
+	margin-top: 20px;
+}
+
+.wsh-aine-lock-screen__badge {
+	display: inline-block;
+	padding: 6px 12px;
+	border-radius: 999px;
+	background: #f3e8ff;
+	color: #6b21a8;
+	font-weight: 700;
+	margin-bottom: 14px;
+}
+
+.wsh-aine-settings-summary {
+	padding: 16px;
+	margin-bottom: 14px;
+}
+
+.wsh-aine-settings-summary a.button-secondary {
+	margin-top: 10px;
+}
+
+.wsh-aine-inline-plan {
+	display: inline-flex;
+	align-items: center;
+	padding: 3px 8px;
+	border-radius: 999px;
+	font-size: 11px;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.wsh-aine-inline-plan--pro {
+	background: #f3e8ff;
+	color: #6b21a8;
+}
+
+.wsh-aine-inline-plan--agency {
+	background: #fff1db;
+	color: #9a3412;
+}
+
+.wsh-aine-settings-tab {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.wsh-aine-source-cap {
+	font-size: 12px;
+	font-weight: 700;
+	color: #50575e;
+}
+
+.wsh-aine-upsell-box {
+	padding: 14px 16px;
+	margin-bottom: 16px;
+	border-color: #d8b4fe;
+	background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+}
+
+.wsh-aine-upsell-box__title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-weight: 700;
+}
+
+.wsh-aine-upsell-box p {
+	margin: 10px 0 0;
+	color: #50575e;
+}
+
+.wsh-aine-inline-upgrade {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 10px 12px;
+	margin-bottom: 14px;
+	border-radius: 10px;
+	background: #f6f7f7;
+	font-size: 13px;
+}
+
+.wsh-aine-inline-upgrade a {
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.wsh-aine-pricing-card.is-current {
+	border-color: #2271b1;
+	box-shadow: 0 0 0 1px rgba(34, 113, 177, 0.15);
+}
+
+.wsh-aine-pricing-card ul {
+	margin: 14px 0 0 18px;
+}
+
+@media (max-width: 980px) {
+	.wsh-aine-plan-hero,
+	.wsh-aine-upsell-box,
+	.wsh-aine-section-head,
+	.wsh-aine-settings-summary__plan,
+	.wsh-aine-inline-upgrade,
+	.wsh-aine-lock-screen__meta,
+	.wsh-aine-lock-screen__actions {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+
+
+.wsh-aine-notice {
+    background: #fff;
+    border-left: 4px solid #0073aa;
+    padding: 16px;
+    margin: 20px 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.wsh-aine-notice-error {
+    border-color: #dc3232;
+}
+
+.wsh-aine-notice-warning {
+    border-color: #ffb900;
+}
+
+.wsh-aine-notice h3 {
+    margin: 0 0 8px;
+}
+
+.wsh-aine-notice p {
+    margin: 0 0 10px;
+}
+
+.wsh-aine-sports-filters {
+	margin-top: 20px;
+}
+
+.wsh-aine-sports-filters__row {
+	display: flex;
+	gap: 10px;
+	align-items: flex-end;
+	flex-wrap: wrap;
+}
+
+.wsh-aine-sports-filters__help {
+	display: block;
+	margin: 8px 0 0;
+	max-width: 720px;
+}
