@@ -724,6 +724,7 @@ function cubestheme_checkout_without_shipping()
 
 add_filter('woocommerce_cart_needs_shipping', 'cubestheme_checkout_without_shipping', 100);
 add_filter('woocommerce_cart_needs_shipping_address', 'cubestheme_checkout_without_shipping', 100);
+add_filter('woocommerce_cart_contains_subscriptions_needing_shipping', 'cubestheme_checkout_without_shipping', 100);
 
 function cubestheme_header_cart_count()
 {
