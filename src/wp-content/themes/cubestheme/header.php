@@ -81,7 +81,7 @@
 
                 <?php
                 $cubestheme_logged_in = is_user_logged_in();
-                $cubestheme_account_url = $cubestheme_logged_in ? cubestheme_account_url() : cubestheme_auth_page_url('login');
+                $cubestheme_account_url = $cubestheme_logged_in ? cubestheme_account_url() : cubestheme_auth_page_url('sign-in');
                 $cubestheme_cta_url = $cubestheme_logged_in ? cubestheme_account_url() : cubestheme_auth_page_url('register');
                 $cubestheme_cta_label = $cubestheme_logged_in ? __('Account', 'cubestheme') : __('Register', 'cubestheme');
                 ?>

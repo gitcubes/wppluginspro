@@ -13,7 +13,7 @@ $legal_url = cubestheme_legal_page_url();
             </p>
         </div>
 
-        <form method="post" action="<?php echo esc_url(cubestheme_auth_page_url('login')); ?>" class="box">
+        <form method="post" action="<?php echo esc_url(cubestheme_auth_page_url('sign-in')); ?>" class="box">
             <div class="content">
                 <?php if ($error !== '') : ?>
                     <p class="auth-notice is-error" role="alert"><?php echo esc_html($error); ?></p>

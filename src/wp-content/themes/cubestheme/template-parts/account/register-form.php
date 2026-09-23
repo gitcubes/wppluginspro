@@ -12,7 +12,7 @@ $legal_url = cubestheme_legal_page_url();
             <h1 class="lead-title"><?php esc_html_e('Create your account', 'cubestheme'); ?></h1>
             <p class="lead-description">
                 <?php esc_html_e('One account for all premium plugins, suites and support. Already have an account?', 'cubestheme'); ?>
-                <a href="<?php echo esc_url(cubestheme_auth_page_url('login')); ?>"><?php esc_html_e('Sign in here.', 'cubestheme'); ?></a>
+                <a href="<?php echo esc_url(cubestheme_auth_page_url('sign-in')); ?>"><?php esc_html_e('Sign in here.', 'cubestheme'); ?></a>
             </p>
         </div>
 

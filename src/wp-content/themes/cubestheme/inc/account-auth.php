@@ -44,7 +44,7 @@ function cubestheme_lost_password_url()
 function cubestheme_ensure_auth_pages()
 {
     $pages = array(
-        'login' => 'Login',
+        'sign-in' => 'Sign in',
         'register' => 'Register',
     );
 
@@ -62,13 +62,22 @@ function cubestheme_ensure_auth_pages()
             'post_content' => '',
         ));
     }
+
+    $hidden_admin_login = get_page_by_path('login');
+    if (
+        $hidden_admin_login instanceof WP_Post
+        && $hidden_admin_login->post_title === 'Login'
+        && trim($hidden_admin_login->post_content) === ''
+    ) {
+        wp_trash_post($hidden_admin_login->ID);
+    }
 }
 
 add_action('init', 'cubestheme_ensure_auth_pages');
 
 function cubestheme_redirect_auth_pages()
 {
-    if (is_user_logged_in() && (is_page('login') || is_page('register'))) {
+    if (is_user_logged_in() && (is_page('sign-in') || is_page('register'))) {
         wp_safe_redirect(cubestheme_account_url());
         exit;
     }
@@ -81,7 +90,7 @@ function cubestheme_redirect_auth_pages()
         return;
     }
 
-    wp_safe_redirect(cubestheme_auth_page_url('login'));
+    wp_safe_redirect(cubestheme_auth_page_url('sign-in'));
     exit;
 }
 
