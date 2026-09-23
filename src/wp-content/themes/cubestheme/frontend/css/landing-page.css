@@ -3000,6 +3000,9 @@ header .mobile-actions .cta-button {
 .landing-comparison-value svg {
   flex-shrink: 0;
 }
+.landing-comparison-value .market-comparison-icon--negative {
+  margin: 0;
+}
 .landing-comparison-value img {
   flex-shrink: 0;
   width: 18px;
