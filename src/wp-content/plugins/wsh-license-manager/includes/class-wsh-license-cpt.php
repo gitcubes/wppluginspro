@@ -91,9 +91,10 @@ class WSH_License_CPT
 		foreach ($columns as $key => $label) {
 			if ('title' === $key) {
 				$new['title'] = __('License Key', 'wsh-license-manager');
+				$new['wsh_plugin'] = __('Plugin', 'wsh-license-manager');
 				$new['wsh_site']   = __('Site', 'wsh-license-manager');
 				$new['wsh_status'] = __('Status', 'wsh-license-manager');
-				$new['wsh_expires'] = __('Expires', 'wsh-license-manager');
+				$new['wsh_expires'] = __('Subscription', 'wsh-license-manager');
 				$new['wsh_email']  = __('Customer email', 'wsh-license-manager');
 			} else {
 				$new[$key] = $label;
@@ -102,9 +103,10 @@ class WSH_License_CPT
 
 		// If for some reason title wasn't present, ensure our columns exist.
 		if (! isset($new['wsh_site'])) {
+			$new['wsh_plugin']  = __('Plugin', 'wsh-license-manager');
 			$new['wsh_site']    = __('Site', 'wsh-license-manager');
 			$new['wsh_status']  = __('Status', 'wsh-license-manager');
-			$new['wsh_expires'] = __('Expires', 'wsh-license-manager');
+			$new['wsh_expires'] = __('Subscription', 'wsh-license-manager');
 			$new['wsh_email']   = __('Customer email', 'wsh-license-manager');
 		}
 
@@ -118,6 +120,17 @@ class WSH_License_CPT
 	{
 
 		switch ($column) {
+
+			case 'wsh_plugin':
+				$product_id = (int) get_post_meta($post_id, 'wsh_product_id', true);
+				$label = self::plugin_label($post_id);
+				$edit_url = $product_id > 0 ? get_edit_post_link($product_id) : '';
+				if ($edit_url) {
+					echo '<a href="' . esc_url($edit_url) . '">' . esc_html($label) . '</a>';
+				} else {
+					echo esc_html($label);
+				}
+				break;
 
 			case 'wsh_site':
 				$site = (string) get_post_meta($post_id, 'wsh_site_url', true);
@@ -143,8 +156,7 @@ class WSH_License_CPT
 				break;
 
 			case 'wsh_expires':
-				$expires = (string) get_post_meta($post_id, 'wsh_expires_at', true);
-				echo $expires !== '' ? esc_html($expires) : '—';
+				echo esc_html(self::subscription_expires_label($post_id));
 				break;
 
 			case 'wsh_email':
@@ -168,6 +180,65 @@ class WSH_License_CPT
 		$columns['wsh_email']   = 'wsh_customer_email';
 		$columns['wsh_site']    = 'wsh_site_url';
 		return $columns;
+	}
+
+	private static function plugin_label($post_id)
+	{
+		$group = (string) get_post_meta($post_id, 'wsh_license_group', true);
+		$groups = array(
+			'news'      => __('News Suite', 'wsh-license-manager'),
+			'ecommerce' => __('Ecommerce Suite', 'wsh-license-manager'),
+			'all'       => __('All-Access', 'wsh-license-manager'),
+		);
+
+		if (isset($groups[$group])) {
+			return $groups[$group];
+		}
+
+		$product_id = (int) get_post_meta($post_id, 'wsh_product_id', true);
+		if ($product_id > 0) {
+			$title = get_the_title($product_id);
+			if ($title !== '') {
+				return $title;
+			}
+		}
+
+		$slug = (string) get_post_meta($post_id, 'wsh_product_slug', true);
+
+		return $slug !== '' ? $slug : '—';
+	}
+
+	private static function subscription_expires_label($post_id)
+	{
+		$subscription_id = (int) get_post_meta($post_id, 'wsh_subscription_id', true);
+
+		if ($subscription_id > 0 && function_exists('wcs_get_subscription')) {
+			$subscription = wcs_get_subscription($subscription_id);
+
+			if ($subscription instanceof WC_Subscription) {
+				$end = (string) $subscription->get_date('end');
+				if ($end !== '' && $end !== '0') {
+					return date_i18n(get_option('date_format'), strtotime($end));
+				}
+
+				$next = (string) $subscription->get_date('next_payment');
+				if ($next !== '' && $next !== '0') {
+					return sprintf(
+						__('Renews %s', 'wsh-license-manager'),
+						date_i18n(get_option('date_format'), strtotime($next))
+					);
+				}
+			}
+		}
+
+		$stored = (string) get_post_meta($post_id, 'wsh_expires_at', true);
+		if ($stored !== '') {
+			$timestamp = strtotime($stored);
+
+			return $timestamp ? date_i18n(get_option('date_format'), $timestamp) : $stored;
+		}
+
+		return '—';
 	}
 
 	/**
