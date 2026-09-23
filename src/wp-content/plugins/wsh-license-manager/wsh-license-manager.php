@@ -62,52 +62,8 @@ add_action('admin_init', function () {
 	}
 });
 
-// Add "Site URL" field to the checkout billing section.
-add_filter( 'woocommerce_checkout_fields', function ( $fields ) {
-
-	$fields['billing']['billing_wsh_site_url'] = array(
-		'type'        => 'text',
-		'label'       => __( 'Site URL for license', 'wsh-license-manager' ),
-		'placeholder' => __( 'https://example.com', 'wsh-license-manager' ),
-		'required'    => true,
-		'class'       => array( 'form-row-wide' ),
-		'priority'    => 120,
-	);
-
-	return $fields;
-} );
-
-// Validate "Site URL" field.
-add_action( 'woocommerce_checkout_process', function () {
-	$raw = isset($_POST['billing_wsh_site_url']) ? wp_unslash($_POST['billing_wsh_site_url']) : '';
-	$normalized = WSH_License_Utils::normalize_site($raw);
-
-	if ( $normalized === '' ) {
-		wc_add_notice( __( 'Please enter a valid site URL for your license.', 'wsh-license-manager' ), 'error' );
-	}
-} );
-
-/*
-add_action( 'woocommerce_checkout_process', function () {
-	if ( empty( $_POST['billing_wsh_site_url'] ) ) {
-		wc_add_notice( __( 'Please enter the site URL for your license.', 'wsh-license-manager' ), 'error' );
-	}
-} );
- */
-
-add_action( 'woocommerce_checkout_update_order_meta', function ( $order_id ) {
-
-	if ( ! isset($_POST['billing_wsh_site_url']) ) {
-		return;
-	}
-
-	$raw = wp_unslash($_POST['billing_wsh_site_url']);
-	$normalized = WSH_License_Utils::normalize_site($raw);
-
-	if ( $normalized !== '' ) {
-		update_post_meta( $order_id, '_billing_wsh_site_url', $normalized );
-	}
-} );
+// The site is chosen later, when the customer activates the plugin.
+// Checkout only collects billing details.
 
 
 

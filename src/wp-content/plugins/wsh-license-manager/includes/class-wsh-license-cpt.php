@@ -133,8 +133,18 @@ class WSH_License_CPT
 				break;
 
 			case 'wsh_site':
-				$site = (string) get_post_meta($post_id, 'wsh_site_url', true);
-				echo $site !== '' ? '<code>' . esc_html($site) . '</code>' : '—';
+				$sites = WSH_License_Utils::activated_sites($post_id);
+				$limit = WSH_License_Utils::max_sites($post_id);
+				$limit_label = 0 === $limit ? __('unlimited', 'wsh-license-manager') : (string) $limit;
+				if (! $sites) {
+					echo '—';
+				} else {
+					echo '<code>' . esc_html($sites[0]) . '</code>';
+					if (count($sites) > 1) {
+						echo ' +' . (int) (count($sites) - 1);
+					}
+				}
+				echo '<br><span class="wsh-lic-muted">' . esc_html(count($sites) . ' / ' . $limit_label) . '</span>';
 				break;
 
 			case 'wsh_status':
@@ -338,7 +348,8 @@ class WSH_License_CPT
 		$license_key      = (string) get_post_meta($license_id, 'wsh_license_key', true);
 		$status           = (string) get_post_meta($license_id, 'wsh_status', true);
 		$expires_at       = (string) get_post_meta($license_id, 'wsh_expires_at', true);
-		$site_url         = (string) get_post_meta($license_id, 'wsh_site_url', true);
+		$sites            = WSH_License_Utils::activated_sites($license_id);
+		$max_sites        = WSH_License_Utils::max_sites($license_id);
 		$customer_email   = (string) get_post_meta($license_id, 'wsh_customer_email', true);
 		$product_id       = (int)    get_post_meta($license_id, 'wsh_product_id', true);
 		$product_slug     = (string) get_post_meta($license_id, 'wsh_product_slug', true);
@@ -368,7 +379,7 @@ class WSH_License_CPT
 		// Pretty formatting
 		$status     = $status !== '' ? $status : '—';
 		$expires_at = $expires_at !== '' ? $expires_at : '—';
-		$site_url   = $site_url !== '' ? $site_url : '—';
+		$site_limit_label = 0 === $max_sites ? __('unlimited', 'wsh-license-manager') : (string) $max_sites;
 		$customer_email = $customer_email !== '' ? $customer_email : '—';
 		$product_slug   = $product_slug !== '' ? $product_slug : '—';
 		$license_key    = $license_key !== '' ? $license_key : $post->post_title;
@@ -409,8 +420,19 @@ class WSH_License_CPT
 			<div><strong><?php esc_html_e('Status', 'wsh-license-manager'); ?></strong></div>
 			<div><code><?php echo esc_html($status); ?></code></div>
 
-			<div><strong><?php esc_html_e('Bound Site', 'wsh-license-manager'); ?></strong></div>
-			<div><code><?php echo esc_html($site_url); ?></code></div>
+			<div><strong><?php esc_html_e('Activated sites', 'wsh-license-manager'); ?></strong></div>
+			<div>
+				<?php if ($sites) : ?>
+					<?php foreach ($sites as $site) : ?>
+						<code><?php echo esc_html($site); ?></code><br>
+					<?php endforeach; ?>
+				<?php else : ?>
+					—
+				<?php endif; ?>
+				<div class="wsh-lic-muted">
+					<?php echo esc_html(sprintf(__('%1$d of %2$s slots used. Sites are added when the plugin is activated.', 'wsh-license-manager'), count($sites), $site_limit_label)); ?>
+				</div>
+			</div>
 
 			<div><strong><?php esc_html_e('Customer Email', 'wsh-license-manager'); ?></strong></div>
 			<div>
@@ -466,18 +488,19 @@ class WSH_License_CPT
 			<hr />
 
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
-				onsubmit="return confirm('Reset bound site for this license? The customer will be able to activate on a new site.');">
+				onsubmit="return confirm('Clear every activated site on this license? The customer can activate again, up to the slot limit.');">
 
 				<input type="hidden" name="action" value="wsh_reset_site" />
+				<input type="hidden" name="wsh_reset_site" value="1" />
 				<input type="hidden" name="post_ID" value="<?php echo (int) $license_id; ?>" />
 				<?php wp_nonce_field( 'wsh_reset_site_' . $license_id, '_wsh_reset_nonce' ); ?>
 
 				<p>
 					<button type="submit" class="button button-secondary">
-						<?php esc_html_e( 'Reset bound site', 'wsh-license-manager' ); ?>
+						<?php esc_html_e( 'Clear activated sites', 'wsh-license-manager' ); ?>
 					</button>
 					<span class="description">
-						<?php esc_html_e( 'Unbinds the current site. License remains active.', 'wsh-license-manager' ); ?>
+						<?php esc_html_e( 'Frees every slot. The license key and the slot limit stay.', 'wsh-license-manager' ); ?>
 					</span>
 				</p>
 			</form>
@@ -525,8 +548,8 @@ class WSH_License_CPT
 			return;
 		}
 
-		// Unbind site
 		delete_post_meta($license_id, 'wsh_site_url');
+		delete_post_meta($license_id, 'wsh_sites');
 		delete_post_meta($license_id, 'wsh_last_activation');
 
 		// Optional: log reset time

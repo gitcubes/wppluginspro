@@ -133,93 +133,60 @@ class WSH_License_API
 			return self::build_response(false, 'invalid', 'License key not found.');
 		}
 
-		$status     = get_post_meta($license_id, 'wsh_status', true);
-		$expires_at = get_post_meta($license_id, 'wsh_expires_at', true);
-		$product    = get_post_meta($license_id, 'wsh_product_slug', true);
-
-		/*
-		// Normalize requested site URL.
-		$req_site = untrailingslashit(strtolower($site_url));
-
-		// Site URL stored with the license (bound site).
-		$license_site = get_post_meta($license_id, 'wsh_site_url', true);
-		$license_site = $license_site ? untrailingslashit(strtolower($license_site)) : '';
-		*/
-		// Normalize requested site URL.
 		$req_site = WSH_License_Utils::normalize_site($site_url);
 		if ('' === $req_site) {
 			return self::build_response(false, 'invalid', 'Invalid site URL.');
 		}
 
-		// Site URL stored with the license (bound site).
-		$license_site = get_post_meta($license_id, 'wsh_site_url', true);
-		$license_site = $license_site ? WSH_License_Utils::normalize_site($license_site) : '';
-
-
-		// Ensure the license belongs to this product.
-		if (empty($product) || $product !== $plugin_slug) {
-			return self::build_response(false, 'invalid', 'License key does not match this product.');
+		$blocked = self::guard_license($license_id, $plugin_slug);
+		if ($blocked instanceof WP_REST_Response) {
+			return $blocked;
 		}
 
-		// License disabled by admin.
-		if ('disabled' === $status) {
-			return self::build_response(false, 'disabled', 'License is disabled.');
-		}
+		$expires_at = (string) get_post_meta($license_id, 'wsh_expires_at', true);
+		$sites      = WSH_License_Utils::activated_sites($license_id);
 
-		// Check expiry (if expiry is set).
-		if (! empty($expires_at)) {
-			$now = current_time('Y-m-d');
-			if ($now > $expires_at) {
-				update_post_meta($license_id, 'wsh_status', 'expired');
-				return self::build_response(false, 'expired', 'License has expired.', $expires_at);
+		if (in_array($req_site, $sites, true) || WSH_License_Utils::is_staging_site($req_site)) {
+			self::mark_activated($license_id);
+			$extra = self::usage_extra($license_id, $req_site);
+			if (! in_array($req_site, $sites, true)) {
+				$extra['staging'] = true;
 			}
+
+			return self::build_response(true, 'valid', 'License activated successfully.', $expires_at, $extra);
 		}
 
-		/**
-		 * Single-site binding logic.
-		 *
-		 * Scenario A: license already has a bound site (normal case)
-		 *   - if it matches requested site -> OK
-		 *   - if it does not match -> error (wrong_site)
-		 *
-		 * Scenario B: license has no site stored (fallback)
-		 *   - first activation will bind the license to requested site.
-		 */
-
-		if (! empty($license_site)) {
-			// License is already bound to a specific site.
-			if ($license_site !== $req_site) {
+		$limit = WSH_License_Utils::max_sites($license_id);
+		if (0 !== $limit && count($sites) >= $limit) {
+			if (1 === $limit && 1 === count($sites)) {
 				return self::build_response(
 					false,
 					'wrong_site',
 					'This license is bound to a different site URL.',
-					$expires_at
+					$expires_at,
+					self::usage_extra($license_id, $sites[0])
 				);
 			}
-		} else {
-			// No site stored yet – bind license to this site on first successful activation.
-			update_post_meta($license_id, 'wsh_site_url', $req_site);
-			$license_site = $req_site;
+
+			return self::build_response(
+				false,
+				'site_limit',
+				'This license has no free site slots left.',
+				$expires_at,
+				self::usage_extra($license_id)
+			);
 		}
 
-		// At this point, the license is valid for this site.
-		// Ensure status is active.
-		update_post_meta($license_id, 'wsh_status', 'active');
-
-		// Optionally, you can store activation timestamp for stats/logging.
-		update_post_meta($license_id, 'wsh_last_activation', current_time('mysql'));
+		$sites[] = $req_site;
+		WSH_License_Utils::save_activated_sites($license_id, $sites);
+		self::mark_activated($license_id);
 
 		return self::build_response(
 			true,
 			'valid',
 			'License activated successfully.',
 			$expires_at,
-			array(
-				// For single-site model: 1 site, always used = 1.
-				'license_limit' => 1,
-				'license_used'  => 1,
-				'bound_site'    => $license_site,
-			)
+			self::usage_extra($license_id, $req_site)
 		);
 	}
 
@@ -244,85 +211,53 @@ class WSH_License_API
 			return self::build_response(false, 'invalid', 'License key not found.');
 		}
 
-		$status      = get_post_meta($license_id, 'wsh_status', true);
-		$expires_at  = get_post_meta($license_id, 'wsh_expires_at', true);
-		$product     = get_post_meta($license_id, 'wsh_product_slug', true);
-		$license_site = get_post_meta($license_id, 'wsh_site_url', true);
-
-		// Normalize URLs.
-		//$req_site     = untrailingslashit(strtolower($site_url));
-		//$license_site = $license_site ? untrailingslashit(strtolower($license_site)) : '';
 		$req_site = WSH_License_Utils::normalize_site($site_url);
 		if ('' === $req_site) {
 			return self::build_response(false, 'invalid', 'Invalid site URL.');
 		}
 
-		$license_site = $license_site ? WSH_License_Utils::normalize_site($license_site) : '';
-
-		// Ensure the license belongs to this product.
-		if (empty($product) || $product !== $plugin_slug) {
-			return self::build_response(false, 'invalid', 'License key does not match this product.');
+		$blocked = self::guard_license($license_id, $plugin_slug);
+		if ($blocked instanceof WP_REST_Response) {
+			return $blocked;
 		}
 
-		// License disabled by admin.
-		if ('disabled' === $status) {
-			return self::build_response(false, 'disabled', 'License is disabled.', $expires_at);
-		}
+		$expires_at = (string) get_post_meta($license_id, 'wsh_expires_at', true);
+		$sites      = WSH_License_Utils::activated_sites($license_id);
 
-		// Check expiry (if expiry is set).
-		if (! empty($expires_at)) {
-			$now = current_time('Y-m-d');
-			if ($now > $expires_at) {
-				update_post_meta($license_id, 'wsh_status', 'expired');
-				return self::build_response(false, 'expired', 'License has expired.', $expires_at);
-			}
-		}
-
-		/**
-		 * Single-site binding verification.
-		 *
-		 * If no site is stored, we consider that the license was never
-		 * properly activated for any site.
-		 */
-		if (empty($license_site)) {
+		if (in_array($req_site, $sites, true)) {
 			return self::build_response(
-				false,
-				'not_activated',
-				'License not activated for this site.',
+				true,
+				'valid',
+				'License is valid.',
 				$expires_at,
-				array(
-					'license_limit' => 1,
-					'license_used'  => 0,
-				)
+				self::usage_extra($license_id, $req_site)
 			);
 		}
 
-		// License is bound to a specific site - must match the requested one.
-		if ($license_site !== $req_site) {
+		$staging_ready = $sites || (string) get_post_meta($license_id, 'wsh_last_activation', true) !== '';
+		if (WSH_License_Utils::is_staging_site($req_site) && $staging_ready) {
+			$extra = self::usage_extra($license_id, $req_site);
+			$extra['staging'] = true;
+
+			return self::build_response(true, 'valid', 'License is valid.', $expires_at, $extra);
+		}
+
+		if ($sites && 1 === WSH_License_Utils::max_sites($license_id) && 1 === count($sites)) {
 			return self::build_response(
 				false,
 				'wrong_site',
 				'This license is bound to a different site URL.',
 				$expires_at,
-				array(
-					'license_limit' => 1,
-					'license_used'  => 1,
-					'bound_site'    => $license_site,
-				)
+				self::usage_extra($license_id, $sites[0])
 			);
 		}
 
-		// All good: license is valid for this site.
 		return self::build_response(
-			true,
-			'valid',
-			'License is valid.',
+			false,
+			'not_activated',
+			'License not activated for this site.',
 			$expires_at,
-			array(
-				'license_limit' => 1,
-				'license_used'  => 1,
-				'bound_site'    => $license_site,
-			)
+			self::usage_extra($license_id)
 		);
 	}
 
@@ -388,11 +323,7 @@ class WSH_License_API
 			return self::build_response(false, 'invalid', 'License key not found.');
 		}
 
-		$expires_at   = get_post_meta($license_id, 'wsh_expires_at', true);
-		$product_slug = get_post_meta($license_id, 'wsh_product_slug', true);
-
-		// Opcionalno: striktno proveri product.
-		if ('' !== $plugin_slug && $product_slug && $product_slug !== $plugin_slug) {
+		if (! self::license_covers_plugin($license_id, $plugin_slug)) {
 			return self::build_response(false, 'invalid', 'License key does not match this product.');
 		}
 
@@ -401,38 +332,27 @@ class WSH_License_API
 			return self::build_response(false, 'invalid', 'Invalid site URL.');
 		}
 
-		$license_site = get_post_meta($license_id, 'wsh_site_url', true);
-		$license_site = $license_site ? WSH_License_Utils::normalize_site($license_site) : '';
+		$expires_at = (string) get_post_meta($license_id, 'wsh_expires_at', true);
+		$sites      = WSH_License_Utils::activated_sites($license_id);
 
-		if (empty($license_site)) {
+		if (! in_array($req_site, $sites, true)) {
 			return self::build_response(
 				true,
 				'deactivated',
-				'License was not bound to any site (nothing to deactivate).',
+				'License was not bound to this site.',
 				$expires_at,
-				array(
-					'license_limit' => 1,
-					'license_used'  => 0,
-				)
+				self::usage_extra($license_id)
 			);
 		}
 
-		if ($license_site !== $req_site) {
-			return self::build_response(
-				false,
-				'wrong_site',
-				'This license is bound to a different site URL.',
-				$expires_at,
-				array(
-					'license_limit' => 1,
-					'license_used'  => 1,
-					'bound_site'    => $license_site,
-				)
-			);
+		$remaining = array();
+		foreach ($sites as $site) {
+			if ($site !== $req_site) {
+				$remaining[] = $site;
+			}
 		}
 
-		// Unbind
-		delete_post_meta($license_id, 'wsh_site_url');
+		WSH_License_Utils::save_activated_sites($license_id, $remaining);
 		update_post_meta($license_id, 'wsh_last_deactivation', current_time('mysql'));
 
 		return self::build_response(
@@ -440,10 +360,7 @@ class WSH_License_API
 			'deactivated',
 			'License deactivated for this site.',
 			$expires_at,
-			array(
-				'license_limit' => 1,
-				'license_used'  => 0,
-			)
+			self::usage_extra($license_id)
 		);
 	}
 
@@ -514,5 +431,96 @@ class WSH_License_API
 		}
 
 		return true;
+	}
+
+	/**
+	 * Reject a license that is disabled, expired, or for another plugin.
+	 *
+	 * @param int    $license_id  License post ID.
+	 * @param string $plugin_slug Plugin slug sent by the client.
+	 * @return WP_REST_Response|null
+	 */
+	protected static function guard_license($license_id, $plugin_slug)
+	{
+		if (! self::license_covers_plugin($license_id, $plugin_slug)) {
+			return self::build_response(false, 'invalid', 'License key does not match this product.');
+		}
+
+		$status     = (string) get_post_meta($license_id, 'wsh_status', true);
+		$expires_at = (string) get_post_meta($license_id, 'wsh_expires_at', true);
+
+		if ('disabled' === $status) {
+			return self::build_response(false, 'disabled', 'License is disabled.', $expires_at);
+		}
+
+		if ('' !== $expires_at && current_time('Y-m-d') > $expires_at) {
+			update_post_meta($license_id, 'wsh_status', 'expired');
+			return self::build_response(false, 'expired', 'License has expired.', $expires_at);
+		}
+
+		return null;
+	}
+
+	/**
+	 * A single-plugin key matches its slug. A suite key matches every plugin in that family.
+	 *
+	 * @param int    $license_id  License post ID.
+	 * @param string $plugin_slug Plugin slug sent by the client.
+	 * @return bool
+	 */
+	protected static function license_covers_plugin($license_id, $plugin_slug)
+	{
+		$product_slug = (string) get_post_meta($license_id, 'wsh_product_slug', true);
+		$group        = (string) get_post_meta($license_id, 'wsh_license_group', true);
+
+		if ('' === $group) {
+			return '' !== $product_slug && $product_slug === $plugin_slug;
+		}
+
+		if (! class_exists('WSH_Plugin_Catalog')) {
+			return '' !== $product_slug && $product_slug === $plugin_slug;
+		}
+
+		$product = WSH_Plugin_Catalog::find_by_slug($plugin_slug);
+		if (! $product instanceof WP_Post) {
+			return false;
+		}
+
+		if ('all' === $group) {
+			return true;
+		}
+
+		$family = (string) get_post_meta($product->ID, 'wsh_plugin_family', true);
+
+		return '' !== $family && $family === $group;
+	}
+
+	protected static function mark_activated($license_id)
+	{
+		update_post_meta($license_id, 'wsh_status', 'active');
+		update_post_meta($license_id, 'wsh_last_activation', current_time('mysql'));
+	}
+
+	/**
+	 * @param int    $license_id License post ID.
+	 * @param string $bound_site Site this response is about.
+	 * @return array
+	 */
+	protected static function usage_extra($license_id, $bound_site = '')
+	{
+		$sites = WSH_License_Utils::activated_sites($license_id);
+		$extra = array(
+			'license_limit' => WSH_License_Utils::max_sites($license_id),
+			'license_used'  => count($sites),
+			'sites'         => $sites,
+		);
+
+		if ('' !== $bound_site) {
+			$extra['bound_site'] = $bound_site;
+		} elseif ($sites) {
+			$extra['bound_site'] = $sites[0];
+		}
+
+		return $extra;
 	}
 }

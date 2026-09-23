@@ -104,4 +104,124 @@ class WSH_License_Utils {
 	public static function normalize_current_site() {
 		return self::normalize_site( home_url() );
 	}
+
+	/**
+	 * Sites already stored on a license.
+	 *
+	 * Older licenses only have wsh_site_url. That host stays the first slot
+	 * and is not rewritten until the customer activates or deactivates.
+	 *
+	 * @param int $license_id License post ID.
+	 * @return string[]
+	 */
+	public static function activated_sites( $license_id ) {
+		$sites  = array();
+		$stored = get_post_meta( $license_id, 'wsh_sites', true );
+
+		if ( is_array( $stored ) ) {
+			foreach ( $stored as $site ) {
+				$site = self::normalize_site( $site );
+				if ( '' !== $site && ! in_array( $site, $sites, true ) ) {
+					$sites[] = $site;
+				}
+			}
+		}
+
+		$legacy = self::normalize_site( (string) get_post_meta( $license_id, 'wsh_site_url', true ) );
+		if ( '' !== $legacy && ! in_array( $legacy, $sites, true ) ) {
+			array_unshift( $sites, $legacy );
+		}
+
+		return $sites;
+	}
+
+	/**
+	 * Persist the activation list and keep wsh_site_url as the first site.
+	 *
+	 * @param int      $license_id License post ID.
+	 * @param string[] $sites      Normalized hosts.
+	 */
+	public static function save_activated_sites( $license_id, array $sites ) {
+		$clean = array();
+
+		foreach ( $sites as $site ) {
+			$site = self::normalize_site( $site );
+			if ( '' === $site || self::is_staging_site( $site ) || in_array( $site, $clean, true ) ) {
+				continue;
+			}
+			$clean[] = $site;
+		}
+
+		update_post_meta( $license_id, 'wsh_sites', $clean );
+
+		if ( $clean ) {
+			update_post_meta( $license_id, 'wsh_site_url', $clean[0] );
+		} else {
+			delete_post_meta( $license_id, 'wsh_site_url' );
+		}
+	}
+
+	/**
+	 * Slot count for a license. A missing value stays 1 so older keys
+	 * do not become unlimited. Stored 0 means unlimited.
+	 *
+	 * @param int $license_id License post ID.
+	 * @return int
+	 */
+	public static function max_sites( $license_id ) {
+		$raw = get_post_meta( $license_id, 'wsh_max_sites', true );
+		if ( '' === $raw || false === $raw || null === $raw ) {
+			return 1;
+		}
+
+		return max( 0, (int) $raw );
+	}
+
+	/**
+	 * Staging, local and platform preview hosts do not use a license slot.
+	 *
+	 * @param string $site Normalized host.
+	 * @return bool
+	 */
+	public static function is_staging_site( $site ) {
+		$site = self::normalize_site( $site );
+		if ( '' === $site ) {
+			return false;
+		}
+
+		if ( in_array( $site, array( 'localhost', '127.0.0.1', '::1' ), true ) ) {
+			return true;
+		}
+
+		foreach ( array( '.local', '.test', '.localhost', '.invalid' ) as $suffix ) {
+			$len = strlen( $suffix );
+			if ( strlen( $site ) > $len && substr( $site, -$len ) === $suffix ) {
+				return true;
+			}
+		}
+
+		$labels = array( 'staging', 'stage', 'dev', 'development', 'test', 'testing', 'local' );
+		foreach ( explode( '.', $site ) as $label ) {
+			if ( in_array( $label, $labels, true ) ) {
+				return true;
+			}
+		}
+
+		$platforms = array(
+			'.mystagingwebsite.com',
+			'.kinsta.cloud',
+			'.flywheelstaging.com',
+			'.wpcomstaging.com',
+			'.cloudwaysapps.com',
+			'.wpstage.net',
+		);
+		foreach ( $platforms as $suffix ) {
+			$len = strlen( $suffix );
+			if ( strlen( $site ) > $len && substr( $site, -$len ) === $suffix ) {
+				return true;
+			}
+		}
+
+		return (bool) apply_filters( 'wsh_license_is_staging_site', false, $site );
+	}
 }

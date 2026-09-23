@@ -32,16 +32,8 @@ class WSH_License_WooCommerce
 		$subscription_id = $subscription->get_id();
 		$customer_email  = $subscription->get_billing_email();
 
-		// Try to read site URL from subscription meta.
-		// First from our own key (if we ikada budemo upisivali), then from billing field.
-		$site_url = $subscription->get_meta('_wsh_site_url', true);
-
-		if (empty($site_url)) {
-			$site_url = $subscription->get_meta('_billing_wsh_site_url', true);
-		}
-
-		// Normalize to canonical host (no www, lowercase, etc.)
-		$site_url = WSH_License_Utils::normalize_site($site_url);
+		// Sites are attached when the plugin is activated, not at checkout.
+		// A license that already exists is left untouched, including its bound site.
 
 		// Loop through subscription items and generate license for each item.
 		foreach ($subscription->get_items('line_item') as $item_id => $item) {
@@ -78,7 +70,6 @@ class WSH_License_WooCommerce
 				$plugin_slug,
 				$max_sites,
 				$customer_email,
-				$site_url,
 				$license_group
 			);
 		}
@@ -157,7 +148,7 @@ class WSH_License_WooCommerce
 		return (int) $raw;
 	}
 
-	protected static function maybe_create_license($subscription, $subscription_id, $product_id, $plugin_slug, $max_sites, $customer_email, $site_url, $license_group = '')
+	protected static function maybe_create_license($subscription, $subscription_id, $product_id, $plugin_slug, $max_sites, $customer_email, $license_group = '')
 	{
 
 		// Check if license already exists for this subscription + product.
@@ -209,11 +200,6 @@ class WSH_License_WooCommerce
 			update_post_meta($license_id, 'wsh_customer_email', $customer_email);
 			update_post_meta($license_id, 'wsh_status', 'active');
 
-			// Store the site URL this license is bound to.
-			if (! empty($site_url)) {
-				update_post_meta($license_id, 'wsh_site_url', $site_url);
-			}
-
 			// Optional: set expiry date based on subscription end date (if available).
 			if ($subscription instanceof WC_Subscription) {
 				$end_date = $subscription->get_date('end');
@@ -227,7 +213,8 @@ class WSH_License_WooCommerce
 }
 
 
-// Copy site URL from order (billing field) to subscription meta.
+// Older orders may still carry a site URL. Keep it on the subscription for support.
+// New licenses do not copy it; the customer activates sites from the plugin.
 add_action('wcs_checkout_subscription_created', function ($subscription, $order) {
 
 	if (! $subscription instanceof WC_Subscription || ! $order instanceof WC_Order) {
