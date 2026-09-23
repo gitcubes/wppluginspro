@@ -84,8 +84,15 @@
                 $cubestheme_account_url = $cubestheme_logged_in ? cubestheme_account_url() : cubestheme_auth_page_url('sign-in');
                 $cubestheme_cta_url = $cubestheme_logged_in ? cubestheme_account_url() : cubestheme_auth_page_url('register');
                 $cubestheme_cta_label = $cubestheme_logged_in ? __('Account', 'cubestheme') : __('Register', 'cubestheme');
+                $cubestheme_checkout_url = function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/');
                 ?>
                 <div class="header-actions">
+                    <a href="<?php echo esc_url($cubestheme_checkout_url); ?>" class="icon-button" aria-label="<?php esc_attr_e('Checkout', 'cubestheme'); ?>">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M6.5 8h11l-.8 11.2a1 1 0 0 1-1 .8H8.3a1 1 0 0 1-1-.8L6.5 8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                            <path d="M9 8V7a3 3 0 0 1 6 0v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </a>
                     <a href="<?php echo esc_url($cubestheme_account_url); ?>" class="icon-button" aria-label="<?php echo esc_attr($cubestheme_logged_in ? __('Your account', 'cubestheme') : __('Sign in', 'cubestheme')); ?>">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                             <path d="M19 20a7 7 0 0 0-14 0" stroke="currentColor" stroke-width="2"
@@ -112,6 +119,12 @@
                             'submenu_link_class' => 'mobile-link',
                         )); ?>
                         <div class="mobile-actions">
+                            <a href="<?php echo esc_url($cubestheme_checkout_url); ?>" class="icon-button" aria-label="<?php esc_attr_e('Checkout', 'cubestheme'); ?>">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M6.5 8h11l-.8 11.2a1 1 0 0 1-1 .8H8.3a1 1 0 0 1-1-.8L6.5 8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                                    <path d="M9 8V7a3 3 0 0 1 6 0v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                </svg>
+                            </a>
                             <a href="<?php echo esc_url($cubestheme_account_url); ?>" class="icon-button" aria-label="<?php echo esc_attr($cubestheme_logged_in ? __('Your account', 'cubestheme') : __('Sign in', 'cubestheme')); ?>">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                     <path d="M19 20a7 7 0 0 0-14 0" stroke="currentColor" stroke-width="2"
