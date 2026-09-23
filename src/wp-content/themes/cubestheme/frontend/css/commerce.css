@@ -230,6 +230,24 @@
   cursor: pointer;
 }
 
+.static-page.commerce-page ul.products li.product a.added_to_cart {
+  display: block;
+  margin: 10px 12px 0;
+  color: #034dd3;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  line-height: 1.3;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.static-page.commerce-page ul.products li.product a.added_to_cart:hover {
+  color: #186fff;
+}
+
 .commerce-page ul.products li.product .button:hover,
 .commerce-page div.product form.cart .button:hover,
 .commerce-page .checkout-button:hover,

@@ -16,7 +16,7 @@ if (!defined('_S_VERSION')) {
 
 function themeVersion()
 {
-    return  '1.0.5';
+    return  '1.0.6';
 }
 
 // INCLUDE FILES
@@ -29,6 +29,7 @@ function cubestheme_scripts()
     wp_enqueue_script('lottie', get_template_directory_uri() . '/frontend/js/lottie-player.js', array(), '1.19.1', true);
     wp_enqueue_script('fancybox', get_template_directory_uri() . '/frontend/js/jquery.fancybox.min.js', array('jquerymin'), '3.3.5', true);
     wp_enqueue_script('main', get_template_directory_uri() . '/frontend/js/main.js', array('jquerymin'), '1.0', true);
+    wp_enqueue_style('header-cart', get_template_directory_uri() . '/frontend/css/header-cart.css', array(), themeVersion());
 }
 
 add_action('wp_enqueue_scripts', 'cubestheme_scripts');
@@ -647,3 +648,43 @@ function cubestheme_checkout_order_close()
 
 add_action('woocommerce_checkout_before_order_review_heading', 'cubestheme_checkout_order_open', 1);
 add_action('woocommerce_checkout_after_order_review', 'cubestheme_checkout_order_close', 99);
+
+function cubestheme_header_cart_count()
+{
+    if (!function_exists('WC') || !WC()->cart) {
+        return 0;
+    }
+
+    return (int) WC()->cart->get_cart_contents_count();
+}
+
+function cubestheme_header_cart_link()
+{
+    $count = cubestheme_header_cart_count();
+    $url = function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/');
+    $label = $count > 0
+        ? sprintf(_n('Checkout, %d item', 'Checkout, %d items', $count, 'cubestheme'), $count)
+        : __('Checkout', 'cubestheme');
+    ?>
+    <a href="<?php echo esc_url($url); ?>" class="icon-button header-cart" aria-label="<?php echo esc_attr($label); ?>">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6.5 8h11l-.8 11.2a1 1 0 0 1-1 .8H8.3a1 1 0 0 1-1-.8L6.5 8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+            <path d="M9 8V7a3 3 0 0 1 6 0v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <?php if ($count > 0) : ?>
+            <span class="header-cart-count"><?php echo esc_html($count); ?></span>
+        <?php endif; ?>
+    </a>
+    <?php
+}
+
+function cubestheme_header_cart_fragment($fragments)
+{
+    ob_start();
+    cubestheme_header_cart_link();
+    $fragments['a.header-cart'] = trim(ob_get_clean());
+
+    return $fragments;
+}
+
+add_filter('woocommerce_add_to_cart_fragments', 'cubestheme_header_cart_fragment');
