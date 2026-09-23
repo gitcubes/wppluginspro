@@ -633,3 +633,16 @@ function cubestheme_commerce_assets()
 }
 
 add_action('wp_enqueue_scripts', 'cubestheme_commerce_assets', 100);
+
+function cubestheme_checkout_order_open()
+{
+    echo '<div class="commerce-order-column">';
+}
+
+function cubestheme_checkout_order_close()
+{
+    echo '</div>';
+}
+
+add_action('woocommerce_checkout_before_order_review_heading', 'cubestheme_checkout_order_open', 1);
+add_action('woocommerce_checkout_after_order_review', 'cubestheme_checkout_order_close', 99);
