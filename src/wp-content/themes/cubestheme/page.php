@@ -5,8 +5,10 @@ get_header(null, [
     'force_scrolled_header' => true,
 ]);
 
+$commerce_page = function_exists('cubestheme_is_commerce_view') && cubestheme_is_commerce_view();
+
 ?>
-<section class="static-page">
+<section class="static-page<?php echo $commerce_page ? ' commerce-page' : ''; ?>">
     <div class="container">
         <h1 class="page-title">
             <?php the_title() ?>
