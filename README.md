@@ -23,4 +23,4 @@ cp .deploy-ftp.env.example .deploy-ftp.env
 ./deploy-ftp.sh
 ```
 
-`wp-config.php` and `uploads` are not uploaded.
+`wp-config.php` and `uploads` are not uploaded. On this host WordPress lives in `public/`, so `FTP_REMOTE_PATH=public`.

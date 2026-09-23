@@ -210,7 +210,7 @@ set net:timeout 30
 set net:max-retries 2
 $LFTP_SSL_SETTINGS
 echo '=== pwd ==='
-pwd
+pwd -p
 echo ''
 echo '=== FTP root (.) ==='
 cls -l
