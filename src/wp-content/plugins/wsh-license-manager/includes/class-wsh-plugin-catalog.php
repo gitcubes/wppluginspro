@@ -18,6 +18,8 @@ class WSH_Plugin_Catalog
 
 		add_filter('woocommerce_product_data_tabs', array(__CLASS__, 'product_tab'));
 		add_action('woocommerce_product_data_panels', array(__CLASS__, 'product_panel'));
+		add_action('add_meta_boxes', array(__CLASS__, 'files_meta_box'));
+		add_action('post_edit_form_tag', array(__CLASS__, 'product_form_enctype'));
 		add_action('woocommerce_process_product_meta', array(__CLASS__, 'save_product'));
 		add_action('woocommerce_product_after_variable_attributes', array(__CLASS__, 'variation_fields'), 10, 3);
 		add_action('woocommerce_save_product_variation', array(__CLASS__, 'save_variation'), 10, 2);
@@ -64,7 +66,6 @@ class WSH_Plugin_Catalog
 		$group = (string) get_post_meta($product_id, 'wsh_license_group', true);
 		$landing_id = (int) get_post_meta($product_id, 'wsh_landing_page_id', true);
 		$show = get_post_meta($product_id, 'wsh_show_in_catalog', true) === '1';
-		$packages = WSH_Plugin_Storage::packages($product_id);
 		$pages = get_pages(array('post_status' => array('publish', 'draft')));
 		?>
 		<div id="wsh_plugin_product_data" class="panel woocommerce_options_panel hidden">
@@ -120,60 +121,83 @@ class WSH_Plugin_Catalog
 					<span class="description"><?php esc_html_e('Turns this into a variable subscription. Existing test products stay as they are until you click this.', 'wsh-license-manager'); ?></span>
 				</p>
 			</div>
+		</div>
+		<?php
+	}
 
-			<div class="options_group">
-				<p class="form-field">
-					<label><?php esc_html_e('Plugin ZIPs', 'wsh-license-manager'); ?></label>
-					<span class="description"><?php esc_html_e('One row per version. Views Counter needs a Free row and a PRO row. The file address stays private.', 'wsh-license-manager'); ?></span>
-				</p>
-				<?php if (! empty($packages)) : ?>
-					<table class="widefat striped" style="width:auto;margin:0 12px 12px;">
-						<thead>
-							<tr>
-								<th><?php esc_html_e('Package', 'wsh-license-manager'); ?></th>
-								<th><?php esc_html_e('Version', 'wsh-license-manager'); ?></th>
-								<th><?php esc_html_e('File', 'wsh-license-manager'); ?></th>
-								<th><?php esc_html_e('Remove', 'wsh-license-manager'); ?></th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ($packages as $package) : ?>
-								<tr>
-									<td><?php echo esc_html($package['channel'] === 'free' ? 'Free' : 'PRO'); ?></td>
-									<td><?php echo esc_html($package['version']); ?></td>
-									<td>
-										<?php echo esc_html($package['original']); ?>
-										<a href="<?php echo esc_url(WSH_Plugin_Storage::download_url($product_id, $package['id'])); ?>"><?php esc_html_e('Test', 'wsh-license-manager'); ?></a>
-									</td>
-									<td><input type="checkbox" name="wsh_remove_file[]" value="<?php echo esc_attr($package['id']); ?>"></td>
-								</tr>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-				<?php endif; ?>
-				<div id="wsh-file-rows" style="margin:0 12px 12px;">
-					<div class="wsh-file-row" style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
-						<select name="wsh_new_channel[]">
-							<option value="free"><?php esc_html_e('Free', 'wsh-license-manager'); ?></option>
-							<option value="pro" selected><?php esc_html_e('PRO', 'wsh-license-manager'); ?></option>
-						</select>
-						<input type="text" name="wsh_new_version[]" placeholder="1.0.0" style="width:120px;">
-						<input type="file" name="wsh_new_zip[]" accept=".zip,application/zip">
-					</div>
-				</div>
-				<p style="margin:0 12px 12px;">
-					<button type="button" class="button" id="wsh-add-file-row"><?php esc_html_e('Add version', 'wsh-license-manager'); ?></button>
-				</p>
-				<script>
-					document.getElementById('wsh-add-file-row').addEventListener('click', function () {
-						var rows = document.getElementById('wsh-file-rows');
-						var copy = rows.querySelector('.wsh-file-row').cloneNode(true);
-						copy.querySelectorAll('input').forEach(function (input) { input.value = ''; });
-						rows.appendChild(copy);
-					});
-				</script>
+	public static function files_meta_box()
+	{
+		add_meta_box(
+			'wsh_plugin_zips',
+			__('Plugin ZIP files', 'wsh-license-manager'),
+			array(__CLASS__, 'render_files_meta_box'),
+			'product',
+			'normal',
+			'high'
+		);
+	}
+
+	public static function product_form_enctype()
+	{
+		global $post;
+
+		if ($post instanceof WP_Post && $post->post_type === 'product') {
+			echo ' enctype="multipart/form-data"';
+		}
+	}
+
+	public static function render_files_meta_box($post)
+	{
+		$product_id = $post instanceof WP_Post ? $post->ID : 0;
+		$packages = WSH_Plugin_Storage::packages($product_id);
+		?>
+		<p><?php esc_html_e('One row per version. A plugin can have a Free row and a PRO row. The file address stays private.', 'wsh-license-manager'); ?></p>
+		<?php if (! empty($packages)) : ?>
+			<table class="widefat striped" style="margin-bottom:12px;">
+				<thead>
+					<tr>
+						<th><?php esc_html_e('Package', 'wsh-license-manager'); ?></th>
+						<th><?php esc_html_e('Version', 'wsh-license-manager'); ?></th>
+						<th><?php esc_html_e('File', 'wsh-license-manager'); ?></th>
+						<th><?php esc_html_e('Remove', 'wsh-license-manager'); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($packages as $package) : ?>
+						<tr>
+							<td><?php echo esc_html($package['channel'] === 'free' ? 'Free' : 'PRO'); ?></td>
+							<td><?php echo esc_html($package['version']); ?></td>
+							<td>
+								<?php echo esc_html($package['original']); ?>
+								<a href="<?php echo esc_url(WSH_Plugin_Storage::download_url($product_id, $package['id'])); ?>"><?php esc_html_e('Test', 'wsh-license-manager'); ?></a>
+							</td>
+							<td><input type="checkbox" name="wsh_remove_file[]" value="<?php echo esc_attr($package['id']); ?>"></td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		<?php endif; ?>
+		<div id="wsh-file-rows">
+			<div class="wsh-file-row" style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+				<select name="wsh_new_channel[]">
+					<option value="free"><?php esc_html_e('Free', 'wsh-license-manager'); ?></option>
+					<option value="pro" selected><?php esc_html_e('PRO', 'wsh-license-manager'); ?></option>
+				</select>
+				<input type="text" name="wsh_new_version[]" placeholder="1.0.0" style="width:120px;">
+				<input type="file" name="wsh_new_zip[]" accept=".zip,application/zip">
 			</div>
 		</div>
+		<p>
+			<button type="button" class="button" id="wsh-add-file-row"><?php esc_html_e('Add version', 'wsh-license-manager'); ?></button>
+		</p>
+		<script>
+			document.getElementById('wsh-add-file-row').addEventListener('click', function () {
+				var rows = document.getElementById('wsh-file-rows');
+				var copy = rows.querySelector('.wsh-file-row').cloneNode(true);
+				copy.querySelectorAll('input').forEach(function (input) { input.value = ''; });
+				rows.appendChild(copy);
+			});
+		</script>
 		<?php
 	}
 

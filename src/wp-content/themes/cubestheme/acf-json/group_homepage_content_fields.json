@@ -516,8 +516,7 @@
                 "id": ""
             },
             "post_type": [
-                "product",
-                "wp_plugins_pro"
+                "product"
             ],
             "post_status": [
                 "publish"
@@ -1348,5 +1347,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1790121913
+    "modified": 1790300000
 }

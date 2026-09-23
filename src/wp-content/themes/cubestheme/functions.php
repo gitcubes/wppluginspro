@@ -112,36 +112,7 @@ add_action('init', 'cubestheme_menus');
 
 function cubestheme_create_post_type()
 {
-    register_post_type('wp_plugins_pro', array(
-        'labels' => array(
-            'name' => __('WP Plugins Pro', 'cubestheme'),
-            'singular_name' => __('WP Plugin Pro', 'cubestheme'),
-            'plural_name' => __('WP Plugins Pro', 'cubestheme'),
-            'all_items' => __('All WP Plugins Pro', 'cubestheme'),
-            'add_new' => __('Add new Plugin', 'cubestheme'),
-            'add_new_item' => __('Add new Plugin', 'cubestheme'),
-            'new_item' => __('New Plugin', 'cubestheme'),
-            'edit' => __('Edit', 'cubestheme'),
-            'edit_item' => __('Edit Plugin', 'cubestheme'),
-            'view' => __('View Plugin', 'cubestheme'),
-            'view_item' => __('View Plugin', 'cubestheme'),
-            'featured_image' => __('Featured image for Plugin', 'cubestheme'),
-        ),
-        'public' => true,
-        'hierarchical' => false,
-        'show_in_menu' => true,
-        'menu_icon' => 'dashicons-admin-plugins',
-        'menu_position' => 10,
-        'exclude_from_search' => false,
-        'show_in_rest' => true,
-        'supports' => array(
-            'title',
-            'editor',
-            'thumbnail',
-        )
-    ));
-
-    register_taxonomy('plugin_category', array('product', 'wp_plugins_pro'), array(
+    register_taxonomy('plugin_category', array('product'), array(
         'labels' => array(
             'name' => __('Plugin Categories', 'cubestheme'),
             'singular_name' => __('Plugin Category', 'cubestheme'),
@@ -158,6 +129,18 @@ function cubestheme_create_post_type()
 
 
 add_action('init', 'cubestheme_create_post_type');
+
+function cubestheme_flush_removed_plugin_cpt()
+{
+    if (get_option('cubestheme_wp_plugins_pro_removed') === '1') {
+        return;
+    }
+
+    flush_rewrite_rules(false);
+    update_option('cubestheme_wp_plugins_pro_removed', '1', false);
+}
+
+add_action('init', 'cubestheme_flush_removed_plugin_cpt', 99);
 
 function cubestheme_migrate_featured_plugins_to_products()
 {

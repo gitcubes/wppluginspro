@@ -1,6 +1,6 @@
 {
     "key": "group_wp_plugins_pro_fields",
-    "title": "WP Plugins Pro Fields",
+    "title": "Plugin card",
     "fields": [
         {
             "key": "field_tab_plugin_card",
@@ -245,13 +245,6 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "wp_plugins_pro"
-            }
-        ],
-        [
-            {
-                "param": "post_type",
-                "operator": "==",
                 "value": "product"
             }
         ]
@@ -266,5 +259,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1790211000
+    "modified": 1790300000
 }

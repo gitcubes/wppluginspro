@@ -19,15 +19,6 @@ $plugins_query = new WP_Query([
     'meta_value'     => '1',
 ]);
 
-if (!$plugins_query->have_posts()) {
-    $plugins_query = new WP_Query([
-        'post_type'      => 'wp_plugins_pro',
-        'post_status'    => 'publish',
-        'posts_per_page' => 12,
-        'paged'          => $paged,
-    ]);
-}
-
 $delays = ['0.12s', '0.18s', '0.24s', '0.3s', '0.36s', '0.42s'];
 ?>
 
