@@ -717,6 +717,14 @@ function cubestheme_checkout_order_close()
 add_action('woocommerce_checkout_before_order_review_heading', 'cubestheme_checkout_order_open', 1);
 add_action('woocommerce_checkout_after_order_review', 'cubestheme_checkout_order_close', 99);
 
+function cubestheme_checkout_without_shipping()
+{
+    return false;
+}
+
+add_filter('woocommerce_cart_needs_shipping', 'cubestheme_checkout_without_shipping', 100);
+add_filter('woocommerce_cart_needs_shipping_address', 'cubestheme_checkout_without_shipping', 100);
+
 function cubestheme_header_cart_count()
 {
     if (!function_exists('WC') || !WC()->cart) {
