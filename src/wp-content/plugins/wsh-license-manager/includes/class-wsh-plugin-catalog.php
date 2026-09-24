@@ -30,6 +30,7 @@ class WSH_Plugin_Catalog
 		add_action('woocommerce_thankyou', array(__CLASS__, 'render_thankyou_access'), 5);
 		add_action('woocommerce_account_dashboard', array(__CLASS__, 'render_dashboard_access'), 5);
 		add_action('woocommerce_order_details_after_order_table', array(__CLASS__, 'render_order_access'), 5);
+		add_action('woocommerce_after_register_post_type', array(__CLASS__, 'seed_suite_products'));
 	}
 
 	public static function register_account_endpoint()
@@ -730,6 +731,119 @@ class WSH_Plugin_Catalog
 	private static function notice($message)
 	{
 		set_transient('wsh_plugin_notice_' . get_current_user_id(), $message, 60);
+	}
+
+	public static function seed_suite_products()
+	{
+		if (get_option('wsh_suite_products_seeded') === '4' || ! class_exists('WC_Product_Variable_Subscription')) {
+			return;
+		}
+
+		$suites = array(
+			array(
+				'title' => 'WSH News Suite',
+				'slug' => 'news-suite',
+				'group' => 'news',
+				'excerpt' => 'One yearly license for every News plugin. The site limit is on this key.',
+				'prices' => array('1-site' => '149', '5-sites' => '249', 'unlimited' => '349'),
+			),
+			array(
+				'title' => 'WSH Ecommerce Suite',
+				'slug' => 'ecommerce-suite',
+				'group' => 'ecommerce',
+				'excerpt' => 'One yearly license for every Ecommerce plugin. The site limit is on this key.',
+				'prices' => array('1-site' => '149', '5-sites' => '249', 'unlimited' => '349'),
+			),
+			array(
+				'title' => 'WSH All-Access',
+				'slug' => 'all-access',
+				'group' => 'all',
+				'excerpt' => 'One yearly license for every PRO plugin, in both News and Ecommerce. Less than buying both suites.',
+				'prices' => array('1-site' => '199', '5-sites' => '299', 'unlimited' => '399'),
+			),
+		);
+
+		$category = term_exists('suites', 'product_cat');
+		if (! $category) {
+			$category = wp_insert_term('Suites', 'product_cat', array('slug' => 'suites'));
+		}
+		$category_id = 0;
+		if (is_array($category) && isset($category['term_id'])) {
+			$category_id = (int) $category['term_id'];
+		}
+
+		foreach ($suites as $suite) {
+			$existing = get_page_by_path($suite['slug'], OBJECT, 'product');
+			if ($existing instanceof WP_Post) {
+				$product_id = (int) $existing->ID;
+				$product = new WC_Product_Variable_Subscription($product_id);
+			} else {
+				$product = new WC_Product_Variable_Subscription();
+				$product->set_name($suite['title']);
+				$product->set_slug($suite['slug']);
+				$product->set_status('publish');
+				$product->set_catalog_visibility('visible');
+				$product->set_virtual(true);
+				$product->set_short_description($suite['excerpt']);
+				$product->set_description($suite['excerpt']);
+				if ($category_id > 0) {
+					$product->set_category_ids(array($category_id));
+				}
+				$product_id = $product->save();
+			}
+
+			if (! $product_id) {
+				return;
+			}
+
+			update_post_meta($product_id, 'wsh_plugin_slug', '');
+			update_post_meta($product_id, 'wsh_plugin_family', '');
+			update_post_meta($product_id, 'wsh_license_group', $suite['group']);
+			update_post_meta($product_id, 'wsh_show_in_catalog', '1');
+
+			self::ensure_sites_attribute();
+			$terms = array();
+			foreach (array('1-site' => '1 site', '5-sites' => '5 sites', 'unlimited' => 'Unlimited') as $slug => $name) {
+				$term = get_term_by('slug', $slug, 'pa_sites');
+				if ($term instanceof WP_Term) {
+					$terms[$slug] = (int) $term->term_id;
+				}
+			}
+
+			wp_set_object_terms($product_id, array_values($terms), 'pa_sites');
+			$attribute = new WC_Product_Attribute();
+			$attribute->set_id((int) wc_attribute_taxonomy_id_by_name('sites'));
+			$attribute->set_name('pa_sites');
+			$attribute->set_options(array_values($terms));
+			$attribute->set_visible(true);
+			$attribute->set_variation(true);
+			$product->set_attributes(array($attribute));
+			$product->save();
+
+			$limits = array('1-site' => 1, '5-sites' => 5, 'unlimited' => 0);
+			foreach ($limits as $slug => $max_sites) {
+				if (self::variation_exists($product_id, $slug)) {
+					continue;
+				}
+
+				$variation = new WC_Product_Subscription_Variation();
+				$variation->set_parent_id($product_id);
+				$variation->set_attributes(array('pa_sites' => $slug));
+				$variation->set_regular_price($suite['prices'][$slug]);
+				$variation->set_status('publish');
+				$variation->set_virtual(true);
+				$variation->update_meta_data('_subscription_period', 'year');
+				$variation->update_meta_data('_subscription_period_interval', 1);
+				$variation->update_meta_data('_subscription_length', 0);
+				$variation->update_meta_data('wsh_max_sites', $max_sites);
+				$variation->save();
+			}
+
+			WC_Product_Variable::sync($product_id);
+			wp_set_object_terms($product_id, 'variable-subscription', 'product_type');
+		}
+
+		update_option('wsh_suite_products_seeded', '4', false);
 	}
 
 	public static function render_notice()
