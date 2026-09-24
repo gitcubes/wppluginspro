@@ -354,7 +354,8 @@ class WSH_Plugin_Catalog
 		self::render_purchase_access(
 			self::licenses_for_order($order),
 			__('Your license and download', 'wsh-license-manager'),
-			__('Copy the license key into the plugin on your site. Download the PRO file here. The site address is saved when you activate the plugin.', 'wsh-license-manager')
+			__('Copy the license key into the plugin on your site. Download the PRO file here. The site address is saved when you activate the plugin.', 'wsh-license-manager'),
+			true
 		);
 	}
 
@@ -369,7 +370,7 @@ class WSH_Plugin_Catalog
 
 	public static function render_order_access($order)
 	{
-		if (! $order instanceof WC_Order) {
+		if (! $order instanceof WC_Order || (function_exists('is_order_received_page') && is_order_received_page())) {
 			return;
 		}
 
@@ -385,13 +386,17 @@ class WSH_Plugin_Catalog
 		);
 	}
 
-	private static function render_purchase_access($licenses, $title, $text)
+	private static function render_purchase_access($licenses, $title, $text, $prominent = false)
 	{
 		$account_url = function_exists('wc_get_account_endpoint_url') ? wc_get_account_endpoint_url('plugin-files') : home_url('/my-account/plugin-files/');
+		$button = '<p class="wsh-purchase-access__action"><a class="button" href="' . esc_url($account_url) . '">' . esc_html__('Open licenses and downloads', 'wsh-license-manager') . '</a></p>';
 
-		echo '<section class="wsh-purchase-access">';
+		echo '<section class="wsh-purchase-access' . ($prominent ? ' is-prominent' : '') . '">';
 		echo '<h2>' . esc_html($title) . '</h2>';
 		echo '<p>' . esc_html($text) . '</p>';
+		if ($prominent) {
+			echo $button;
+		}
 
 		if (empty($licenses)) {
 			echo '<p>' . esc_html__('Your license is still being prepared. Open Licenses & downloads in a moment.', 'wsh-license-manager') . '</p>';
@@ -399,7 +404,9 @@ class WSH_Plugin_Catalog
 			self::render_license_table($licenses);
 		}
 
-		echo '<p class="wsh-purchase-access__action"><a class="button" href="' . esc_url($account_url) . '">' . esc_html__('Open licenses and downloads', 'wsh-license-manager') . '</a></p>';
+		if (! $prominent) {
+			echo $button;
+		}
 		echo '</section>';
 	}
 

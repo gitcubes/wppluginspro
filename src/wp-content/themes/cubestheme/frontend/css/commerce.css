@@ -632,6 +632,56 @@
 
 .wsh-purchase-access h2 {
   margin: 0 0 8px;
+  font-size: 1.75rem;
+  letter-spacing: -0.4px;
+}
+
+body.woocommerce-order-received .woocommerce-order > h2,
+body.woocommerce-order-received .woocommerce-order h2.woocommerce-order-details__title,
+body.woocommerce-order-received .woocommerce-order h2.woocommerce-column__title,
+body.woocommerce-order-received .woocommerce-order .woocommerce-order-downloads__title,
+body.woocommerce-order-received .woocommerce-order h2 {
+  font-size: 1.75rem;
+  letter-spacing: -0.4px;
+}
+
+body.woocommerce-order-received .woocommerce-thankyou-order-received {
+  margin: 8px 0 28px;
+  padding: 22px 28px;
+  border-radius: 16px;
+  background: #034dd3;
+  color: #fff;
+  font-family: "Funnel Display", sans-serif;
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.4px;
+  text-align: center;
+}
+
+body.woocommerce-order-received .woocommerce-order-overview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 0 28px;
+  padding: 0;
+  list-style: none;
+}
+
+body.woocommerce-order-received .woocommerce-order-overview li {
+  flex: 1 1 150px;
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid rgba(3, 77, 211, 0.12);
+  border-radius: 12px;
+  background: #fff;
+  font-size: 14px;
+}
+
+body.woocommerce-order-received .woocommerce-order-overview li strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 16px;
 }
 
 .wsh-purchase-access > p {
@@ -640,6 +690,31 @@
 
 .wsh-purchase-access__action {
   margin: 16px 0 0;
+}
+
+.wsh-purchase-access.is-prominent .wsh-purchase-access__action {
+  margin: 4px 0 20px;
+}
+
+.wsh-purchase-access.is-prominent .wsh-purchase-access__action .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 0 32px;
+  border: 0;
+  border-radius: 999px;
+  background: #034dd3;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.wsh-purchase-access.is-prominent .wsh-purchase-access__action .button:hover {
+  background: #3c8afe;
+  color: #fff;
 }
 
 .wsh-license-key {
