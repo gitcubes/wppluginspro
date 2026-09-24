@@ -15,6 +15,11 @@ class WSH_Tickets
 		add_filter('manage_wsh_ticket_posts_columns', array(__CLASS__, 'columns'));
 		add_action('manage_wsh_ticket_posts_custom_column', array(__CLASS__, 'column_value'), 10, 2);
 		add_filter('manage_edit-wsh_ticket_sortable_columns', array(__CLASS__, 'sortable_columns'));
+		add_filter('post_class', array(__CLASS__, 'row_class'), 10, 3);
+		add_action('admin_head', array(__CLASS__, 'admin_css'));
+		add_action('admin_footer', array(__CLASS__, 'unread_badges'));
+		add_action('admin_menu', array(__CLASS__, 'menu_badge'), 99);
+		add_action('load-post.php', array(__CLASS__, 'mark_read'));
 	}
 
 	public static function activate()
@@ -129,6 +134,7 @@ class WSH_Tickets
 		update_post_meta($ticket_id, 'wsh_ticket_environment', $environment);
 		update_post_meta($ticket_id, 'wsh_ticket_user_id', $user_id);
 		update_post_meta($ticket_id, 'wsh_ticket_token', wp_generate_password(32, false, false));
+		update_post_meta($ticket_id, 'wsh_ticket_unread', '1');
 
 		self::email(
 			$email,
@@ -172,6 +178,73 @@ class WSH_Tickets
 	{
 		$columns['status'] = 'post_status';
 		return $columns;
+	}
+
+	public static function row_class($classes, $class, $post_id)
+	{
+		if (get_post_type($post_id) === 'wsh_ticket' && get_post_meta($post_id, 'wsh_ticket_unread', true) === '1') {
+			$classes[] = 'wsh-ticket-unread';
+		}
+
+		return $classes;
+	}
+
+	public static function mark_read()
+	{
+		$post_id = absint($_GET['post'] ?? 0);
+		if ($post_id <= 0 || get_post_type($post_id) !== 'wsh_ticket' || ! current_user_can('edit_post', $post_id)) {
+			return;
+		}
+
+		delete_post_meta($post_id, 'wsh_ticket_unread');
+	}
+
+	public static function admin_css()
+	{
+		$screen = function_exists('get_current_screen') ? get_current_screen() : null;
+		if (! $screen || $screen->id !== 'edit-wsh_ticket') {
+			return;
+		}
+
+		echo '<style>
+			.wsh-ticket-unread { background: #eef5ff; }
+			.wsh-ticket-unread .row-title { font-weight: 700; }
+			.wsh-ticket-new { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 999px; background: #034dd3; color: #fff; font-size: 11px; font-weight: 700; line-height: 1.6; vertical-align: middle; }
+		</style>';
+	}
+
+	public static function unread_badges()
+	{
+		$screen = function_exists('get_current_screen') ? get_current_screen() : null;
+		if (! $screen || $screen->id !== 'edit-wsh_ticket') {
+			return;
+		}
+
+		echo '<script>
+			document.querySelectorAll("tr.wsh-ticket-unread .row-title").forEach(function (link) {
+				var badge = document.createElement("span");
+				badge.className = "wsh-ticket-new";
+				badge.textContent = "New";
+				link.after(badge);
+			});
+		</script>';
+	}
+
+	public static function menu_badge()
+	{
+		global $menu, $wpdb;
+		$count = (int) $wpdb->get_var("SELECT COUNT(DISTINCT p.ID) FROM {$wpdb->posts} p INNER JOIN {$wpdb->postmeta} m ON p.ID = m.post_id WHERE p.post_type = 'wsh_ticket' AND p.post_status NOT IN ('trash','auto-draft') AND m.meta_key = 'wsh_ticket_unread' AND m.meta_value = '1'");
+		if ($count < 1 || ! is_array($menu)) {
+			return;
+		}
+
+		foreach ($menu as $index => $item) {
+			if (($item[2] ?? '') !== 'edit.php?post_type=wsh_ticket') {
+				continue;
+			}
+			$menu[$index][0] .= ' <span class="update-plugins count-' . $count . '"><span class="plugin-count">' . $count . '</span></span>';
+			break;
+		}
 	}
 
 	public static function column_value($column, $post_id)
@@ -367,6 +440,7 @@ class WSH_Tickets
 			'comment_author_email' => $email,
 		));
 
+		update_post_meta($post->ID, 'wsh_ticket_unread', '1');
 		remove_action('save_post_wsh_ticket', array(__CLASS__, 'save_ticket'), 10);
 		wp_update_post(array(
 			'ID' => $post->ID,
