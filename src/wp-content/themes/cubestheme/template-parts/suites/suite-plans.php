@@ -110,7 +110,7 @@ $plan_delays = ['0.1s', '0.18s', '0.26s', '0.34s'];
                             <?php endif; ?>
                             <div class="cta">
                                 <a href="<?php echo esc_url(get_permalink($suite_id)); ?>" class="btn btn-primary">
-                                    <?php esc_html_e('View suite', 'cubestheme'); ?>
+                                    <?php esc_html_e('Buy suite', 'cubestheme'); ?>
                                 </a>
                             </div>
                         </div>

@@ -2838,10 +2838,24 @@ header .mobile-actions .cta-button {
 .suite-plans .suite-plan-grid .suite-plan-card .included-plugins li img {
   flex-shrink: 0;
 }
+.suite-plans .suite-plan-grid .suite-plan-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.suite-plans .suite-plan-grid .suite-plan-card .content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+}
+
 .suite-plans .suite-plan-grid .suite-plan-card .cta {
   display: flex;
   gap: 12px;
   flex-direction: column;
+  margin-top: auto;
 }
 @media (min-width: 1440px) {
   .suite-plans .suite-plan-grid .suite-plan-card .cta {
