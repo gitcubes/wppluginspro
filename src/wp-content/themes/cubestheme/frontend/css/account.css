@@ -1,0 +1,393 @@
+.woocommerce-account .commerce-page .page-title {
+  margin-bottom: 28px;
+  font-size: 40px;
+  text-align: left;
+}
+
+.woocommerce-account .commerce-page .woocommerce {
+  display: grid;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .woocommerce-account .commerce-page .woocommerce {
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 32px;
+  }
+}
+
+.woocommerce-account .account-nav {
+  padding: 10px;
+  border: 1px solid rgba(3, 77, 211, 0.12);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.woocommerce-account .account-nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.woocommerce-account .account-nav li {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.woocommerce-account .account-nav li::marker {
+  content: none;
+}
+
+.woocommerce-account .account-nav a {
+  display: block;
+  padding: 11px 14px;
+  border-radius: 10px;
+  color: #1b1b21;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.woocommerce-account .account-nav li.is-active a,
+.woocommerce-account .account-nav a[aria-current="page"] {
+  background: #034dd3;
+  color: #fff;
+}
+
+.woocommerce-account .account-nav a:hover {
+  background: rgba(3, 77, 211, 0.08);
+  color: #034dd3;
+}
+
+.woocommerce-account .account-nav li.is-active a:hover,
+.woocommerce-account .account-nav a[aria-current="page"]:hover {
+  background: #034dd3;
+  color: #fff;
+}
+
+.woocommerce-account .woocommerce-MyAccount-content h2,
+.woocommerce-account .woocommerce-MyAccount-content h3 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: -0.4px;
+}
+
+.woocommerce-account .woocommerce-MyAccount-content h3 {
+  font-size: 22px;
+}
+
+.woocommerce-account .account-panel {
+  display: grid;
+  gap: 20px;
+}
+
+.woocommerce-account .account-intro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.woocommerce-account .account-intro p,
+.woocommerce-account .account-section-head p,
+.woocommerce-account .account-metric p,
+.woocommerce-account .account-product p,
+.woocommerce-account .account-plan p {
+  margin: 0;
+  color: rgba(27, 27, 33, 0.72);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.woocommerce-account .account-kicker,
+.woocommerce-account .account-metric span {
+  display: block;
+  margin-bottom: 8px;
+  color: #034dd3;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.woocommerce-account .account-intro__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.woocommerce-account .account-metrics {
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width: 700px) {
+  .woocommerce-account .account-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .woocommerce-account .account-metrics {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.woocommerce-account .account-metric,
+.woocommerce-account .account-address,
+.woocommerce-account .woocommerce-MyAccount-content .shop_table,
+.woocommerce-account .woocommerce-MyAccount-content .woocommerce-orders-table,
+.woocommerce-account .woocommerce-MyAccount-content .account-payment-methods-table,
+.woocommerce-account .woocommerce-EditAccountForm,
+.woocommerce-account .woocommerce-address-fields {
+  padding: 18px 20px;
+  border: 1px solid rgba(3, 77, 211, 0.12);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.woocommerce-account .account-metric strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.6px;
+}
+
+.woocommerce-account .account-table-wrap {
+  overflow-x: auto;
+  border: 1px solid rgba(3, 77, 211, 0.12);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.woocommerce-account .account-license-table,
+.woocommerce-account .woocommerce-MyAccount-content table.shop_table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.woocommerce-account .account-license-table th,
+.woocommerce-account .account-license-table td,
+.woocommerce-account .woocommerce-MyAccount-content table.shop_table th,
+.woocommerce-account .woocommerce-MyAccount-content table.shop_table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(3, 77, 211, 0.08);
+  vertical-align: top;
+  text-align: left;
+  font-size: 14px;
+}
+
+.woocommerce-account .account-license-table th,
+.woocommerce-account .woocommerce-MyAccount-content table.shop_table th {
+  color: rgba(27, 27, 33, 0.62);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.woocommerce-account .account-product strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.woocommerce-account .account-plan,
+.woocommerce-account .account-key,
+.woocommerce-account .account-sites,
+.woocommerce-account .account-downloads {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+
+.woocommerce-account .account-pill,
+.woocommerce-account .account-badge,
+.woocommerce-account .account-site,
+.woocommerce-account .account-key code {
+  display: inline-flex;
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.woocommerce-account .account-pill,
+.woocommerce-account .account-badge.is-active {
+  background: #034dd3;
+  color: #fff;
+}
+
+.woocommerce-account .account-badge.is-expiring {
+  background: #facc15;
+  color: #1b1b21;
+}
+
+.woocommerce-account .account-badge.is-expired {
+  background: #fff0f0;
+  color: #ff2727;
+}
+
+.woocommerce-account .account-key code,
+.woocommerce-account .account-site {
+  background: rgba(24, 111, 255, 0.08);
+  color: #1b1b21;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.woocommerce-account .wsh-copy-key,
+.woocommerce-account .wsh-download {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #034dd3;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.woocommerce-account .wsh-download.is-older {
+  color: rgba(27, 27, 33, 0.62);
+}
+
+.woocommerce-account .account-address-grid {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 700px) {
+  .woocommerce-account .account-address-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.woocommerce-account .account-address header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.woocommerce-account .account-address header a {
+  color: #034dd3;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.woocommerce-account .account-address address {
+  margin: 0;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.woocommerce-account .woocommerce-MyAccount-content .button,
+.woocommerce-account .woocommerce-MyAccount-content button.button,
+.woocommerce-account .woocommerce-EditAccountForm .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin: 0 8px 8px 0;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: #034dd3;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.woocommerce-account .woocommerce-MyAccount-content .button.button-secondary,
+.woocommerce-account .woocommerce-MyAccount-content .button.cancel,
+.woocommerce-account .woocommerce-MyAccount-content .button.delete {
+  border: 1px solid rgba(3, 77, 211, 0.25);
+  background: #fff;
+  color: #034dd3;
+}
+
+.woocommerce-account .woocommerce-MyAccount-content .button:hover,
+.woocommerce-account .woocommerce-EditAccountForm .button:hover {
+  background: #3c8afe;
+  color: #fff;
+}
+
+.woocommerce-account .woocommerce-EditAccountForm .form-row,
+.woocommerce-account .woocommerce-address-fields .form-row {
+  margin-bottom: 14px;
+}
+
+.woocommerce-account .woocommerce-EditAccountForm label,
+.woocommerce-account .woocommerce-address-fields label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.woocommerce-account .woocommerce-EditAccountForm input.input-text,
+.woocommerce-account .woocommerce-address-fields input.input-text,
+.woocommerce-account .woocommerce-address-fields select,
+.woocommerce-account .woocommerce-address-fields textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1px solid rgba(3, 77, 211, 0.2);
+  border-radius: 12px;
+  background: #fff;
+  font-size: 16px;
+}
+
+.woocommerce-account .woocommerce-EditAccountForm fieldset {
+  margin: 8px 0 16px;
+  padding: 16px;
+  border: 1px solid rgba(3, 77, 211, 0.12);
+  border-radius: 12px;
+}
+
+.woocommerce-account .woocommerce-EditAccountForm fieldset legend {
+  padding: 0 6px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info,
+.woocommerce-account .woocommerce-MyAccount-content .woocommerce-message {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border: 1px solid rgba(3, 77, 211, 0.15);
+  border-radius: 12px;
+  background: #f4f7ff;
+}
+
+.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info::before,
+.woocommerce-account .woocommerce-MyAccount-content .woocommerce-message::before {
+  content: none;
+}
+
+.woocommerce-account .account-empty {
+  margin: 0;
+  padding: 20px;
+  border: 1px dashed rgba(3, 77, 211, 0.3);
+  border-radius: 16px;
+  background: #fff;
+}

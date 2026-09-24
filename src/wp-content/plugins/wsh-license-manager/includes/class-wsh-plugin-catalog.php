@@ -361,11 +361,46 @@ class WSH_Plugin_Catalog
 
 	public static function render_dashboard_access()
 	{
-		self::render_purchase_access(
-			self::licenses_for_user(),
-			__('Your licenses and downloads', 'wsh-license-manager'),
-			__('Download the plugin and copy the license key. Paste the key in the plugin settings on your site.', 'wsh-license-manager')
-		);
+		$licenses = self::licenses_for_user();
+		$plugins_url = function_exists('cubestheme_plugins_page_url') ? cubestheme_plugins_page_url() : home_url('/plugins/');
+		$licenses_url = function_exists('wc_get_account_endpoint_url') ? wc_get_account_endpoint_url('plugin-files') : home_url('/my-account/plugin-files/');
+		$site_count = 0;
+		$nearest_label = __('No renewal date yet', 'wsh-license-manager');
+		$nearest_detail = __('A renewal date appears after the first subscription payment.', 'wsh-license-manager');
+		$nearest_time = null;
+
+		foreach ($licenses as $license) {
+			$site_count += count(WSH_License_Utils::activated_sites($license->ID));
+			$facts = self::license_facts($license->ID);
+			if ($facts['renews_time'] && ($nearest_time === null || $facts['renews_time'] < $nearest_time)) {
+				$nearest_time = $facts['renews_time'];
+				$days = (int) max(0, floor(($facts['renews_time'] - time()) / DAY_IN_SECONDS));
+				$nearest_label = sprintf(_n('%d day', '%d days', $days, 'wsh-license-manager'), $days);
+				$nearest_detail = $facts['name'] . ' · ' . $facts['plan'];
+			}
+		}
+
+		echo '<section class="account-panel">';
+		echo '<div class="account-intro">';
+		echo '<div><span class="account-kicker">' . esc_html__('Account', 'wsh-license-manager') . '</span>';
+		echo '<h2>' . esc_html__('Your licenses and sites', 'wsh-license-manager') . '</h2>';
+		echo '<p>' . esc_html__('Copy a license key into the plugin, then download the PRO file. The site is saved when you activate the plugin.', 'wsh-license-manager') . '</p></div>';
+		echo '<div class="account-intro__actions">';
+		echo '<a class="button button-secondary" href="' . esc_url($licenses_url) . '">' . esc_html__('All licenses', 'wsh-license-manager') . '</a>';
+		echo '<a class="button" href="' . esc_url($plugins_url) . '">' . esc_html__('Browse plugins', 'wsh-license-manager') . '</a>';
+		echo '</div></div>';
+
+		echo '<div class="account-metrics">';
+		self::metric_card(__('Total licenses', 'wsh-license-manager'), (string) count($licenses), __('Active plugin and suite keys on this account.', 'wsh-license-manager'));
+		self::metric_card(__('Active sites', 'wsh-license-manager'), (string) $site_count, __('Domains currently using your licenses. Staging does not count.', 'wsh-license-manager'));
+		self::metric_card(__('Nearest renewal', 'wsh-license-manager'), $nearest_label, $nearest_detail);
+		self::metric_card(__('Support', 'wsh-license-manager'), empty($licenses) ? __('Inactive', 'wsh-license-manager') : __('Priority', 'wsh-license-manager'), empty($licenses) ? __('Support starts with an active PRO license.', 'wsh-license-manager') : __('Active while at least one PRO license is valid.', 'wsh-license-manager'));
+		echo '</div>';
+
+		echo '<div class="account-section-head"><div><h3>' . esc_html__('Your licenses', 'wsh-license-manager') . '</h3>';
+		echo '<p>' . esc_html__('Download the latest PRO file and paste the key in the plugin settings.', 'wsh-license-manager') . '</p></div></div>';
+		self::render_account_license_table($licenses);
+		echo '</section>';
 	}
 
 	public static function render_order_access($order)
@@ -413,16 +448,141 @@ class WSH_Plugin_Catalog
 	public static function render_account_downloads()
 	{
 		$licenses = self::licenses_for_user();
+		$plugins_url = function_exists('cubestheme_plugins_page_url') ? cubestheme_plugins_page_url() : home_url('/plugins/');
 
+		echo '<section class="account-panel">';
+		echo '<div class="account-intro">';
+		echo '<div><span class="account-kicker">' . esc_html__('Licenses', 'wsh-license-manager') . '</span>';
 		echo '<h2>' . esc_html__('Licenses and downloads', 'wsh-license-manager') . '</h2>';
-		echo '<div class="woocommerce-info">' . esc_html__('Copy the license key into the plugin. Download the latest PRO file. Older files can be less secure.', 'wsh-license-manager') . '</div>';
+		echo '<p>' . esc_html__('Copy the license key into the plugin. Download the latest PRO file. Older files can be less secure.', 'wsh-license-manager') . '</p></div>';
+		echo '<div class="account-intro__actions"><a class="button" href="' . esc_url($plugins_url) . '">' . esc_html__('Browse plugins', 'wsh-license-manager') . '</a></div>';
+		echo '</div>';
+		self::render_account_license_table($licenses);
+		echo '</section>';
+	}
 
+	private static function metric_card($label, $value, $text)
+	{
+		echo '<article class="account-metric"><span>' . esc_html($label) . '</span><strong>' . esc_html($value) . '</strong><p>' . esc_html($text) . '</p></article>';
+	}
+
+	private static function render_account_license_table($licenses)
+	{
 		if (empty($licenses)) {
-			echo '<p>' . esc_html__('You do not have an active plugin license yet.', 'wsh-license-manager') . '</p>';
+			echo '<p class="account-empty">' . esc_html__('You do not have an active plugin license yet.', 'wsh-license-manager') . '</p>';
 			return;
 		}
 
-		self::render_license_table($licenses);
+		echo '<div class="account-table-wrap"><table class="account-license-table"><thead><tr>';
+		echo '<th>' . esc_html__('Plugin / Suite', 'wsh-license-manager') . '</th>';
+		echo '<th>' . esc_html__('Plan', 'wsh-license-manager') . '</th>';
+		echo '<th>' . esc_html__('License key', 'wsh-license-manager') . '</th>';
+		echo '<th>' . esc_html__('Status', 'wsh-license-manager') . '</th>';
+		echo '<th>' . esc_html__('Renews', 'wsh-license-manager') . '</th>';
+		echo '<th>' . esc_html__('Sites', 'wsh-license-manager') . '</th>';
+		echo '<th>' . esc_html__('Download', 'wsh-license-manager') . '</th>';
+		echo '</tr></thead><tbody>';
+
+		foreach ($licenses as $license) {
+			$facts = self::license_facts($license->ID);
+			echo '<tr>';
+			echo '<td><div class="account-product"><strong>' . esc_html($facts['name']) . '</strong>';
+			if ($facts['summary'] !== '') {
+				echo '<p>' . esc_html($facts['summary']) . '</p>';
+			}
+			echo '</div></td>';
+			echo '<td><div class="account-plan"><span class="account-pill">' . esc_html($facts['kind']) . '</span><p>' . esc_html($facts['plan']) . '</p></div></td>';
+			echo '<td><div class="account-key"><code>' . esc_html($facts['key']) . '</code>';
+			echo '<button type="button" class="wsh-copy-key" data-key="' . esc_attr($facts['key']) . '">' . esc_html__('Copy key', 'wsh-license-manager') . '</button></div></td>';
+			echo '<td><span class="account-badge is-' . esc_attr($facts['status_class']) . '">' . esc_html($facts['status']) . '</span></td>';
+			echo '<td>' . esc_html($facts['renews']) . '</td>';
+			echo '<td><div class="account-sites">';
+			if (empty($facts['sites'])) {
+				echo '<span>' . esc_html__('Not activated yet', 'wsh-license-manager') . '</span>';
+			} else {
+				foreach ($facts['sites'] as $site) {
+					echo '<span class="account-site">' . esc_html($site) . '</span>';
+				}
+			}
+			echo '</div></td>';
+			echo '<td><div class="account-downloads">' . $facts['downloads'] . '</div></td>';
+			echo '</tr>';
+		}
+
+		echo '</tbody></table></div>';
+	}
+
+	private static function license_facts($license_id)
+	{
+		$products = self::products_for_license($license_id);
+		$group = (string) get_post_meta($license_id, 'wsh_license_group', true);
+		$max_sites = WSH_License_Utils::max_sites($license_id);
+		$status = (string) get_post_meta($license_id, 'wsh_status', true);
+		$plan = $max_sites === 0 ? __('Unlimited sites', 'wsh-license-manager') : sprintf(_n('%d site', '%d sites', $max_sites, 'wsh-license-manager'), $max_sites);
+		$renews = __('Not scheduled', 'wsh-license-manager');
+		$renews_time = null;
+		$subscription_id = (int) get_post_meta($license_id, 'wsh_subscription_id', true);
+
+		if ($subscription_id && function_exists('wcs_get_subscription')) {
+			$subscription = wcs_get_subscription($subscription_id);
+			if ($subscription) {
+				$next = $subscription->get_time('next_payment');
+				if ($next) {
+					$renews_time = $next;
+					$renews = $subscription->get_date_to_display('next_payment');
+				}
+				if ($status === '') {
+					$status = $subscription->get_status();
+				}
+			}
+		}
+
+		$downloads = '';
+		foreach ($products as $product) {
+			$downloads .= self::download_links($product);
+		}
+		if ($downloads === '') {
+			$downloads = '<span>' . esc_html__('Not available yet', 'wsh-license-manager') . '</span>';
+		}
+
+		$kinds = array(
+			'news' => __('Suite', 'wsh-license-manager'),
+			'ecommerce' => __('Suite', 'wsh-license-manager'),
+			'all' => __('All-Access', 'wsh-license-manager'),
+		);
+
+		return array(
+			'name' => self::license_label($license_id, $products),
+			'summary' => $plan . ' · ' . __('Yearly', 'wsh-license-manager'),
+			'kind' => isset($kinds[$group]) ? $kinds[$group] : __('Single plugin', 'wsh-license-manager'),
+			'plan' => $plan,
+			'key' => (string) get_post_meta($license_id, 'wsh_license_key', true),
+			'status' => $status !== '' ? ucfirst($status) : __('Active', 'wsh-license-manager'),
+			'status_class' => in_array($status, array('active', ''), true) ? 'active' : ($status === 'expired' ? 'expired' : 'expiring'),
+			'renews' => $renews,
+			'renews_time' => $renews_time,
+			'sites' => WSH_License_Utils::activated_sites($license_id),
+			'downloads' => $downloads,
+		);
+	}
+
+	private static function download_links($product)
+	{
+		$html = '';
+		foreach (array('pro', 'free') as $channel) {
+			$packages = WSH_Plugin_Storage::packages_for_channel($product->ID, $channel);
+			if (empty($packages) || ! WSH_Plugin_Storage::user_can_download(get_current_user_id(), $product->ID, $channel)) {
+				continue;
+			}
+
+			foreach ($packages as $index => $package) {
+				$label = trim(get_the_title($product) . ' ' . ($channel === 'free' ? 'Free' : 'PRO') . ' ' . $package['version']);
+				$class = $index === 0 ? 'wsh-download' : 'wsh-download is-older';
+				$html .= '<a class="' . esc_attr($class) . '" href="' . esc_url(WSH_Plugin_Storage::download_url($product->ID, $package['id'])) . '">' . esc_html($label) . '</a>';
+			}
+		}
+
+		return $html;
 	}
 
 	private static function render_license_table($licenses)

@@ -16,7 +16,7 @@ if (!defined('_S_VERSION')) {
 
 function themeVersion()
 {
-    return  '1.0.14';
+    return  '1.0.15';
 }
 
 // INCLUDE FILES
@@ -700,6 +700,10 @@ function cubestheme_commerce_assets()
 
     wp_enqueue_style('static-page', get_template_directory_uri() . '/frontend/css/static-page.css', array(), themeVersion());
     wp_enqueue_style('commerce', get_template_directory_uri() . '/frontend/css/commerce.css', array('static-page'), themeVersion());
+
+    if (function_exists('is_account_page') && is_account_page()) {
+        wp_enqueue_style('account', get_template_directory_uri() . '/frontend/css/account.css', array('commerce'), themeVersion());
+    }
 }
 
 add_action('wp_enqueue_scripts', 'cubestheme_commerce_assets', 100);
@@ -919,3 +923,65 @@ function cubestheme_cart_added_toast()
 }
 
 add_action('wp_body_open', 'cubestheme_cart_added_toast', 20);
+
+function cubestheme_account_section_intro()
+{
+    if (!function_exists('is_wc_endpoint_url')) {
+        return;
+    }
+
+    $sections = array(
+        'orders' => array('Orders', 'Your orders', 'Each order keeps the plugin, the payment, and the license that was created from it.'),
+        'payment-methods' => array('Payments', 'Saved cards', 'These cards are used for subscription renewals.'),
+        'edit-account' => array('Account', 'Your details', 'Update the name, email, and password used for this account.'),
+        'subscriptions' => array('Subscriptions', 'Your plans', 'Each plan renews yearly and keeps the license active.'),
+    );
+
+    foreach ($sections as $endpoint => $copy) {
+        if (!is_wc_endpoint_url($endpoint)) {
+            continue;
+        }
+        if ($endpoint === 'subscriptions' && is_wc_endpoint_url('view-subscription')) {
+            continue;
+        }
+
+        echo '<div class="account-intro"><div>';
+        echo '<span class="account-kicker">' . esc_html__($copy[0], 'cubestheme') . '</span>';
+        echo '<h2>' . esc_html__($copy[1], 'cubestheme') . '</h2>';
+        echo '<p>' . esc_html__($copy[2], 'cubestheme') . '</p>';
+        echo '</div></div>';
+        return;
+    }
+}
+
+add_action('woocommerce_account_content', 'cubestheme_account_section_intro', 9);
+
+function cubestheme_account_copy_script()
+{
+    if (!function_exists('is_account_page') || !is_account_page()) {
+        return;
+    }
+    ?>
+    <script>
+        document.addEventListener('click', function (event) {
+            var button = event.target.closest('.wsh-copy-key');
+            if (!button) {
+                return;
+            }
+            var key = button.getAttribute('data-key') || '';
+            if (!key || !navigator.clipboard) {
+                return;
+            }
+            navigator.clipboard.writeText(key).then(function () {
+                var previous = button.textContent;
+                button.textContent = 'Copied';
+                window.setTimeout(function () {
+                    button.textContent = previous;
+                }, 1600);
+            });
+        });
+    </script>
+    <?php
+}
+
+add_action('wp_footer', 'cubestheme_account_copy_script');
