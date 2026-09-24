@@ -9,6 +9,7 @@ class WSH_Tickets
 	{
 		add_action('init', array(__CLASS__, 'register_type'));
 		add_action('template_redirect', array(__CLASS__, 'handle_form'));
+		add_action('template_redirect', array(__CLASS__, 'handle_customer_reply'));
 		add_action('add_meta_boxes', array(__CLASS__, 'meta_box'));
 		add_action('save_post_wsh_ticket', array(__CLASS__, 'save_ticket'), 10, 2);
 		add_filter('manage_wsh_ticket_posts_columns', array(__CLASS__, 'columns'));
@@ -127,6 +128,7 @@ class WSH_Tickets
 		update_post_meta($ticket_id, 'wsh_ticket_priority', $priority === 'high' ? 'high' : 'normal');
 		update_post_meta($ticket_id, 'wsh_ticket_environment', $environment);
 		update_post_meta($ticket_id, 'wsh_ticket_user_id', $user_id);
+		update_post_meta($ticket_id, 'wsh_ticket_token', wp_generate_password(32, false, false));
 
 		self::email(
 			$email,
@@ -134,7 +136,8 @@ class WSH_Tickets
 			__('Request received', 'wsh-ticketing'),
 			'<p style="margin:0 0 12px;font-size:16px;line-height:1.5;">' . esc_html(sprintf(__('Hi %s,', 'wsh-ticketing'), $name)) . '</p>'
 			. '<p style="margin:0 0 12px;font-size:16px;line-height:1.5;">' . esc_html(sprintf(__('We received your request “%1$s” for %2$s. The ticket number is #%3$d.', 'wsh-ticketing'), $subject, $product_name, $ticket_id)) . '</p>'
-			. '<p style="margin:0;font-size:16px;line-height:1.5;">' . esc_html__('We will reply to this email address.', 'wsh-ticketing') . '</p>'
+			. '<p style="margin:0;font-size:16px;line-height:1.5;">' . esc_html__('Follow the ticket on this page. Replies sent from your mail app are not added to the ticket.', 'wsh-ticketing') . '</p>'
+			. self::reply_link_html($ticket_id)
 		);
 
 		$admin = get_option('admin_email');
@@ -205,6 +208,7 @@ class WSH_Tickets
 		));
 
 		echo '<p><strong>' . esc_html(get_post_meta($post->ID, 'wsh_ticket_name', true)) . '</strong> · ' . esc_html(get_post_meta($post->ID, 'wsh_ticket_email', true)) . '</p>';
+		echo '<p><a href="' . esc_url(self::reply_url($post->ID)) . '">' . esc_html__('Customer reply link', 'wsh-ticketing') . '</a></p>';
 		echo '<p>' . esc_html(get_post_meta($post->ID, 'wsh_ticket_product', true));
 		$site = (string) get_post_meta($post->ID, 'wsh_ticket_site', true);
 		if ($site !== '') {
@@ -266,7 +270,7 @@ class WSH_Tickets
 		$reply = wp_kses_post(wp_unslash($_POST['wsh_ticket_reply'] ?? ''));
 		if (trim(wp_strip_all_tags($reply)) !== '') {
 			$user = wp_get_current_user();
-			wp_insert_comment(array(
+			self::insert_reply(array(
 				'comment_post_ID' => $post_id,
 				'comment_content' => $reply,
 				'comment_type' => 'wsh_reply',
@@ -285,7 +289,8 @@ class WSH_Tickets
 					__('Support reply', 'wsh-ticketing'),
 					'<p style="margin:0 0 12px;font-size:16px;line-height:1.5;">' . esc_html(sprintf(__('Hi %s,', 'wsh-ticketing'), $name)) . '</p>'
 					. '<p style="margin:0 0 12px;font-size:16px;line-height:1.5;">' . esc_html(sprintf(__('Reply to “%s”:', 'wsh-ticketing'), $post->post_title)) . '</p>'
-					. '<div style="font-size:16px;line-height:1.5;">' . $reply . '</div>'
+					. self::format_email_html($reply)
+					. self::reply_link_html($post_id)
 				);
 			}
 
@@ -302,6 +307,148 @@ class WSH_Tickets
 			));
 			add_action('save_post_wsh_ticket', array(__CLASS__, 'save_ticket'), 10, 2);
 		}
+	}
+
+	public static function viewing_thread()
+	{
+		return self::ticket_from_request() instanceof WP_Post;
+	}
+
+	public static function ticket_from_request()
+	{
+		$id = absint($_REQUEST['view'] ?? 0);
+		$key = sanitize_text_field(wp_unslash($_REQUEST['key'] ?? ''));
+		if ($id <= 0 || $key === '') {
+			return null;
+		}
+
+		$post = get_post($id);
+		if (! $post instanceof WP_Post || $post->post_type !== 'wsh_ticket') {
+			return null;
+		}
+
+		$token = (string) get_post_meta($id, 'wsh_ticket_token', true);
+		if ($token === '' || ! hash_equals($token, $key)) {
+			return null;
+		}
+
+		return $post;
+	}
+
+	public static function handle_customer_reply()
+	{
+		if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || empty($_POST['wsh_ticket_customer_reply'])) {
+			return;
+		}
+
+		$post = self::ticket_from_request();
+		if (! $post instanceof WP_Post) {
+			return;
+		}
+
+		if (! isset($_POST['wsh_ticket_reply_nonce']) || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['wsh_ticket_reply_nonce'])), 'wsh_ticket_customer_reply')) {
+			self::redirect_thread($post->ID, 'expired');
+		}
+
+		$message = sanitize_textarea_field(wp_unslash($_POST['wsh_customer_message'] ?? ''));
+		if ($message === '') {
+			self::redirect_thread($post->ID, 'required');
+		}
+
+		$name = (string) get_post_meta($post->ID, 'wsh_ticket_name', true);
+		$email = (string) get_post_meta($post->ID, 'wsh_ticket_email', true);
+		self::insert_reply(array(
+			'comment_post_ID' => $post->ID,
+			'comment_content' => $message,
+			'comment_type' => 'wsh_reply',
+			'comment_approved' => 1,
+			'user_id' => 0,
+			'comment_author' => $name,
+			'comment_author_email' => $email,
+		));
+
+		remove_action('save_post_wsh_ticket', array(__CLASS__, 'save_ticket'), 10);
+		wp_update_post(array(
+			'ID' => $post->ID,
+			'post_status' => 'wsh-open',
+		));
+		add_action('save_post_wsh_ticket', array(__CLASS__, 'save_ticket'), 10, 2);
+
+		$admin = get_option('admin_email');
+		if (is_email($admin)) {
+			$edit = admin_url('post.php?post=' . $post->ID . '&action=edit');
+			self::email(
+				$admin,
+				sprintf(__('Customer replied on ticket #%d', 'wsh-ticketing'), $post->ID),
+				__('Customer reply', 'wsh-ticketing'),
+				'<p style="margin:0 0 12px;font-size:16px;line-height:1.5;"><strong>' . esc_html($post->post_title) . '</strong></p>'
+				. '<p style="margin:0 0 12px;font-size:16px;line-height:1.5;">' . esc_html($name . ' · ' . $email) . '</p>'
+				. self::format_email_html($message)
+				. '<p style="margin:20px 0 0;"><a href="' . esc_url($edit) . '" style="display:inline-block;padding:12px 22px;background:#034dd3;color:#ffffff;text-decoration:none;border-radius:999px;font-weight:700;">' . esc_html__('Open the ticket', 'wsh-ticketing') . '</a></p>'
+			);
+		}
+
+		self::redirect_thread($post->ID, 'sent');
+	}
+
+	private static function insert_reply($comment)
+	{
+		remove_filter('pre_comment_content', 'wp_filter_kses');
+		$comment_id = wp_insert_comment($comment);
+		add_filter('pre_comment_content', 'wp_filter_kses');
+
+		return $comment_id;
+	}
+
+	private static function token($ticket_id)
+	{
+		$token = (string) get_post_meta($ticket_id, 'wsh_ticket_token', true);
+		if ($token === '') {
+			$token = wp_generate_password(32, false, false);
+			update_post_meta($ticket_id, 'wsh_ticket_token', $token);
+		}
+
+		return $token;
+	}
+
+	private static function reply_url($ticket_id)
+	{
+		return add_query_arg(array(
+			'view' => $ticket_id,
+			'key' => self::token($ticket_id),
+		), home_url('/get-support/'));
+	}
+
+	private static function reply_link_html($ticket_id)
+	{
+		$url = self::reply_url($ticket_id);
+
+		return '<p style="margin:20px 0 0;">'
+			. '<a href="' . esc_url($url) . '" style="display:inline-block;padding:12px 22px;background:#034dd3;color:#ffffff;text-decoration:none;border-radius:999px;font-weight:700;">'
+			. esc_html__('Reply on the ticket', 'wsh-ticketing') . '</a></p>'
+			. '<p style="margin:12px 0 0;font-size:14px;line-height:1.5;color:#5c6570;">'
+			. esc_html__('Please reply on this page. A reply from your mail app is not added to the ticket.', 'wsh-ticketing') . '</p>';
+	}
+
+	private static function format_email_html($html)
+	{
+		$html = trim((string) $html);
+		if ($html === '') {
+			return '';
+		}
+		if (strpos($html, '<') === false) {
+			$html = wpautop($html);
+		}
+		$html = wp_kses_post($html);
+		$html = preg_replace('/<p(\s[^>]*)?>/i', '<p style="margin:0 0 14px;font-size:16px;line-height:1.5;">', $html);
+
+		return $html;
+	}
+
+	private static function redirect_thread($ticket_id, $notice)
+	{
+		wp_safe_redirect(add_query_arg('notice', $notice, self::reply_url($ticket_id)));
+		exit;
 	}
 
 	private static function email($to, $subject, $heading, $body_html)

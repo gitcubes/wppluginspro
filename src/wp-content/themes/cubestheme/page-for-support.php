@@ -9,7 +9,11 @@ wp_enqueue_style('support', get_template_directory_uri() . '/frontend/css/suppor
 get_header();
 
 get_template_part('template-parts/support/support-lead');
-get_template_part('template-parts/support/support-request-form');
+if (class_exists('WSH_Tickets') && WSH_Tickets::viewing_thread()) {
+	get_template_part('template-parts/support/support-ticket');
+} else {
+	get_template_part('template-parts/support/support-request-form');
+}
 get_template_part('template-parts/faq');
 
 get_footer();

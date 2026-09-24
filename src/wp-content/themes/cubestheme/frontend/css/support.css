@@ -3259,4 +3259,22 @@ footer .box .content .footer-bottom .footer-links a {
   font-family: "Host Grotesk";
   font-size: 14px;
   font-weight: 500;
-}/*# sourceMappingURL=support.css.map */
+}
+.support-thread {
+  display: grid;
+  gap: 16px;
+  margin: 0 0 28px;
+}
+.support-thread-item {
+  padding: 16px 18px;
+  border: 1px solid #e4e7ee;
+  border-radius: 12px;
+  background: #fff;
+}
+.support-thread-item p {
+  margin: 0 0 8px;
+}
+.support-thread-item p:last-child {
+  margin-bottom: 0;
+}
+/*# sourceMappingURL=support.css.map */
