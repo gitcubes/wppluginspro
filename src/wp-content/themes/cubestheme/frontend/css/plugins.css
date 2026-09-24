@@ -3156,4 +3156,36 @@ footer .box .content .footer-bottom .footer-links a {
   font-family: "Host Grotesk";
   font-size: 14px;
   font-weight: 500;
-}/*# sourceMappingURL=plugins.css.map */
+}
+
+.plugin-catalog .container,
+.plugin-catalog .catalog-browser,
+.plugin-catalog .catalog-grid,
+.plugin-catalog .catalog-grid .plugin-card {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.plugin-catalog .catalog-switcher {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.plugin-catalog .catalog-grid .plugin-card .plugin-card-header,
+.plugin-catalog .catalog-grid .plugin-card .license-badges {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.plugin-catalog .catalog-grid .plugin-card .best-fit p {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 767px) {
+  .plugin-catalog .catalog-grid .plugin-card .content {
+    padding: 16px;
+  }
+}
