@@ -1100,3 +1100,32 @@ function cubestheme_password_changed_email($email, $user)
 }
 
 add_filter('wp_password_change_notification_email', 'cubestheme_password_changed_email', 10, 2);
+
+function cubestheme_boot_ticketing()
+{
+    if (get_option('wsh_ticketing_booted') === '1') {
+        return;
+    }
+
+    $plugin = 'wsh-ticketing/wsh-ticketing.php';
+    $plugin_file = WP_PLUGIN_DIR . '/' . $plugin;
+    if (!file_exists($plugin_file)) {
+        return;
+    }
+
+    if (!function_exists('activate_plugin')) {
+        require_once ABSPATH . 'wp-admin/includes/plugin.php';
+    }
+
+    if (!is_plugin_active($plugin)) {
+        activate_plugin($plugin);
+    }
+
+    if (class_exists('WSH_Tickets')) {
+        WSH_Tickets::init();
+    }
+
+    update_option('wsh_ticketing_booted', '1');
+}
+
+add_action('init', 'cubestheme_boot_ticketing', 5);

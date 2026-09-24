@@ -1,96 +1,24 @@
 <?php
-global $wpdb;
-
-// Send
-$user = "";
-$email = "";
-$support_name = "";
-$support_type = "";
-$support_plugin = "";
-$support_site = "";
-$support_priority = "";
-$support_subject = "";
-$support_issue = "";
-$support_environment = "";
-$message = "";
-$error = "";
-$request_message = "";
-$website = get_site_url();
-
-if (isset($_POST) && isset($_POST['send'])) {
-    $error = "";
-    $status = "failed";
-    $message = "";
-
-    $to = "office@cubes.rs";
-
-    $subject = 'Support request from site ' . $website;
-
-    $support_name        = sanitize_text_field($_POST['support_name']);
-    $email               = sanitize_text_field($_POST['support_email']);
-    $support_type        = sanitize_text_field($_POST['support_type']);
-    $support_plugin      = sanitize_text_field($_POST['support_plugin']);
-    $support_site        = sanitize_text_field($_POST['support_site']);
-    $support_priority    = sanitize_text_field($_POST['support_priority']);
-    $support_subject     = sanitize_text_field($_POST['support_subject']);
-    $request_message     = sanitize_textarea_field($_POST['support_issue']);
-    $support_environment = sanitize_textarea_field($_POST['support_environment']);
-    $support_privacy     = isset($_POST['support_privacy']) ? sanitize_text_field($_POST['support_privacy']) : '';
-
-    $created = date("Y-m-d H:i:s");
-
-    // ReCaptcha Block
-    $response = null;
-
-    $reCaptcha = new Cubestheme_Recaptcha();
-
-    if ($_POST["g-recaptcha-response"]) {
-        $response = $reCaptcha->verifyResponse(
-            $_SERVER["REMOTE_ADDR"],
-            $_POST["g-recaptcha-response"]
-        );
+$current_user = wp_get_current_user();
+$support_name = '';
+$email = '';
+if ($current_user instanceof WP_User && $current_user->ID) {
+    $support_name = trim($current_user->first_name . ' ' . $current_user->last_name);
+    if ($support_name === '') {
+        $support_name = $current_user->display_name;
     }
-    // End recaptcha
-
-    if (($response != null && $response->success)) {
-
-        $body = "New support request from site $website:<br /><br />";
-        $body .= "Support Form:<br /><br />";
-        $body .= "Name: $support_name<br />";
-        $body .= "Email: $email<br />";
-        $body .= "Support type: $support_type<br />";
-        $body .= "Plugin / Suite: $support_plugin<br />";
-        $body .= "Site URL / domain: " . (!empty($support_site) ? $support_site : 'Not provided') . "<br />";
-        $body .= "Priority: $support_priority<br />";
-        $body .= "Subject: $support_subject<br />";
-        $body .= "Issue: " . nl2br(esc_html($request_message)) . "<br />";
-        $body .= "Environment / logs: " . (!empty($support_environment) ? nl2br(esc_html($support_environment)) : 'Not provided') . "<br />";
-        $body .= "Privacy consent: " . (!empty($support_privacy) ? 'Yes' : 'No') . "<br />";
-        $body .= "Created: $created<br />";
-
-        function wpse27856_set_content_type()
-        {
-            return "text/html";
-        }
-
-        add_filter('wp_mail_content_type', 'wpse27856_set_content_type');
-
-        $headers = array(
-            "Content-Type: text/html; charset=UTF-8",
-            "From: $to",
-            "Reply-To: $support_name <$email>"
-        );
-
-        wp_mail($to, $subject, $body, $headers);
-
-        $status = "done";
-        $message = __("Your message has been sent!", 'cubestheme');
-
-        remove_filter('phpmailer_init', 'mailer_config');
-    } else {
-        $error = __("Please verify that you are not robot.", "cubestheme");
-    }
+    $email = $current_user->user_email;
 }
+
+$message = '';
+$error = '';
+if (!empty($_GET['ticket'])) {
+    $message = sprintf(__('Your request was received. The ticket number is #%s. A confirmation was sent to your email.', 'cubestheme'), sanitize_text_field(wp_unslash($_GET['ticket'])));
+} elseif (!empty($_GET['support_error'])) {
+    $error = __('The request could not be sent. Check the required fields and try again.', 'cubestheme');
+}
+
+$support_products = class_exists('WSH_Tickets') ? WSH_Tickets::products() : array();
 ?>
 
 <?php
@@ -139,6 +67,7 @@ $support_info_card_delays = ['0.12s', '0.2s', '0.28s', '0.36s', '0.44s'];
                                         for="support-name"><?php printf(esc_html__('Your name', 'cubestheme')); ?></label>
                                 </div>
                                 <input type="text" id="support-name" name="support_name"
+                                    value="<?php echo esc_attr($support_name); ?>"
                                     placeholder="<?php echo esc_attr__('Ana', 'cubestheme'); ?>" required>
                                 <div class="error"></div>
                             </div>
@@ -153,7 +82,8 @@ $support_info_card_delays = ['0.12s', '0.2s', '0.28s', '0.36s', '0.44s'];
                                     </label>
                                 </div>
                                 <input type="email" id="support-email" name="support_email"
-                                    placeholder="<?php echo esc_attr__('Markovic', 'cubestheme'); ?>" required>
+                                    value="<?php echo esc_attr($email); ?>"
+                                    placeholder="<?php echo esc_attr__('you@example.com', 'cubestheme'); ?>" required>
                                 <div class="error"></div>
                             </div>
 
@@ -193,15 +123,11 @@ $support_info_card_delays = ['0.12s', '0.2s', '0.28s', '0.36s', '0.44s'];
                                     <select id="support-plugin" name="support_plugin" required>
                                         <option value="" selected>
                                             <?php printf(esc_html__('Select...', 'cubestheme')); ?></option>
-                                        <option value="views-counter-pro">
-                                            <?php printf(esc_html__('WSH Views Counter PRO', 'cubestheme')); ?></option>
-                                        <option value="editor-enhancer">
-                                            <?php printf(esc_html__('WSH Editor Enhancer', 'cubestheme')); ?></option>
-                                        <option value="news-suite">
-                                            <?php printf(esc_html__('News Portal Suite', 'cubestheme')); ?></option>
-                                        <option value="woo-suite">
-                                            <?php printf(esc_html__('WooCommerce Growth Suite', 'cubestheme')); ?>
-                                        </option>
+                                        <?php foreach ($support_products as $support_product) : ?>
+                                            <option value="<?php echo esc_attr($support_product->ID); ?>">
+                                                <?php echo esc_html(get_the_title($support_product)); ?>
+                                            </option>
+                                        <?php endforeach; ?>
                                     </select>
                                     <span class="support-select-icon" aria-hidden="true">
                                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
@@ -324,7 +250,8 @@ $support_info_card_delays = ['0.12s', '0.2s', '0.28s', '0.36s', '0.44s'];
                             <div class="error"></div>
                         </div>
 
-                        <input type="hidden" name="send" value="1">
+                        <?php wp_nonce_field('wsh_support_request', 'wsh_support_nonce'); ?>
+                        <input type="hidden" name="wsh_support_request" value="1">
 
                         <button type="submit" class="btn btn-primary">
                             <?php printf(esc_html__('Submit Request', 'cubestheme')); ?>
