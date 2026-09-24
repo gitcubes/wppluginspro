@@ -8,7 +8,7 @@ $blog_categories = get_categories([
 
 $default_category_id = (int) get_option('default_category');
 
-$paged = get_query_var('paged') ? get_query_var('paged') : 1;
+$paged = get_query_var('paged') ? get_query_var('paged') : (get_query_var('page') ? get_query_var('page') : 1);
 
 $postArgs = [
     'posts_per_page' => get_option('posts_per_page'),

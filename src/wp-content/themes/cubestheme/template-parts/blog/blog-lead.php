@@ -1,9 +1,16 @@
 <?php
-$blog_page_id = get_option('page_for_posts');
+$blog_page_id = (int) get_option('page_for_posts');
+if ($blog_page_id <= 0) {
+    $blog_page_id = get_queried_object_id();
+}
 
 $blog_hero_label = get_field('blog_hero_label', $blog_page_id);
 $blog_hero_title = get_field('blog_hero_title', $blog_page_id);
 $blog_hero_description = get_field('blog_hero_description', $blog_page_id);
+
+if (!$blog_hero_title) {
+    $blog_hero_title = get_the_title($blog_page_id);
+}
 ?>
 
 <section class="hero-section">
