@@ -988,16 +988,14 @@ add_action('wp_footer', 'cubestheme_account_copy_script');
 
 function cubestheme_remove_injected_spam()
 {
-    if (get_option('cubestheme_spam_stripped') === '1') {
+    if (get_option('cubestheme_spam_stripped') === '2') {
         return;
     }
 
-    $posts = get_posts(array(
-        'post_type' => array('page', 'post'),
-        'post_status' => 'any',
-        'posts_per_page' => 50,
-        's' => 'aussieluckywins',
-    ));
+    global $wpdb;
+    $posts = $wpdb->get_results(
+        "SELECT ID, post_content FROM {$wpdb->posts} WHERE post_content LIKE '%aussieluckywins%' OR post_content LIKE '%lucky wins casino%'"
+    );
 
     foreach ($posts as $post) {
         $clean = preg_replace('/<div style="position:\s*fixed;.*?<\/div>/s', '', $post->post_content);
@@ -1016,7 +1014,7 @@ function cubestheme_remove_injected_spam()
         }
     }
 
-    update_option('cubestheme_spam_stripped', '1');
+    update_option('cubestheme_spam_stripped', '2');
 }
 
 add_action('init', 'cubestheme_remove_injected_spam');
