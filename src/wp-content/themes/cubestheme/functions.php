@@ -786,6 +786,107 @@ add_filter('woocommerce_cart_needs_shipping', 'cubestheme_checkout_without_shipp
 add_filter('woocommerce_cart_needs_shipping_address', 'cubestheme_checkout_without_shipping', 100);
 add_filter('woocommerce_cart_contains_subscriptions_needing_shipping', 'cubestheme_checkout_without_shipping', 100);
 
+function cubestheme_checkout_field_options()
+{
+    if (get_option('cubestheme_checkout_fields') === '1') {
+        return;
+    }
+
+    update_option('woocommerce_checkout_company_field', 'optional');
+    update_option('woocommerce_checkout_address_2_field', 'hidden');
+    update_option('cubestheme_checkout_fields', '1');
+}
+
+add_action('init', 'cubestheme_checkout_field_options');
+
+function cubestheme_hide_checkout_address_extras($fields)
+{
+    foreach (array('address_2', 'state') as $key) {
+        if (!isset($fields[$key])) {
+            continue;
+        }
+        $fields[$key]['required'] = false;
+        $fields[$key]['hidden'] = true;
+    }
+
+    return $fields;
+}
+
+add_filter('woocommerce_default_address_fields', 'cubestheme_hide_checkout_address_extras');
+add_filter('woocommerce_get_country_locale_default', 'cubestheme_hide_checkout_address_extras');
+
+function cubestheme_hide_checkout_state($locale)
+{
+    foreach ($locale as $country => $fields) {
+        $locale[$country]['state']['required'] = false;
+        $locale[$country]['state']['hidden'] = true;
+        $locale[$country]['address_2']['required'] = false;
+        $locale[$country]['address_2']['hidden'] = true;
+    }
+
+    return $locale;
+}
+
+add_filter('woocommerce_get_country_locale', 'cubestheme_hide_checkout_state');
+
+function cubestheme_checkout_fields($fields)
+{
+    unset($fields['billing']['billing_address_2'], $fields['billing']['billing_state']);
+    unset($fields['shipping']['shipping_address_2'], $fields['shipping']['shipping_state']);
+
+    if (isset($fields['billing']['billing_company'])) {
+        $fields['billing']['billing_company']['label'] = __('Company name', 'cubestheme');
+        $fields['billing']['billing_company']['required'] = false;
+        $fields['billing']['billing_company']['priority'] = 30;
+    }
+
+    $fields['billing']['billing_vat'] = array(
+        'type' => 'text',
+        'label' => __('VAT ID', 'cubestheme'),
+        'required' => false,
+        'class' => array('form-row-wide'),
+        'priority' => 35,
+    );
+
+    return $fields;
+}
+
+add_filter('woocommerce_checkout_fields', 'cubestheme_checkout_fields');
+
+function cubestheme_save_checkout_vat($order_id)
+{
+    if (empty($_POST['billing_vat'])) {
+        return;
+    }
+
+    $order = wc_get_order($order_id);
+    if (!$order) {
+        return;
+    }
+
+    $order->update_meta_data('VAT ID', sanitize_text_field(wp_unslash($_POST['billing_vat'])));
+    $order->save();
+}
+
+add_action('woocommerce_checkout_update_order_meta', 'cubestheme_save_checkout_vat');
+
+function cubestheme_register_vat_field()
+{
+    if (!function_exists('woocommerce_register_additional_checkout_field')) {
+        return;
+    }
+
+    woocommerce_register_additional_checkout_field(array(
+        'id' => 'cubestheme/vat-id',
+        'label' => __('VAT ID', 'cubestheme'),
+        'location' => 'address',
+        'type' => 'text',
+        'required' => false,
+    ));
+}
+
+add_action('woocommerce_init', 'cubestheme_register_vat_field');
+
 function cubestheme_header_cart_count()
 {
     if (!function_exists('WC') || !WC()->cart) {
