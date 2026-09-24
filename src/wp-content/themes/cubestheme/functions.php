@@ -16,7 +16,7 @@ if (!defined('_S_VERSION')) {
 
 function themeVersion()
 {
-    return  '1.0.18';
+    return  '1.0.19';
 }
 
 // INCLUDE FILES
@@ -29,6 +29,12 @@ function cubestheme_scripts()
     wp_enqueue_script('lottie', get_template_directory_uri() . '/frontend/js/lottie-player.js', array(), '1.19.1', true);
     wp_enqueue_script('fancybox', get_template_directory_uri() . '/frontend/js/jquery.fancybox.min.js', array('jquerymin'), '3.3.5', true);
     wp_enqueue_script('main', get_template_directory_uri() . '/frontend/js/main.js', array('jquerymin'), themeVersion(), true);
+}
+
+add_action('wp_enqueue_scripts', 'cubestheme_header_cart_style', 200);
+
+function cubestheme_header_cart_style()
+{
     wp_enqueue_style('header-cart', get_template_directory_uri() . '/frontend/css/header-cart.css', array(), themeVersion());
 }
 

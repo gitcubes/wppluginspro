@@ -1,3 +1,21 @@
+header .mobile-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+header .mobile-panel .mobile-actions .icon-button {
+  flex: 0 0 48px;
+  width: 48px;
+  min-width: 48px;
+}
+
+header .mobile-panel .mobile-actions .cta-button {
+  flex: 1;
+  width: auto;
+}
+
 header .header-cart {
   position: relative;
 }

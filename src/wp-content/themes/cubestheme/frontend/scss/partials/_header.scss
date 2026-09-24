@@ -326,27 +326,19 @@ header {
 
     .mobile-actions {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
         gap: 10px;
 
-        .icon-button,
-        .cta-button {
-            width: 100%;
+        .icon-button {
+            flex: 0 0 48px;
+            width: 48px;
         }
 
-        @media (min-width: 641px) {
-            flex-direction: row;
-
-            .icon-button {
-                flex: 0 0 48px;
-                width: 48px;
-            }
-
-            .cta-button {
-                flex: 1;
-                width: auto;
-                padding-inline: 18px;
-            }
+        .cta-button {
+            flex: 1;
+            width: auto;
+            padding-inline: 18px;
         }
     }
 
