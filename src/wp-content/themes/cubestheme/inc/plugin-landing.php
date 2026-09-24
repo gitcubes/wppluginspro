@@ -503,7 +503,196 @@ function cubestheme_landing_is_included($text)
     return $text !== '' && $text !== 'no' && $text !== '—' && $text !== '-';
 }
 
+function cubestheme_find_landing_product($needles)
+{
+    $products = get_posts(array(
+        'post_type' => 'product',
+        'post_status' => 'publish',
+        'post_parent' => 0,
+        'posts_per_page' => -1,
+    ));
+
+    $best = 0;
+    $best_score = -1;
+
+    foreach ($products as $product) {
+        $title = (string) $product->post_title;
+        $matched = false;
+
+        foreach ($needles as $needle) {
+            if (stripos($title, $needle) !== false) {
+                $matched = true;
+                break;
+            }
+        }
+
+        if (!$matched) {
+            continue;
+        }
+
+        $score = 1;
+        $wc_product = function_exists('wc_get_product') ? wc_get_product($product->ID) : null;
+
+        if ($wc_product && $wc_product->is_type(array('variable', 'variable-subscription'))) {
+            $score += 10;
+        } elseif ($wc_product && $wc_product->is_type(array('subscription', 'simple'))) {
+            $score += 4;
+        }
+
+        if (stripos($title, '1 year') !== false) {
+            $score -= 2;
+        }
+
+        $score += max(0, 80 - strlen($title));
+
+        if ($score > $best_score) {
+            $best_score = $score;
+            $best = (int) $product->ID;
+        }
+    }
+
+    return $best;
+}
+
+function cubestheme_seed_remaining_landings()
+{
+    if (!function_exists('update_field')) {
+        return;
+    }
+
+    $files = glob(get_template_directory() . '/inc/landings/*.php');
+    if (!$files) {
+        return;
+    }
+
+    sort($files);
+
+    foreach ($files as $file) {
+        $landing = include $file;
+        if (!is_array($landing) || empty($landing['slug']) || empty($landing['fields']['landing_hero_title'])) {
+            continue;
+        }
+
+        $slug = sanitize_title($landing['slug']);
+        $seed_key = 'cubestheme_landing_seeded_' . $slug;
+        if (get_option($seed_key) === '1') {
+            continue;
+        }
+
+        $page = get_page_by_path($slug);
+
+        if (!$page instanceof WP_Post) {
+            $page_id = wp_insert_post(array(
+                'post_type' => 'page',
+                'post_status' => 'publish',
+                'post_title' => $landing['title'],
+                'post_name' => $slug,
+            ), true);
+
+            if (is_wp_error($page_id) || !$page_id) {
+                continue;
+            }
+
+            $page = get_post($page_id);
+        }
+
+        if (!$page instanceof WP_Post) {
+            continue;
+        }
+
+        update_post_meta($page->ID, '_wp_page_template', 'page-for-plugin-landing.php');
+
+        if (!get_field('landing_hero_title', $page->ID)) {
+
+        $id = $page->ID;
+
+        foreach ($landing['fields'] as $name => $value) {
+            update_field($name, $value, $id);
+        }
+
+        $needs = array();
+        foreach ($landing['needs'] as $text) {
+            $needs[] = array('item_text' => $text);
+        }
+        update_field('landing_needs_items', $needs, $id);
+
+        update_field('landing_features', $landing['features'], $id);
+
+        $compare = array();
+        foreach ($landing['compare'] as $row) {
+            $compare[] = array(
+                'feature' => $row[0],
+                'free_text' => $row[1],
+                'pro_text' => $row[2],
+            );
+        }
+        update_field('landing_compare_rows', $compare, $id);
+
+        $market = array();
+        foreach ($landing['market'] as $row) {
+            $market[] = array(
+                'feature' => $row[0],
+                'ours' => $row[1],
+                'competitor_a' => (int) $row[2],
+                'competitor_b' => (int) $row[3],
+            );
+        }
+        update_field('landing_market_rows', $market, $id);
+
+        $plan_bullets = array(
+            '1-site' => "Use on 1 WordPress site\nAll PRO features included\n1 year of updates and support",
+            '5-sites' => "Use on up to 5 WordPress sites\nAll PRO features included\n1 year of updates and support",
+            'unlimited' => "Use on unlimited WordPress sites\nAll PRO features included\n1 year of updates and support",
+        );
+        $plan_buttons = array(
+            '1-site' => 'Buy 1 site',
+            '5-sites' => 'Buy 5 sites',
+            'unlimited' => 'Buy unlimited',
+        );
+        $plans = array();
+        foreach (array('1-site', '5-sites', 'unlimited') as $plan_slug) {
+            $plans[] = array(
+                'plan_slug' => $plan_slug,
+                'plan_description' => isset($landing['plans'][$plan_slug]) ? $landing['plans'][$plan_slug] : '',
+                'plan_bullets' => $plan_bullets[$plan_slug],
+                'plan_button' => $plan_buttons[$plan_slug],
+                'plan_highlight' => $plan_slug === '5-sites' ? 1 : 0,
+            );
+        }
+        update_field('landing_plans', $plans, $id);
+
+        $faq = array();
+        foreach ($landing['faq'] as $item) {
+            $faq[] = array(
+                'question' => $item[0],
+                'answer' => $item[1],
+            );
+        }
+        update_field('landing_faq', $faq, $id);
+
+        }
+
+        cubestheme_link_landing_product($page->ID, $landing);
+
+        if (get_field('landing_hero_title', $page->ID)) {
+            update_option($seed_key, '1', false);
+        }
+    }
+}
+
+function cubestheme_link_landing_product($page_id, $landing)
+{
+    $product_id = cubestheme_find_landing_product(isset($landing['needles']) ? $landing['needles'] : array());
+    if ($product_id <= 0) {
+        return;
+    }
+
+    update_field('landing_product', $product_id, $page_id);
+    update_post_meta($product_id, 'wsh_landing_page_id', $page_id);
+}
+
 add_action('acf/init', function () {
     cubestheme_register_plugin_landing_fields();
     cubestheme_seed_plugin_landing();
+    cubestheme_seed_remaining_landings();
 });
