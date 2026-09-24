@@ -451,3 +451,90 @@
 .woocommerce-account .woocommerce-MyAccount-content > h2 {
   margin-top: 28px;
 }
+
+.woocommerce-account .woocommerce-ResetPassword,
+.woocommerce-account .lost_reset_password {
+  box-sizing: border-box;
+  max-width: 720px;
+  margin-top: 8px;
+  padding: 28px;
+  border: 1px solid rgba(3, 77, 211, 0.18);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.woocommerce-account .woocommerce-ResetPassword > p,
+.woocommerce-account .lost_reset_password > p {
+  margin: 0 0 18px;
+  color: rgba(27, 27, 33, 0.72);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.woocommerce-account .woocommerce-ResetPassword .form-row-first,
+.woocommerce-account .woocommerce-ResetPassword .form-row-last,
+.woocommerce-account .lost_reset_password .form-row-first,
+.woocommerce-account .lost_reset_password .form-row-last {
+  float: left;
+  width: calc(50% - 8px);
+  margin: 0 0 16px;
+}
+
+.woocommerce-account .woocommerce-ResetPassword .form-row-last,
+.woocommerce-account .lost_reset_password .form-row-last {
+  float: right;
+}
+
+.woocommerce-account .woocommerce-ResetPassword label,
+.woocommerce-account .lost_reset_password label {
+  display: block;
+  margin-bottom: 6px;
+  color: #1b1b21;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.woocommerce-account .woocommerce-ResetPassword input.input-text,
+.woocommerce-account .lost_reset_password input.input-text {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1px solid rgba(3, 77, 211, 0.2);
+  border-radius: 12px;
+  background: #fff;
+  font-size: 16px;
+}
+
+.woocommerce-account .woocommerce-ResetPassword .button,
+.woocommerce-account .lost_reset_password .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  margin-top: 8px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 999px;
+  background: #034dd3;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.woocommerce-account .woocommerce-ResetPassword .button:hover,
+.woocommerce-account .lost_reset_password .button:hover {
+  background: #3c8afe;
+  color: #fff;
+}
+
+@media (max-width: 700px) {
+  .woocommerce-account .woocommerce-ResetPassword .form-row-first,
+  .woocommerce-account .woocommerce-ResetPassword .form-row-last,
+  .woocommerce-account .lost_reset_password .form-row-first,
+  .woocommerce-account .lost_reset_password .form-row-last {
+    float: none;
+    width: 100%;
+  }
+}

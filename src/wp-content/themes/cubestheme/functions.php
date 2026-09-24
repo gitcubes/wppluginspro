@@ -16,7 +16,7 @@ if (!defined('_S_VERSION')) {
 
 function themeVersion()
 {
-    return  '1.0.17';
+    return  '1.0.18';
 }
 
 // INCLUDE FILES
@@ -985,3 +985,38 @@ function cubestheme_account_copy_script()
 }
 
 add_action('wp_footer', 'cubestheme_account_copy_script');
+
+function cubestheme_remove_injected_spam()
+{
+    if (get_option('cubestheme_spam_stripped') === '1') {
+        return;
+    }
+
+    $posts = get_posts(array(
+        'post_type' => array('page', 'post'),
+        'post_status' => 'any',
+        'posts_per_page' => 50,
+        's' => 'aussieluckywins',
+    ));
+
+    foreach ($posts as $post) {
+        $clean = preg_replace('/<div style="position:\s*fixed;.*?<\/div>/s', '', $post->post_content);
+        if ($clean !== $post->post_content) {
+            wp_update_post(array(
+                'ID' => $post->ID,
+                'post_content' => $clean,
+            ));
+        }
+
+        foreach (array('_yoast_wpseo_metadesc', 'rank_math_description', '_aioseo_description') as $meta_key) {
+            $description = (string) get_post_meta($post->ID, $meta_key, true);
+            if ($description !== '' && stripos($description, 'casino') !== false) {
+                delete_post_meta($post->ID, $meta_key);
+            }
+        }
+    }
+
+    update_option('cubestheme_spam_stripped', '1');
+}
+
+add_action('init', 'cubestheme_remove_injected_spam');
