@@ -454,6 +454,25 @@
     });
   }
 
+  function initFaqMore() {
+    document.querySelectorAll('[data-faq-more]').forEach(button => {
+      button.addEventListener('click', () => {
+        const section = button.closest('.faq');
+        if (!section) {
+          return;
+        }
+
+        const expanded = section.classList.toggle('is-expanded');
+        section.querySelectorAll('.accordion-item.is-extra').forEach(item => {
+          item.hidden = !expanded;
+        });
+        button.textContent = expanded
+          ? button.dataset.labelLess || 'See less'
+          : button.dataset.labelMore || 'See more';
+      });
+    });
+  }
+
   $(function () {
     initScrollAnimations();
     initHeaderScrollState();
@@ -462,5 +481,6 @@
     initAccordions();
     initModals();
     initSelectFieldStates();
+    initFaqMore();
   });
 })(jQuery);

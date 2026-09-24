@@ -348,7 +348,7 @@ $competitor_b = cubestheme_landing_value($page_id, 'landing_market_competitor_b'
                 $number = str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT);
                 $open = $index === 0;
                 ?>
-                <div class="box accordion-item<?php echo $open ? ' is-active' : ''; ?>" data-accordion-item>
+                <div class="box accordion-item<?php echo $open ? ' is-active' : ''; ?><?php echo $index >= 3 ? ' is-extra' : ''; ?>" data-accordion-item<?php echo $index >= 3 ? ' hidden' : ''; ?>>
                     <div class="single-accordion">
                         <button class="accordion-trigger" type="button" id="faq-trigger-<?php echo esc_attr($number); ?>" aria-expanded="<?php echo $open ? 'true' : 'false'; ?>" aria-controls="faq-panel-<?php echo esc_attr($number); ?>" data-accordion-trigger>
                             <div class="accordion-head d-flex align-items-center justify-content-between">
@@ -370,9 +370,12 @@ $competitor_b = cubestheme_landing_value($page_id, 'landing_market_competitor_b'
                 </div>
             <?php endforeach; ?>
         </div>
-        <?php if (cubestheme_landing_value($page_id, 'landing_faq_button') && cubestheme_landing_value($page_id, 'landing_faq_url')) : ?>
+        <?php if (count($faq_rows) > 3) : ?>
+            <?php $faq_more_label = cubestheme_landing_value($page_id, 'landing_faq_button') ?: __('See more', 'cubestheme'); ?>
             <div class="faq-footer animation" data-animation="slideUp" data-delay="0.18s">
-                <a href="<?php echo esc_url(cubestheme_landing_value($page_id, 'landing_faq_url')); ?>" class="btn btn-primary"><?php echo esc_html(cubestheme_landing_value($page_id, 'landing_faq_button')); ?></a>
+                <button type="button" class="btn btn-primary" data-faq-more data-label-more="<?php echo esc_attr($faq_more_label); ?>" data-label-less="<?php esc_attr_e('See less', 'cubestheme'); ?>">
+                    <?php echo esc_html($faq_more_label); ?>
+                </button>
             </div>
         <?php endif; ?>
     </div>

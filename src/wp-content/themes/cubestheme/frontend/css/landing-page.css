@@ -408,11 +408,19 @@ body {
 .faq .accordion .accordion-item.is-active .accordion-icon {
   transform: rotate(180deg);
 }
+.faq .accordion-item.is-extra[hidden] {
+  display: none;
+}
 .faq .faq-footer {
   margin-top: 32px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.faq .faq-footer .btn {
+  width: auto;
+  border: 0;
+  cursor: pointer;
 }
 
 .blog-item {

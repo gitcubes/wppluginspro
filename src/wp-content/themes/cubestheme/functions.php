@@ -16,7 +16,7 @@ if (!defined('_S_VERSION')) {
 
 function themeVersion()
 {
-    return  '1.0.9';
+    return  '1.0.10';
 }
 
 // INCLUDE FILES
@@ -28,7 +28,7 @@ function cubestheme_scripts()
     wp_enqueue_script('validate', get_template_directory_uri() . '/frontend/js/jquery.validate.min.js', array('jquerymin'), '1.19.1', true);
     wp_enqueue_script('lottie', get_template_directory_uri() . '/frontend/js/lottie-player.js', array(), '1.19.1', true);
     wp_enqueue_script('fancybox', get_template_directory_uri() . '/frontend/js/jquery.fancybox.min.js', array('jquerymin'), '3.3.5', true);
-    wp_enqueue_script('main', get_template_directory_uri() . '/frontend/js/main.js', array('jquerymin'), '1.0', true);
+    wp_enqueue_script('main', get_template_directory_uri() . '/frontend/js/main.js', array('jquerymin'), themeVersion(), true);
     wp_enqueue_style('header-cart', get_template_directory_uri() . '/frontend/css/header-cart.css', array(), themeVersion());
 }
 
