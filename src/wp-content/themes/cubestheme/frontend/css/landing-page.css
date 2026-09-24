@@ -3072,7 +3072,7 @@ header .mobile-actions .cta-button {
 
 .market-comparison-table {
   width: 100%;
-  min-width: 960px;
+  min-width: 1080px;
   border-collapse: separate;
   border-spacing: 0;
 }
@@ -3089,18 +3089,21 @@ header .mobile-actions .cta-button {
   letter-spacing: -0.44px;
 }
 .market-comparison-column--feature {
-  width: 30%;
+  width: 28%;
   padding: 18px 20px;
   border-top-left-radius: 16px;
   border-bottom-left-radius: 16px;
 }
 .market-comparison-column--featured {
-  width: 33%;
+  width: 30%;
 }
 .market-comparison-column--brand {
-  width: 18.5%;
-  padding: 18px 20px;
+  width: 21%;
+  padding: 18px 16px;
   text-align: center;
+  font-size: 16px;
+  line-height: 1.25;
+  text-wrap: balance;
 }
 .market-comparison-column:last-child {
   border-top-right-radius: 16px;
@@ -3121,7 +3124,7 @@ header .mobile-actions .cta-button {
 }
 
 .market-comparison-feature {
-  width: 30%;
+  width: 28%;
   padding: 16px 18px;
   color: #000;
   font-size: 18px;
@@ -3141,11 +3144,11 @@ header .mobile-actions .cta-button {
 }
 
 .market-comparison-detail {
-  width: 33%;
+  width: 30%;
 }
 
 .market-comparison-status {
-  width: 18.5%;
+  width: 21%;
   text-align: center;
 }
 

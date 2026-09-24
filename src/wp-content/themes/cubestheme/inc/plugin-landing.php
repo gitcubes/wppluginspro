@@ -691,8 +691,25 @@ function cubestheme_link_landing_product($page_id, $landing)
     update_post_meta($product_id, 'wsh_landing_page_id', $page_id);
 }
 
+function cubestheme_fix_catalog_competitor_labels()
+{
+    if (get_option('cubestheme_catalog_market_labels') === '1' || !function_exists('update_field')) {
+        return;
+    }
+
+    $page = get_page_by_path('product-catalog');
+    if (!$page instanceof WP_Post) {
+        return;
+    }
+
+    update_field('landing_market_competitor_a', 'Basic feeds', $page->ID);
+    update_field('landing_market_competitor_b', 'Enterprise platforms', $page->ID);
+    update_option('cubestheme_catalog_market_labels', '1', false);
+}
+
 add_action('acf/init', function () {
     cubestheme_register_plugin_landing_fields();
     cubestheme_seed_plugin_landing();
     cubestheme_seed_remaining_landings();
+    cubestheme_fix_catalog_competitor_labels();
 });
