@@ -16,7 +16,7 @@ if (!defined('_S_VERSION')) {
 
 function themeVersion()
 {
-    return  '1.0.22';
+    return  '1.0.23';
 }
 
 // INCLUDE FILES

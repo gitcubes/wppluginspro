@@ -109,9 +109,21 @@ $plan_delays = ['0.1s', '0.18s', '0.26s', '0.34s'];
                                 </div>
                             <?php endif; ?>
                             <div class="cta">
-                                <a href="<?php echo esc_url(get_permalink($suite_id)); ?>" class="btn btn-primary">
-                                    <?php esc_html_e('Buy suite', 'cubestheme'); ?>
-                                </a>
+                                <?php
+                                $suite_plans = function_exists('cubestheme_landing_variations') ? cubestheme_landing_variations($suite_id) : array();
+                                $suite_page_id = get_queried_object_id();
+                                ?>
+                                <?php if ($suite_plans) : ?>
+                                    <?php foreach ($suite_plans as $plan) : ?>
+                                        <a href="<?php echo esc_url(cubestheme_landing_cart_url($suite_page_id, $plan)); ?>" class="btn <?php echo $plan['slug'] === '5-sites' ? 'btn-primary' : 'btn-white'; ?>">
+                                            <?php echo esc_html(sprintf(__('Buy %s', 'cubestheme'), $plan['label'])); ?>
+                                        </a>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <a href="<?php echo esc_url(get_permalink($suite_id)); ?>" class="btn btn-primary">
+                                        <?php esc_html_e('Buy suite', 'cubestheme'); ?>
+                                    </a>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

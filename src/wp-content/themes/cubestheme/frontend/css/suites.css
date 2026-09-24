@@ -2859,7 +2859,7 @@ header .mobile-actions .cta-button {
 }
 @media (min-width: 1440px) {
   .suite-plans .suite-plan-grid .suite-plan-card .cta {
-    flex-direction: row;
+    flex-direction: column;
   }
 }
 .suite-plans .suite-plan-grid .suite-plan-card .btn {
