@@ -234,8 +234,14 @@ class WSH_Tickets
 			echo '<option value="' . esc_attr($key) . '" ' . selected($status, $key, false) . '>' . esc_html($label) . '</option>';
 		}
 		echo '</select></p>';
-		echo '<p><label for="wsh_ticket_reply"><strong>' . esc_html__('Reply to the customer', 'wsh-ticketing') . '</strong></label><br>';
-		echo '<textarea id="wsh_ticket_reply" name="wsh_ticket_reply" rows="6" style="width:100%;"></textarea></p>';
+		echo '<p><strong>' . esc_html__('Reply to the customer', 'wsh-ticketing') . '</strong></p>';
+		wp_editor('', 'wsh_ticket_reply', array(
+			'textarea_name' => 'wsh_ticket_reply',
+			'textarea_rows' => 10,
+			'media_buttons' => false,
+			'teeny' => false,
+			'quicktags' => true,
+		));
 		echo '<p class="description">' . esc_html__('Saving a reply emails it to the customer and marks the ticket answered.', 'wsh-ticketing') . '</p>';
 	}
 
@@ -257,8 +263,8 @@ class WSH_Tickets
 			$status = 'wsh-open';
 		}
 
-		$reply = sanitize_textarea_field(wp_unslash($_POST['wsh_ticket_reply'] ?? ''));
-		if ($reply !== '') {
+		$reply = wp_kses_post(wp_unslash($_POST['wsh_ticket_reply'] ?? ''));
+		if (trim(wp_strip_all_tags($reply)) !== '') {
 			$user = wp_get_current_user();
 			wp_insert_comment(array(
 				'comment_post_ID' => $post_id,
@@ -279,7 +285,7 @@ class WSH_Tickets
 					__('Support reply', 'wsh-ticketing'),
 					'<p style="margin:0 0 12px;font-size:16px;line-height:1.5;">' . esc_html(sprintf(__('Hi %s,', 'wsh-ticketing'), $name)) . '</p>'
 					. '<p style="margin:0 0 12px;font-size:16px;line-height:1.5;">' . esc_html(sprintf(__('Reply to “%s”:', 'wsh-ticketing'), $post->post_title)) . '</p>'
-					. '<div style="font-size:16px;line-height:1.5;">' . nl2br(esc_html($reply)) . '</div>'
+					. '<div style="font-size:16px;line-height:1.5;">' . $reply . '</div>'
 				);
 			}
 
