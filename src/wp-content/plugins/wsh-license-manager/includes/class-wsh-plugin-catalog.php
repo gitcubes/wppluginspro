@@ -27,6 +27,9 @@ class WSH_Plugin_Catalog
 
 		add_filter('woocommerce_account_menu_items', array(__CLASS__, 'account_menu_items'));
 		add_action('woocommerce_account_plugin-files_endpoint', array(__CLASS__, 'render_account_downloads'));
+		add_action('woocommerce_thankyou', array(__CLASS__, 'render_thankyou_access'), 5);
+		add_action('woocommerce_account_dashboard', array(__CLASS__, 'render_dashboard_access'), 5);
+		add_action('woocommerce_order_details_after_order_table', array(__CLASS__, 'render_order_access'), 5);
 	}
 
 	public static function register_account_endpoint()
@@ -330,68 +333,207 @@ class WSH_Plugin_Catalog
 		}
 
 		if (! isset($updated['plugin-files'])) {
-			$updated['plugin-files'] = __('Plugins', 'wsh-license-manager');
+			$updated['plugin-files'] = __('Licenses & downloads', 'wsh-license-manager');
+		} else {
+			$updated['plugin-files'] = __('Licenses & downloads', 'wsh-license-manager');
 		}
+
+		unset($updated['downloads']);
 
 		return $updated;
 	}
 
-	public static function render_account_downloads()
+	public static function render_thankyou_access($order_id)
 	{
-		$user = wp_get_current_user();
-		$licenses = array();
-
-		if ($user instanceof WP_User && $user->user_email !== '') {
-			$licenses = get_posts(array(
-				'post_type'      => 'wsh_license',
-				'post_status'    => 'publish',
-				'posts_per_page' => 50,
-				'meta_query'     => array(
-					'relation' => 'AND',
-					array(
-						'key'   => 'wsh_customer_email',
-						'value' => $user->user_email,
-					),
-					array(
-						'key'   => 'wsh_status',
-						'value' => 'active',
-					),
-				),
-			));
+		$order = wc_get_order($order_id);
+		if (! $order instanceof WC_Order) {
+			return;
 		}
 
-		echo '<h2>' . esc_html__('My Downloads', 'wsh-license-manager') . '</h2>';
-		echo '<div class="woocommerce-info">' . esc_html__('Always download the latest version available. Previous versions may not be secure or stable.', 'wsh-license-manager') . '</div>';
+		self::render_purchase_access(
+			self::licenses_for_order($order),
+			__('Your license and download', 'wsh-license-manager'),
+			__('Copy the license key into the plugin on your site. Download the PRO file here. The site address is saved when you activate the plugin.', 'wsh-license-manager')
+		);
+	}
+
+	public static function render_dashboard_access()
+	{
+		self::render_purchase_access(
+			self::licenses_for_user(),
+			__('Your licenses and downloads', 'wsh-license-manager'),
+			__('Download the plugin and copy the license key. Paste the key in the plugin settings on your site.', 'wsh-license-manager')
+		);
+	}
+
+	public static function render_order_access($order)
+	{
+		if (! $order instanceof WC_Order) {
+			return;
+		}
+
+		$licenses = self::licenses_for_order($order);
+		if (empty($licenses)) {
+			return;
+		}
+
+		self::render_purchase_access(
+			$licenses,
+			__('License and download for this order', 'wsh-license-manager'),
+			__('Use this key in the plugin. Download the PRO file from the list.', 'wsh-license-manager')
+		);
+	}
+
+	private static function render_purchase_access($licenses, $title, $text)
+	{
+		$account_url = function_exists('wc_get_account_endpoint_url') ? wc_get_account_endpoint_url('plugin-files') : home_url('/my-account/plugin-files/');
+
+		echo '<section class="wsh-purchase-access">';
+		echo '<h2>' . esc_html($title) . '</h2>';
+		echo '<p>' . esc_html($text) . '</p>';
+
+		if (empty($licenses)) {
+			echo '<p>' . esc_html__('Your license is still being prepared. Open Licenses & downloads in a moment.', 'wsh-license-manager') . '</p>';
+		} else {
+			self::render_license_table($licenses);
+		}
+
+		echo '<p class="wsh-purchase-access__action"><a class="button" href="' . esc_url($account_url) . '">' . esc_html__('Open licenses and downloads', 'wsh-license-manager') . '</a></p>';
+		echo '</section>';
+	}
+
+	public static function render_account_downloads()
+	{
+		$licenses = self::licenses_for_user();
+
+		echo '<h2>' . esc_html__('Licenses and downloads', 'wsh-license-manager') . '</h2>';
+		echo '<div class="woocommerce-info">' . esc_html__('Copy the license key into the plugin. Download the latest PRO file. Older files can be less secure.', 'wsh-license-manager') . '</div>';
 
 		if (empty($licenses)) {
 			echo '<p>' . esc_html__('You do not have an active plugin license yet.', 'wsh-license-manager') . '</p>';
 			return;
 		}
 
-		echo '<table class="shop_table shop_table_responsive"><thead><tr>';
-		echo '<th>' . esc_html__('Download name', 'wsh-license-manager') . '</th>';
+		self::render_license_table($licenses);
+	}
+
+	private static function render_license_table($licenses)
+	{
+		echo '<table class="shop_table shop_table_responsive wsh-license-table"><thead><tr>';
+		echo '<th>' . esc_html__('Plugin', 'wsh-license-manager') . '</th>';
 		echo '<th>' . esc_html__('License key', 'wsh-license-manager') . '</th>';
-		echo '<th>' . esc_html__('Files', 'wsh-license-manager') . '</th>';
+		echo '<th>' . esc_html__('Download', 'wsh-license-manager') . '</th>';
 		echo '</tr></thead><tbody>';
 
 		foreach ($licenses as $license) {
 			$products = self::products_for_license($license->ID);
 			$name = self::license_label($license->ID, $products);
 			$key = (string) get_post_meta($license->ID, 'wsh_license_key', true);
+			$max_sites = (int) get_post_meta($license->ID, 'wsh_max_sites', true);
+			$sites = $max_sites === 0 ? __('Unlimited sites', 'wsh-license-manager') : sprintf(_n('%d site', '%d sites', $max_sites, 'wsh-license-manager'), $max_sites);
 
-			echo '<tr><td>' . esc_html($name) . '</td><td><code>' . esc_html($key) . '</code></td><td>';
+			echo '<tr><td>' . esc_html($name) . '<br><span class="wsh-license-sites">' . esc_html($sites) . '</span></td>';
+			echo '<td><code class="wsh-license-key">' . esc_html($key) . '</code></td><td>';
 			if (empty($products)) {
 				esc_html_e('Not available yet', 'wsh-license-manager');
 			} else {
 				foreach ($products as $product) {
-					self::render_version_links($product, 'free');
 					self::render_version_links($product, 'pro');
+					self::render_version_links($product, 'free');
 				}
 			}
 			echo '</td></tr>';
 		}
 
 		echo '</tbody></table>';
+	}
+
+	private static function licenses_for_user()
+	{
+		$user = wp_get_current_user();
+		if (! $user instanceof WP_User || $user->user_email === '') {
+			return array();
+		}
+
+		return get_posts(array(
+			'post_type'      => 'wsh_license',
+			'post_status'    => 'publish',
+			'posts_per_page' => 50,
+			'meta_query'     => array(
+				'relation' => 'AND',
+				array(
+					'key'   => 'wsh_customer_email',
+					'value' => $user->user_email,
+				),
+				array(
+					'key'   => 'wsh_status',
+					'value' => 'active',
+				),
+			),
+		));
+	}
+
+	private static function licenses_for_order($order)
+	{
+		$licenses = array();
+		$seen = array();
+
+		if (function_exists('wcs_get_subscriptions_for_order')) {
+			$subscriptions = wcs_get_subscriptions_for_order($order, array('order_type' => 'any'));
+			foreach ($subscriptions as $subscription) {
+				$found = get_posts(array(
+					'post_type'      => 'wsh_license',
+					'post_status'    => 'publish',
+					'posts_per_page' => 20,
+					'meta_key'       => 'wsh_subscription_id',
+					'meta_value'     => (string) $subscription->get_id(),
+				));
+				foreach ($found as $license) {
+					if (! isset($seen[$license->ID])) {
+						$seen[$license->ID] = true;
+						$licenses[] = $license;
+					}
+				}
+			}
+		}
+
+		if (! empty($licenses)) {
+			return $licenses;
+		}
+
+		$email = $order->get_billing_email();
+		$product_ids = array();
+		foreach ($order->get_items() as $item) {
+			if (method_exists($item, 'get_product_id')) {
+				$product_ids[] = (int) $item->get_product_id();
+			}
+		}
+
+		if ($email === '' || empty($product_ids)) {
+			return array();
+		}
+
+		return get_posts(array(
+			'post_type'      => 'wsh_license',
+			'post_status'    => 'publish',
+			'posts_per_page' => 20,
+			'meta_query'     => array(
+				'relation' => 'AND',
+				array(
+					'key'   => 'wsh_customer_email',
+					'value' => $email,
+				),
+				array(
+					'key'     => 'wsh_product_id',
+					'value'   => $product_ids,
+					'compare' => 'IN',
+				),
+				array(
+					'key'   => 'wsh_status',
+					'value' => 'active',
+				),
+			),
+		));
 	}
 
 	public static function delete_private_file($post_id)
