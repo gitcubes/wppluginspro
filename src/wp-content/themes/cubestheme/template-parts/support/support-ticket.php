@@ -12,8 +12,26 @@ $replies = get_comments(array(
 	'order' => 'ASC',
 ));
 $product = (string) get_post_meta($ticket->ID, 'wsh_ticket_product', true);
+$customer_name = (string) get_post_meta($ticket->ID, 'wsh_ticket_name', true);
+$messages = array(array(
+	'author' => $customer_name,
+	'role' => __('Customer', 'cubestheme'),
+	'staff' => false,
+	'date' => $ticket->post_date,
+	'html' => wpautop($ticket->post_content),
+));
+foreach ($replies as $reply) {
+	$staff = (int) $reply->user_id > 0;
+	$messages[] = array(
+		'author' => $reply->comment_author,
+		'role' => $staff ? __('Support', 'cubestheme') : __('Customer', 'cubestheme'),
+		'staff' => $staff,
+		'date' => $reply->comment_date,
+		'html' => wpautop($reply->comment_content),
+	);
+}
 ?>
-<section class="support-request">
+<section class="support-request support-thread-page">
 	<div class="container">
 		<div class="support-layout">
 			<div class="support-request-panel box">
@@ -32,14 +50,14 @@ $product = (string) get_post_meta($ticket->ID, 'wsh_ticket_product', true);
 					<?php endif; ?>
 
 					<div class="support-thread">
-						<article class="support-thread-item">
-							<p><strong><?php echo esc_html(get_post_meta($ticket->ID, 'wsh_ticket_name', true)); ?></strong></p>
-							<div><?php echo wp_kses_post(wpautop($ticket->post_content)); ?></div>
-						</article>
-						<?php foreach ($replies as $reply) : ?>
-							<article class="support-thread-item">
-								<p><strong><?php echo esc_html($reply->comment_author); ?></strong></p>
-								<div><?php echo wp_kses_post(wpautop($reply->comment_content)); ?></div>
+						<?php foreach ($messages as $message) : ?>
+							<article class="support-thread-item<?php echo $message['staff'] ? ' is-staff' : ' is-customer'; ?>">
+								<div class="support-thread-meta">
+									<span class="support-thread-name"><?php echo esc_html($message['author']); ?></span>
+									<span class="support-thread-role"><?php echo esc_html($message['role']); ?></span>
+									<time><?php echo esc_html(mysql2date('M j, H:i', $message['date'])); ?></time>
+								</div>
+								<div class="support-thread-bubble"><?php echo wp_kses_post($message['html']); ?></div>
 							</article>
 						<?php endforeach; ?>
 					</div>

@@ -3260,21 +3260,73 @@ footer .box .content .footer-bottom .footer-links a {
   font-size: 14px;
   font-weight: 500;
 }
+.support-request.support-thread-page .support-layout {
+  display: block;
+  max-width: 760px;
+  margin: 0 auto;
+}
 .support-thread {
-  display: grid;
-  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
   margin: 0 0 28px;
 }
 .support-thread-item {
-  padding: 16px 18px;
-  border: 1px solid #e4e7ee;
-  border-radius: 12px;
-  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 86%;
 }
-.support-thread-item p {
+.support-thread-item.is-staff {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+.support-thread-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 4px 6px;
+  font-size: 13px;
+  line-height: 1.3;
+}
+.support-thread-name {
+  color: #1b1b21;
+  font-weight: 700;
+}
+.support-thread-role {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eef1f6;
+  color: #5c6570;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.support-thread-item.is-staff .support-thread-role {
+  background: #034dd3;
+  color: #fff;
+}
+.support-thread-meta time {
+  color: #8b93a0;
+  font-size: 12px;
+}
+.support-thread-bubble {
+  padding: 14px 16px;
+  border: 1px solid #e4e7ee;
+  border-radius: 4px 16px 16px 16px;
+  background: #fff;
+  color: #1b1b21;
+}
+.support-thread-item.is-staff .support-thread-bubble {
+  border-color: #d5e3fb;
+  border-radius: 16px 4px 16px 16px;
+  background: #eef3fb;
+}
+.support-thread-bubble p {
   margin: 0 0 8px;
 }
-.support-thread-item p:last-child {
+.support-thread-bubble p:last-child {
   margin-bottom: 0;
 }
 /*# sourceMappingURL=support.css.map */
