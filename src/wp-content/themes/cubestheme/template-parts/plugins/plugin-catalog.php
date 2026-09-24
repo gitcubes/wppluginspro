@@ -4,11 +4,16 @@ $plugin_catalog_title = get_field('plugin_catalog_title');
 
 $paged = get_query_var('paged') ? get_query_var('paged') : 1;
 $default_category_id = (int) get_option('default_product_cat');
+$excluded_category_ids = $default_category_id > 0 ? [$default_category_id] : [];
+$suites_category = get_term_by('slug', 'suites', 'product_cat');
+if ($suites_category instanceof WP_Term) {
+    $excluded_category_ids[] = (int) $suites_category->term_id;
+}
 
 $plugin_categories = get_terms([
     'taxonomy'   => 'product_cat',
     'hide_empty' => true,
-    'exclude'    => $default_category_id > 0 ? [$default_category_id] : [],
+    'exclude'    => $excluded_category_ids,
 ]);
 
 $category_ids = (!is_wp_error($plugin_categories) && $plugin_categories) ? wp_list_pluck($plugin_categories, 'term_id') : [];
