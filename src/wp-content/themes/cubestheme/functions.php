@@ -1018,3 +1018,49 @@ function cubestheme_remove_injected_spam()
 }
 
 add_action('init', 'cubestheme_remove_injected_spam');
+
+function cubestheme_email_brand_options()
+{
+    if (get_option('cubestheme_email_brand') === '1') {
+        return;
+    }
+
+    update_option('woocommerce_email_background_color', '#eef3fb');
+    update_option('woocommerce_email_body_background_color', '#ffffff');
+    update_option('woocommerce_email_base_color', '#034dd3');
+    update_option('woocommerce_email_text_color', '#1b1b21');
+    update_option('woocommerce_email_footer_text_color', '#5c6570');
+    update_option('cubestheme_email_brand', '1');
+}
+
+add_action('init', 'cubestheme_email_brand_options');
+
+function cubestheme_email_footer_text()
+{
+    return 'WP Plugins Pro · wppluginspro.io';
+}
+
+add_filter('woocommerce_email_footer_text', 'cubestheme_email_footer_text');
+
+function cubestheme_email_styles($css)
+{
+    $css .= '
+        #outer_wrapper { background-color: #eef3fb; }
+        #wrapper { padding: 32px 0; }
+        #template_header_image { background-color: #034dd3; padding: 18px 32px; border-radius: 16px 16px 0 0; }
+        #template_header_image p, .email-logo-text { color: #ffffff !important; font-size: 18px; font-weight: 700; margin: 0; }
+        #inner_wrapper, #template_container { border-radius: 0 0 16px 16px; }
+        h1 { color: #1b1b21; font-size: 28px; line-height: 1.2; }
+        h2 { color: #1b1b21; font-size: 18px; }
+        a { color: #034dd3; }
+        #addresses a, address a { color: #1b1b21; text-decoration: none; }
+        .email-introduction a { display: inline-block; margin: 8px 0; padding: 12px 22px; background: #034dd3; color: #ffffff !important; text-decoration: none; border-radius: 999px; font-weight: 700; }
+        table.td th, .order-item-data th { color: #5c6570; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+        #template_footer { color: #5c6570; }
+        #template_footer a { color: #034dd3; }
+    ';
+
+    return $css;
+}
+
+add_filter('woocommerce_email_styles', 'cubestheme_email_styles');
