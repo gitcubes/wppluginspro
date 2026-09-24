@@ -3174,6 +3174,10 @@ header .mobile-actions .cta-button {
 .market-comparison-icon--positive {
   margin-top: 1px;
 }
+.market-comparison-status .market-comparison-icon {
+  margin-left: auto;
+  margin-right: auto;
+}
 .market-comparison-icon--negative {
   margin: 0 auto;
 }
