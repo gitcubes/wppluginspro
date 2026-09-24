@@ -436,7 +436,7 @@ class WSH_Tickets
 		if ($html === '') {
 			return '';
 		}
-		if (strpos($html, '<') === false) {
+		if (! preg_match('/<(?:p|br|div|li|ul|ol|h[1-6]|blockquote)\b/i', $html)) {
 			$html = wpautop($html);
 		}
 		$html = wp_kses_post($html);
