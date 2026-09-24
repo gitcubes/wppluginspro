@@ -1,6 +1,6 @@
 .woocommerce-account .commerce-page .page-title {
-  margin-bottom: 28px;
-  font-size: 40px;
+  margin-bottom: 24px;
+  font-size: 32px;
   text-align: left;
 }
 
@@ -13,8 +13,8 @@
 
 @media (min-width: 900px) {
   .woocommerce-account .account-layout {
-    grid-template-columns: 240px minmax(0, 1fr);
-    gap: 32px;
+    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 48px;
   }
 }
 
@@ -26,7 +26,9 @@
 }
 
 .woocommerce-account .account-nav {
+  max-width: 100%;
   padding: 10px;
+  overflow: hidden;
   border: 1px solid rgba(3, 77, 211, 0.12);
   border-radius: 16px;
   background: #fff;
@@ -92,12 +94,18 @@
   gap: 20px;
 }
 
+.woocommerce-account .woocommerce-MyAccount-content > .account-intro {
+  margin-bottom: 24px;
+}
+
 .woocommerce-account .account-intro {
   display: flex;
   flex-wrap: wrap;
   gap: 16px 24px;
   align-items: flex-end;
   justify-content: space-between;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .woocommerce-account .account-intro p,
@@ -409,4 +417,37 @@
   border: 1px dashed rgba(3, 77, 211, 0.3);
   border-radius: 16px;
   background: #fff;
+}
+
+.woocommerce-account .woocommerce-customer-details {
+  margin-top: 28px;
+}
+
+.woocommerce-account .woocommerce-customer-details .col-1,
+.woocommerce-account .woocommerce-customer-details .col-2,
+.woocommerce-account .woocommerce-columns--addresses {
+  float: none;
+  width: 100%;
+}
+
+.woocommerce-account .woocommerce-customer-details address {
+  display: block;
+  margin: 12px 0 0;
+  padding: 20px 24px;
+  border: 1px solid rgba(3, 77, 211, 0.18);
+  border-radius: 16px;
+  background: #fff;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.woocommerce-account .woocommerce-customer-details address p {
+  margin: 8px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.woocommerce-account .woocommerce-MyAccount-content > h2 {
+  margin-top: 28px;
 }
