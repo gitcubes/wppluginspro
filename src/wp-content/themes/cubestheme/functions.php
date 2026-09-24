@@ -1064,3 +1064,33 @@ function cubestheme_email_styles($css)
 }
 
 add_filter('woocommerce_email_styles', 'cubestheme_email_styles');
+
+function cubestheme_brand_email_html($heading, $body_html)
+{
+    $heading = esc_html($heading);
+
+    return '<!DOCTYPE html><html><body style="margin:0;padding:0;background:#eef3fb;">'
+        . '<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#eef3fb;"><tr><td align="center" style="padding:32px 16px;">'
+        . '<table width="600" cellpadding="0" cellspacing="0" role="presentation" style="max-width:600px;width:100%;">'
+        . '<tr><td style="background:#034dd3;padding:18px 32px;border-radius:16px 16px 0 0;color:#ffffff;font-family:Helvetica,Arial,sans-serif;font-size:18px;font-weight:700;">WP Plugins Pro</td></tr>'
+        . '<tr><td style="background:#ffffff;padding:32px;border-radius:0 0 16px 16px;font-family:Helvetica,Arial,sans-serif;color:#1b1b21;">'
+        . '<h1 style="margin:0 0 16px;font-size:28px;line-height:1.2;font-weight:700;">' . $heading . '</h1>'
+        . $body_html
+        . '</td></tr>'
+        . '<tr><td style="padding:16px 8px;color:#5c6570;font-family:Helvetica,Arial,sans-serif;font-size:13px;">WP Plugins Pro · wppluginspro.io</td></tr>'
+        . '</table></td></tr></table></body></html>';
+}
+
+function cubestheme_password_changed_email($email, $user)
+{
+    $login = $user instanceof WP_User ? $user->user_login : '';
+    $email['message'] = cubestheme_brand_email_html(
+        'Password changed',
+        '<p style="margin:0;font-size:16px;line-height:1.5;">The password was changed for <strong>' . esc_html($login) . '</strong>.</p>'
+    );
+    $email['headers'] = array('Content-Type: text/html; charset=UTF-8');
+
+    return $email;
+}
+
+add_filter('wp_password_change_notification_email', 'cubestheme_password_changed_email', 10, 2);
