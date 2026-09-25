@@ -56,6 +56,8 @@ function theme_front_page_settings() {
 
         $copyright_text = esc_attr($_POST["copyright_text"]);
         update_option("cubestheme_copyright_text", $copyright_text);
+
+        update_option("cubestheme_company_logo_id", absint($_POST["company_logo_id"] ?? 0));
         
         $message = "Custom Settings have been updated successfully.";
     }
@@ -70,6 +72,8 @@ function theme_front_page_settings() {
  
     $footer_text = stripslashes(get_option("cubestheme_footer_text"));
     $copyright_text = stripslashes(get_option("cubestheme_copyright_text"));
+    $company_logo_id = absint(get_option("cubestheme_company_logo_id"));
+    $company_logo_url = $company_logo_id ? wp_get_attachment_image_url($company_logo_id, 'medium') : '';
     ?>
     <div class="wrap">
     <h2>Company Info</h2>
@@ -80,6 +84,18 @@ function theme_front_page_settings() {
             }
             ?>
             <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">
+                        <label><?php esc_html_e('Company logo', 'cubestheme'); ?></label>
+                    </th>
+                    <td>
+                        <input type="hidden" id="company_logo_id" name="company_logo_id" value="<?php echo esc_attr($company_logo_id); ?>">
+                        <img id="company_logo_preview" src="<?php echo esc_url($company_logo_url); ?>" alt="" style="display:<?php echo $company_logo_url ? 'block' : 'none'; ?>;max-width:180px;height:auto;margin:0 0 12px;background:#fff;border:1px solid #dcdcde;border-radius:8px;padding:8px;">
+                        <button type="button" class="button" id="company_logo_select"><?php esc_html_e('Upload logo', 'cubestheme'); ?></button>
+                        <button type="button" class="button" id="company_logo_remove" style="display:<?php echo $company_logo_url ? 'inline-block' : 'none'; ?>;"><?php esc_html_e('Remove logo', 'cubestheme'); ?></button>
+                        <p class="description"><?php esc_html_e('Shown at the top of customer invoices. Use a PNG with a transparent background.', 'cubestheme'); ?></p>
+                    </td>
+                </tr>
                 <tr valign="top">
                     <th scope="row">
                         <label for="Company Name">
@@ -189,3 +205,44 @@ function setup_theme_admin_menus() {
 // This tells WordPress to call the function named "setup_theme_admin_menus"
 // when it's time to create the menu pages.
 add_action("admin_menu", "setup_theme_admin_menus");
+
+function cubestheme_company_logo_media($hook)
+{
+    if ($hook !== 'toplevel_page_tut_theme_settings') {
+        return;
+    }
+
+    wp_enqueue_media();
+    wp_add_inline_script('jquery', "
+        jQuery(function ($) {
+            var frame;
+            $('#company_logo_select').on('click', function (event) {
+                event.preventDefault();
+                if (frame) {
+                    frame.open();
+                    return;
+                }
+                frame = wp.media({
+                    title: 'Company logo',
+                    button: { text: 'Use this logo' },
+                    multiple: false
+                });
+                frame.on('select', function () {
+                    var attachment = frame.state().get('selection').first().toJSON();
+                    $('#company_logo_id').val(attachment.id);
+                    $('#company_logo_preview').attr('src', attachment.url).show();
+                    $('#company_logo_remove').show();
+                });
+                frame.open();
+            });
+            $('#company_logo_remove').on('click', function (event) {
+                event.preventDefault();
+                $('#company_logo_id').val('0');
+                $('#company_logo_preview').attr('src', '').hide();
+                $(this).hide();
+            });
+        });
+    ");
+}
+
+add_action('admin_enqueue_scripts', 'cubestheme_company_logo_media');

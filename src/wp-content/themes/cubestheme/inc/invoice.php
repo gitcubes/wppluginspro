@@ -114,6 +114,10 @@ function cubestheme_render_invoice($order)
 		$order->get_billing_email(),
 	));
 
+	$logo_id = absint(get_option('cubestheme_company_logo_id'));
+	$logo_url = $logo_id ? wp_get_attachment_image_url($logo_id, 'medium') : '';
+	$status = wc_get_order_status_name($order->get_status());
+
 	nocache_headers();
 	header('Content-Type: text/html; charset=UTF-8');
 	?>
@@ -123,29 +127,36 @@ function cubestheme_render_invoice($order)
 	<meta charset="utf-8">
 	<title><?php echo esc_html($number); ?></title>
 	<style>
-		body { margin: 0; background: #eef3fb; color: #1b1b21; font-family: Helvetica, Arial, sans-serif; }
-		.toolbar { max-width: 800px; margin: 24px auto 0; padding: 0 16px; text-align: right; }
+		* { box-sizing: border-box; }
+		body { margin: 0; background: #eef3fb; color: #1b1b21; font-family: Helvetica, Arial, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+		.toolbar { max-width: 820px; margin: 24px auto 0; padding: 0 16px; text-align: right; }
 		.toolbar button { border: 0; border-radius: 999px; background: #034dd3; color: #fff; font: 600 14px Helvetica, Arial, sans-serif; padding: 12px 18px; cursor: pointer; }
-		.sheet { max-width: 800px; margin: 16px auto 40px; background: #fff; border-radius: 16px; overflow: hidden; }
-		.bar { background: #034dd3; color: #fff; padding: 18px 32px; font-size: 18px; font-weight: 700; }
-		.pad { padding: 32px; }
-		h1 { margin: 0 0 8px; font-size: 28px; }
-		.meta { margin: 0 0 28px; color: #5c6570; }
-		.columns { display: flex; gap: 32px; margin-bottom: 28px; }
-		.columns div { flex: 1; }
-		h2 { margin: 0 0 8px; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: #5c6570; }
-		p { margin: 0; line-height: 1.5; }
-		table { width: 100%; border-collapse: collapse; }
-		th { text-align: left; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: #5c6570; padding: 10px 0; border-bottom: 1px solid #e4e7ee; }
-		td { padding: 12px 0; border-bottom: 1px solid #eef1f6; vertical-align: top; }
+		.sheet { max-width: 820px; margin: 16px auto 40px; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 40px rgba(3, 77, 211, 0.08); }
+		.pad { padding: 36px 40px 32px; }
+		.head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; padding-bottom: 22px; border-bottom: 3px solid #034dd3; }
+		.logo { display: block; max-width: 210px; max-height: 64px; width: auto; height: auto; }
+		.wordmark { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+		.doc { text-align: right; }
+		.doc h1 { margin: 0; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: #034dd3; }
+		.doc strong { display: block; margin-top: 4px; font-size: 26px; letter-spacing: -0.4px; }
+		.doc p { margin: 8px 0 0; color: #5c6570; font-size: 13px; line-height: 1.5; }
+		.parties { display: flex; gap: 24px; margin: 28px 0; }
+		.card { flex: 1; padding: 16px 18px; border: 1px solid #d9e2f2; border-radius: 12px; }
+		h2 { margin: 0 0 8px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #034dd3; }
+		.card p { margin: 0; line-height: 1.55; font-size: 14px; }
+		table.items { width: 100%; border-collapse: collapse; }
+		table.items th { text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #5c6570; padding: 10px 8px; border-bottom: 2px solid #034dd3; }
+		table.items td { padding: 14px 8px; border-bottom: 1px solid #e6ebf5; vertical-align: top; font-size: 14px; }
 		.num { text-align: right; }
-		.totals { margin-top: 16px; margin-left: auto; width: 260px; }
-		.totals td { border: 0; padding: 4px 0; }
-		.totals .grand td { font-size: 18px; font-weight: 700; padding-top: 10px; }
+		.totals { margin: 18px 0 0 auto; width: 280px; border-collapse: collapse; }
+		.totals td { padding: 6px 8px; font-size: 14px; }
+		.totals .grand td { padding-top: 12px; border-top: 2px solid #034dd3; font-size: 18px; font-weight: 700; }
+		.foot { margin-top: 36px; padding-top: 16px; border-top: 1px solid #e6ebf5; color: #5c6570; font-size: 12px; }
+		@page { margin: 14mm; }
 		@media print {
 			body { background: #fff; }
 			.toolbar { display: none; }
-			.sheet { margin: 0; border-radius: 0; }
+			.sheet { margin: 0; max-width: none; border-radius: 0; box-shadow: none; }
 		}
 	</style>
 </head>
@@ -154,21 +165,36 @@ function cubestheme_render_invoice($order)
 		<button type="button" onclick="window.print()"><?php esc_html_e('Download PDF', 'cubestheme'); ?></button>
 	</div>
 	<article class="sheet">
-		<div class="bar">WP Plugins Pro</div>
 		<div class="pad">
-			<h1><?php esc_html_e('Invoice', 'cubestheme'); ?> <?php echo esc_html($number); ?></h1>
-			<p class="meta"><?php echo esc_html(sprintf(__('Issued %1$s · Order #%2$s · %3$s', 'cubestheme'), $issued_label, $order->get_order_number(), wc_get_order_status_name($order->get_status()))); ?></p>
-			<div class="columns">
+			<header class="head">
 				<div>
+					<?php if ($logo_url) : ?>
+						<img class="logo" src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
+					<?php else : ?>
+						<p class="wordmark"><?php echo esc_html(get_bloginfo('name')); ?></p>
+					<?php endif; ?>
+				</div>
+				<div class="doc">
+					<h1><?php esc_html_e('Invoice', 'cubestheme'); ?></h1>
+					<strong><?php echo esc_html($number); ?></strong>
+					<p>
+						<?php echo esc_html($issued_label); ?><br>
+						<?php echo esc_html(sprintf(__('Order #%s', 'cubestheme'), $order->get_order_number())); ?><br>
+						<?php echo esc_html($status); ?>
+					</p>
+				</div>
+			</header>
+			<div class="parties">
+				<div class="card">
 					<h2><?php esc_html_e('From', 'cubestheme'); ?></h2>
 					<p><?php echo wp_kses_post(implode('<br>', array_map('esc_html', $seller))); ?></p>
 				</div>
-				<div>
+				<div class="card">
 					<h2><?php esc_html_e('Bill to', 'cubestheme'); ?></h2>
 					<p><?php echo wp_kses_post(implode('<br>', array_map('esc_html', $customer))); ?></p>
 				</div>
 			</div>
-			<table>
+			<table class="items">
 				<thead>
 					<tr>
 						<th><?php esc_html_e('Description', 'cubestheme'); ?></th>
@@ -202,6 +228,7 @@ function cubestheme_render_invoice($order)
 					<td class="num"><?php echo wp_kses_post($order->get_formatted_order_total()); ?></td>
 				</tr>
 			</table>
+			<p class="foot"><?php esc_html_e('Thank you for your business.', 'cubestheme'); ?> WP Plugins Pro · wppluginspro.io</p>
 		</div>
 	</article>
 </body>
