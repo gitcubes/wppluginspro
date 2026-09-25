@@ -1213,7 +1213,7 @@
                                 </div>
                             </div>
                             <h4>
-                                Unlimited Sites
+                                25 Sites
                             </h4>
                         </div>
                         <h3>$149 / year</h3>
@@ -1224,7 +1224,7 @@
                             <ul class="list-unstyled">
                                 <li>
                                     <img src="img/homepage/check-circle-blue.svg" alt="">
-                                    <span>Use on unlimited sites</span>
+                                    <span>Use on up to 25 WordPress sites</span>
                                 </li>
                                 <li>
                                     <img src="img/homepage/check-circle-blue.svg" alt="">
@@ -1236,7 +1236,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <a href="pricing.php#newsletter-signup" class="btn btn-white">Buy unlimited</a>
+                        <a href="pricing.php#newsletter-signup" class="btn btn-white">Buy 25 sites</a>
                     </div>
                 </div>
             </div>

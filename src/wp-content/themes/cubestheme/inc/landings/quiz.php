@@ -77,7 +77,7 @@ return array(
     'plans' => array(
         '1-site' => 'For one blog, educational site, publication or marketing website.',
         '5-sites' => 'For agencies, publishers and teams managing multiple WordPress sites.',
-        'unlimited' => 'For agencies, networks and professional WordPress operations.',
+        '25-sites' => 'For agencies, networks and professional WordPress operations.',
     ),
     'faq' => array(
         array('What is WSH Quiz PRO?', 'WSH Quiz PRO is a WordPress plugin for creating interactive quizzes and tests directly from the dashboard, with tools for questions, answers, scoring, results and publishing.'),

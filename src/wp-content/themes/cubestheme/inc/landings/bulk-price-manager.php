@@ -77,7 +77,7 @@ return array(
     'plans' => array(
         '1-site' => 'For one WooCommerce store with ongoing pricing-management needs.',
         '5-sites' => 'For agencies, retailers and teams managing multiple WooCommerce stores.',
-        'unlimited' => 'For WooCommerce agencies and professional multi-store operations.',
+        '25-sites' => 'For WooCommerce agencies and professional multi-store operations.',
     ),
     'faq' => array(
         array('What is WSH WooCommerce Bulk Price Manager PRO?', 'It is a WooCommerce pricing plugin that updates prices across many products from one bulk workflow.'),

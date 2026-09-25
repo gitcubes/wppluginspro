@@ -77,7 +77,7 @@ return array(
     'plans' => array(
         '1-site' => 'For one WooCommerce store with ongoing catalog-management needs.',
         '5-sites' => 'For agencies, retailers and teams managing multiple WooCommerce stores.',
-        'unlimited' => 'For WooCommerce agencies and professional multi-site catalog operations.',
+        '25-sites' => 'For WooCommerce agencies and professional multi-site catalog operations.',
     ),
     'faq' => array(
         array('What is WSH WooCommerce Bulk Taxonomy Editor PRO?', 'It is a WooCommerce catalog plugin that bulk edits product categories, tags, attributes and supported taxonomies without opening products one by one.'),

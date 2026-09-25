@@ -28,7 +28,7 @@ function cubestheme_register_plugin_landing_fields()
         'title' => 'Plugin landing',
         'fields' => array(
             cubestheme_landing_field('field_landing_product_note', '', '', 'message', array(
-                'message' => 'Buy buttons use the product that lists this page as its Landing page. You can also pick that product below. Prices come from its 1 site, 5 sites, and unlimited variations.',
+                'message' => 'Buy buttons use the product that lists this page as its Landing page. You can also pick that product below. Prices come from its 1 site, 5 sites, and 25 site variations.',
             )),
             cubestheme_landing_field('field_landing_product', 'Product', 'landing_product', 'post_object', array(
                 'post_type' => array('product'),
@@ -111,7 +111,7 @@ function cubestheme_register_plugin_landing_fields()
             cubestheme_landing_field('field_landing_plans', 'Plan copy', 'landing_plans', 'repeater', array(
                 'layout' => 'block',
                 'button_label' => 'Add plan copy',
-                'instructions' => 'Match the variation slug: 1-site, 5-sites, or unlimited. The price and the cart button come from the product.',
+                'instructions' => 'Match the variation slug: 1-site, 5-sites, or 25-sites. The price and the cart button come from the product.',
                 'sub_fields' => array(
                     $text('field_landing_plan_slug', 'Variation slug', 'plan_slug'),
                     $area('field_landing_plan_description', 'Description', 'plan_description'),
@@ -257,7 +257,7 @@ function cubestheme_landing_variations($product_id)
         return array();
     }
 
-    $order = array('1-site' => 1, '5-sites' => 2, 'unlimited' => 3);
+    $order = array('1-site' => 1, '5-sites' => 2, '25-sites' => 3);
     $items = array();
 
     foreach ($product->get_children() as $child_id) {
@@ -470,10 +470,10 @@ function cubestheme_seed_plugin_landing()
             'plan_highlight' => 1,
         ),
         array(
-            'plan_slug' => 'unlimited',
+            'plan_slug' => '25-sites',
             'plan_description' => 'For serious agencies, networks and hosting partners.',
-            'plan_bullets' => "Use on unlimited sites\nAll PRO features included\nBest price per site as you scale",
-            'plan_button' => 'Buy unlimited',
+            'plan_bullets' => "Use on up to 25 WordPress sites\nAll PRO features included\nBest price per site as you scale",
+            'plan_button' => 'Buy 25 sites',
             'plan_highlight' => 0,
         ),
     ), $id);
@@ -642,15 +642,15 @@ function cubestheme_seed_remaining_landings()
         $plan_bullets = array(
             '1-site' => "Use on 1 WordPress site\nAll PRO features included\n1 year of updates and support",
             '5-sites' => "Use on up to 5 WordPress sites\nAll PRO features included\n1 year of updates and support",
-            'unlimited' => "Use on unlimited WordPress sites\nAll PRO features included\n1 year of updates and support",
+            '25-sites' => "Use on up to 25 WordPress sites\nAll PRO features included\n1 year of updates and support",
         );
         $plan_buttons = array(
             '1-site' => 'Buy 1 site',
             '5-sites' => 'Buy 5 sites',
-            'unlimited' => 'Buy unlimited',
+            '25-sites' => 'Buy 25 sites',
         );
         $plans = array();
-        foreach (array('1-site', '5-sites', 'unlimited') as $plan_slug) {
+        foreach (array('1-site', '5-sites', '25-sites') as $plan_slug) {
             $plans[] = array(
                 'plan_slug' => $plan_slug,
                 'plan_description' => isset($landing['plans'][$plan_slug]) ? $landing['plans'][$plan_slug] : '',
@@ -761,7 +761,7 @@ function cubestheme_apply_views_counter_landing_copy()
         'landing_market_competitor_b' => '',
         'landing_pricing_label' => 'Pricing',
         'landing_pricing_title' => 'WordPress Post Views Counter PRO Pricing',
-        'landing_pricing_text' => 'Annual licenses for 1 site, 5 sites or unlimited sites. The price on each card is the live subscription price, with updates and support for the year.',
+        'landing_pricing_text' => 'Annual licenses for 1 site, 5 sites or 25 sites. The price on each card is the live subscription price, with updates and support for the year.',
         'landing_faq_label' => 'FAQ',
         'landing_faq_title' => 'Frequently Asked Questions About WordPress Post Views',
         'landing_faq_button' => 'See more',
@@ -922,10 +922,64 @@ function cubestheme_landing_seo_head()
 
 add_action('wp_head', 'cubestheme_landing_seo_head', 1);
 
+function cubestheme_migrate_plans_to_25_sites()
+{
+    if (get_option('cubestheme_plans_25') === '1' || !function_exists('update_field')) {
+        return;
+    }
+
+    $pages = get_posts(array(
+        'post_type' => 'page',
+        'post_status' => array('publish', 'draft', 'private'),
+        'posts_per_page' => -1,
+        'meta_key' => '_wp_page_template',
+        'meta_value' => 'page-for-plugin-landing.php',
+    ));
+
+    foreach ($pages as $page) {
+        $plans = cubestheme_landing_rows($page->ID, 'landing_plans');
+        $changed = false;
+
+        foreach ($plans as $index => $plan) {
+            if (($plan['plan_slug'] ?? '') === 'unlimited') {
+                $plans[$index]['plan_slug'] = '25-sites';
+                $changed = true;
+            }
+            if (!empty($plans[$index]['plan_button']) && stripos($plans[$index]['plan_button'], 'unlimited') !== false) {
+                $plans[$index]['plan_button'] = 'Buy 25 sites';
+                $changed = true;
+            }
+            if (!empty($plans[$index]['plan_bullets'])) {
+                $bullets = str_ireplace(
+                    array('Use on unlimited sites', 'Use on unlimited WordPress sites'),
+                    'Use on up to 25 WordPress sites',
+                    $plans[$index]['plan_bullets']
+                );
+                if ($bullets !== $plans[$index]['plan_bullets']) {
+                    $plans[$index]['plan_bullets'] = $bullets;
+                    $changed = true;
+                }
+            }
+        }
+
+        if ($changed) {
+            update_field('landing_plans', $plans, $page->ID);
+        }
+
+        $pricing = cubestheme_landing_value($page->ID, 'landing_pricing_text');
+        if ($pricing !== '' && stripos($pricing, 'unlimited') !== false) {
+            update_field('landing_pricing_text', str_ireplace('unlimited', '25', $pricing), $page->ID);
+        }
+    }
+
+    update_option('cubestheme_plans_25', '1', false);
+}
+
 add_action('acf/init', function () {
     cubestheme_register_plugin_landing_fields();
     cubestheme_seed_plugin_landing();
     cubestheme_seed_remaining_landings();
     cubestheme_fix_catalog_competitor_labels();
     cubestheme_apply_views_counter_landing_copy();
+    cubestheme_migrate_plans_to_25_sites();
 });

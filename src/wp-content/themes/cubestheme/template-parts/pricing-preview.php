@@ -34,7 +34,7 @@
                             <ul class="list-unstyled">
                                 <li>
                                     <img src="img/homepage/check-circle-blue.svg" alt="">
-                                    <span>1, 5 or unlimited site options</span>
+                                    <span>1, 5 or 25 site options</span>
                                 </li>
                                 <li>
                                     <img src="img/homepage/check-circle-blue.svg" alt="">
@@ -105,7 +105,7 @@
                             <ul class="list-unstyled">
                                 <li>
                                     <img src="img/homepage/check-circle-blue.svg" alt="">
-                                    <span>1, 5 or unlimited site options</span>
+                                    <span>1, 5 or 25 site options</span>
                                 </li>
                                 <li>
                                     <img src="img/homepage/check-circle-blue.svg" alt="">

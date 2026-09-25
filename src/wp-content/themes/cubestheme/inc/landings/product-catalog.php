@@ -77,7 +77,7 @@ return array(
     'plans' => array(
         '1-site' => 'For one WooCommerce store.',
         '5-sites' => 'For agencies, retailers and teams managing multiple stores.',
-        'unlimited' => 'For WooCommerce agencies, store networks and professional implementations.',
+        '25-sites' => 'For WooCommerce agencies, store networks and professional implementations.',
     ),
     'faq' => array(
         array('What is WSH Product Catalog PRO?', 'It is a WooCommerce catalog and product-feed plugin that prepares product data for supported sales and advertising channels from WordPress.'),

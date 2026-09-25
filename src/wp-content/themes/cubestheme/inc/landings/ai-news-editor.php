@@ -77,7 +77,7 @@ return array(
     'plans' => array(
         '1-site' => 'For a single publication, blog or editorial website.',
         '5-sites' => 'For agencies, publishers and teams managing multiple WordPress sites.',
-        'unlimited' => 'For agencies, publishing networks and larger WordPress operations.',
+        '25-sites' => 'For agencies, publishing networks and larger WordPress operations.',
     ),
     'faq' => array(
         array('What is WSH AI News Editor PRO?', 'It is an AI-powered editorial assistant for WordPress publishers, news websites, magazines and content teams. It brings rewriting, summarization, headline generation, translation and content optimization into the WordPress editorial workflow.'),

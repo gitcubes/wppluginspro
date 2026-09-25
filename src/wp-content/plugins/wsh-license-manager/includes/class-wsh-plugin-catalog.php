@@ -31,6 +31,7 @@ class WSH_Plugin_Catalog
 		add_action('woocommerce_account_dashboard', array(__CLASS__, 'render_dashboard_access'), 5);
 		add_action('woocommerce_order_details_after_order_table', array(__CLASS__, 'render_order_access'), 5);
 		add_action('woocommerce_after_register_post_type', array(__CLASS__, 'seed_suite_products'));
+		add_action('woocommerce_after_register_post_type', array(__CLASS__, 'replace_unlimited_with_25_sites'), 20);
 	}
 
 	public static function register_account_endpoint()
@@ -120,7 +121,7 @@ class WSH_Plugin_Catalog
 				<p class="form-field">
 					<label><?php esc_html_e('Site variations', 'wsh-license-manager'); ?></label>
 					<a class="button" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=wsh_create_site_variations&product_id=' . $product_id), 'wsh_create_site_variations_' . $product_id)); ?>">
-						<?php esc_html_e('Add 1 site, 5 sites, and unlimited', 'wsh-license-manager'); ?>
+						<?php esc_html_e('Add 1 site, 5 sites, and 25 sites', 'wsh-license-manager'); ?>
 					</a>
 					<span class="description"><?php esc_html_e('Turns this into a variable subscription. Existing test products stay as they are until you click this.', 'wsh-license-manager'); ?></span>
 				</p>
@@ -212,7 +213,7 @@ class WSH_Plugin_Catalog
 			'name'          => 'wsh_max_sites[' . $loop . ']',
 			'value'         => get_post_meta($variation->ID, 'wsh_max_sites', true),
 			'label'         => __('Max sites', 'wsh-license-manager'),
-			'description'   => __('1, 5, or 0 for unlimited.', 'wsh-license-manager'),
+			'description'   => __('1, 5, 25, or 0 for an older unlimited key.', 'wsh-license-manager'),
 			'type'          => 'number',
 			'wrapper_class' => 'form-row form-row-full',
 			'custom_attributes' => array('min' => '0', 'step' => '1'),
@@ -273,7 +274,7 @@ class WSH_Plugin_Catalog
 		clean_post_cache($product_id);
 
 		$terms = array();
-		foreach (array('1-site' => '1 site', '5-sites' => '5 sites', 'unlimited' => 'Unlimited') as $slug => $name) {
+		foreach (array('1-site' => '1 site', '5-sites' => '5 sites', '25-sites' => '25 sites') as $slug => $name) {
 			$term = get_term_by('slug', $slug, 'pa_sites');
 			if ($term instanceof WP_Term) {
 				$terms[$slug] = (int) $term->term_id;
@@ -292,7 +293,7 @@ class WSH_Plugin_Catalog
 		$product->set_attributes(array($attribute));
 		$product->save();
 
-		$limits = array('1-site' => 1, '5-sites' => 5, 'unlimited' => 0);
+		$limits = array('1-site' => 1, '5-sites' => 5, '25-sites' => 25);
 		$price = get_post_meta($product_id, '_subscription_price', true);
 		if ($price === '') {
 			$price = get_post_meta($product_id, '_regular_price', true);
@@ -770,11 +771,120 @@ class WSH_Plugin_Catalog
 			));
 		}
 
-		foreach (array('1-site' => '1 site', '5-sites' => '5 sites', 'unlimited' => 'Unlimited') as $slug => $name) {
+		foreach (array('1-site' => '1 site', '5-sites' => '5 sites', '25-sites' => '25 sites', 'unlimited' => 'Unlimited') as $slug => $name) {
 			if (! term_exists($slug, 'pa_sites')) {
 				wp_insert_term($name, 'pa_sites', array('slug' => $slug));
 			}
 		}
+	}
+
+	/**
+	 * Retire the public Unlimited variation. A 25-site variation takes its price.
+	 * The old variation stays private so an existing subscription can still renew.
+	 */
+	public static function replace_unlimited_with_25_sites()
+	{
+		if (get_option('wsh_sites_25_migration') === '1' || ! class_exists('WC_Product_Subscription_Variation')) {
+			return;
+		}
+
+		self::ensure_sites_attribute();
+		$term_25 = get_term_by('slug', '25-sites', 'pa_sites');
+		$term_unlimited = get_term_by('slug', 'unlimited', 'pa_sites');
+		if (! $term_25 instanceof WP_Term) {
+			return;
+		}
+
+		$products = get_posts(array(
+			'post_type'      => 'product',
+			'post_status'    => array('publish', 'private', 'draft'),
+			'post_parent'    => 0,
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		));
+
+		foreach ($products as $product_id) {
+			$unlimited_id = 0;
+			$children = get_posts(array(
+				'post_type'      => 'product_variation',
+				'post_parent'    => $product_id,
+				'post_status'    => array('publish', 'private'),
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+			));
+
+			foreach ($children as $child_id) {
+				if ((string) get_post_meta($child_id, 'attribute_pa_sites', true) === 'unlimited') {
+					$unlimited_id = (int) $child_id;
+					break;
+				}
+			}
+
+			if ($unlimited_id <= 0) {
+				continue;
+			}
+
+			if (! self::variation_exists($product_id, '25-sites')) {
+				$variation = new WC_Product_Subscription_Variation();
+				$variation->set_parent_id($product_id);
+				$variation->set_attributes(array('pa_sites' => '25-sites'));
+				$variation->set_status('publish');
+				$variation->set_virtual(true);
+				$variation->update_meta_data('wsh_max_sites', 25);
+				$new_id = $variation->save();
+
+				$copy_keys = array(
+					'_regular_price',
+					'_sale_price',
+					'_price',
+					'_subscription_price',
+					'_subscription_period',
+					'_subscription_period_interval',
+					'_subscription_length',
+					'_subscription_sign_up_fee',
+					'_subscription_trial_period',
+					'_subscription_trial_length',
+					'_sale_price_dates_from',
+					'_sale_price_dates_to',
+				);
+				foreach ($copy_keys as $key) {
+					$value = get_post_meta($unlimited_id, $key, true);
+					if ($value === '' || $value === false) {
+						continue;
+					}
+					update_post_meta($new_id, $key, $value);
+				}
+			}
+
+			wp_update_post(array(
+				'ID'          => $unlimited_id,
+				'post_status' => 'private',
+			));
+
+			$product = wc_get_product($product_id);
+			if ($product && method_exists($product, 'get_attributes')) {
+				$attributes = $product->get_attributes();
+				if (isset($attributes['pa_sites'])) {
+					$options = array_map('intval', $attributes['pa_sites']->get_options());
+					if ($term_unlimited instanceof WP_Term) {
+						$options = array_values(array_diff($options, array((int) $term_unlimited->term_id)));
+					}
+					if (! in_array((int) $term_25->term_id, $options, true)) {
+						$options[] = (int) $term_25->term_id;
+					}
+					$attributes['pa_sites']->set_options($options);
+					$product->set_attributes($attributes);
+					$product->save();
+					wp_set_object_terms($product_id, $options, 'pa_sites');
+				}
+			}
+
+			if (class_exists('WC_Product_Variable')) {
+				WC_Product_Variable::sync($product_id);
+			}
+		}
+
+		update_option('wsh_sites_25_migration', '1', false);
 	}
 
 	private static function variation_exists($product_id, $slug)
@@ -912,21 +1022,21 @@ class WSH_Plugin_Catalog
 				'slug' => 'news-suite',
 				'group' => 'news',
 				'excerpt' => 'One yearly license for every News plugin. The site limit is on this key.',
-				'prices' => array('1-site' => '149', '5-sites' => '249', 'unlimited' => '349'),
+				'prices' => array('1-site' => '149', '5-sites' => '249', '25-sites' => '349'),
 			),
 			array(
 				'title' => 'WSH Ecommerce Suite',
 				'slug' => 'ecommerce-suite',
 				'group' => 'ecommerce',
 				'excerpt' => 'One yearly license for every Ecommerce plugin. The site limit is on this key.',
-				'prices' => array('1-site' => '149', '5-sites' => '249', 'unlimited' => '349'),
+				'prices' => array('1-site' => '149', '5-sites' => '249', '25-sites' => '349'),
 			),
 			array(
 				'title' => 'WSH All-Access',
 				'slug' => 'all-access',
 				'group' => 'all',
 				'excerpt' => 'One yearly license for every PRO plugin, in both News and Ecommerce. Less than buying both suites.',
-				'prices' => array('1-site' => '199', '5-sites' => '299', 'unlimited' => '399'),
+				'prices' => array('1-site' => '199', '5-sites' => '299', '25-sites' => '399'),
 			),
 		);
 
@@ -970,7 +1080,7 @@ class WSH_Plugin_Catalog
 
 			self::ensure_sites_attribute();
 			$terms = array();
-			foreach (array('1-site' => '1 site', '5-sites' => '5 sites', 'unlimited' => 'Unlimited') as $slug => $name) {
+			foreach (array('1-site' => '1 site', '5-sites' => '5 sites', '25-sites' => '25 sites') as $slug => $name) {
 				$term = get_term_by('slug', $slug, 'pa_sites');
 				if ($term instanceof WP_Term) {
 					$terms[$slug] = (int) $term->term_id;
@@ -987,7 +1097,7 @@ class WSH_Plugin_Catalog
 			$product->set_attributes(array($attribute));
 			$product->save();
 
-			$limits = array('1-site' => 1, '5-sites' => 5, 'unlimited' => 0);
+			$limits = array('1-site' => 1, '5-sites' => 5, '25-sites' => 25);
 			foreach ($limits as $slug => $max_sites) {
 				if (self::variation_exists($product_id, $slug)) {
 					continue;
