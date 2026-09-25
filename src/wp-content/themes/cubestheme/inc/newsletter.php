@@ -6,8 +6,11 @@ if (!defined('ABSPATH')) {
 function cubestheme_brevo_api_key()
 {
 	$saved = get_option('cubestheme_brevo_api_key');
-	if (is_string($saved) && $saved !== '') {
-		return $saved;
+	if (is_string($saved) && trim($saved) !== '') {
+		$key = trim($saved);
+		$key = preg_replace('/^(api-key:|bearer)\s*/i', '', $key);
+
+		return trim($key);
 	}
 
 	$smtp = get_option('wp_mail_smtp');
@@ -80,6 +83,8 @@ function cubestheme_brevo_subscribe($email)
 	$api_key = cubestheme_brevo_api_key();
 	$list_id = cubestheme_brevo_list_id($api_key);
 	if ($api_key === '' || $list_id <= 0) {
+		update_option('cubestheme_brevo_last_error', $api_key === '' ? 'missing-key' : 'missing-list', false);
+
 		return false;
 	}
 
@@ -97,16 +102,29 @@ function cubestheme_brevo_subscribe($email)
 		'timeout' => 15,
 	));
 	if (is_wp_error($response)) {
+		update_option('cubestheme_brevo_last_error', 'request:' . $response->get_error_code(), false);
+
 		return false;
 	}
 
 	$code = (int) wp_remote_retrieve_response_code($response);
+	$body = wp_remote_retrieve_body($response);
 	if ($code >= 200 && $code < 300) {
+		delete_option('cubestheme_brevo_last_error');
+
+		return true;
+	}
+	if (strpos($body, 'duplicate_parameter') !== false || strpos($body, 'already exist') !== false) {
+		delete_option('cubestheme_brevo_last_error');
+
 		return true;
 	}
 
-	$body = wp_remote_retrieve_body($response);
-	return strpos($body, 'duplicate_parameter') !== false || strpos($body, 'already exist') !== false;
+	$decoded = json_decode($body, true);
+	$detail = is_array($decoded) ? sanitize_text_field(($decoded['code'] ?? '') . ' ' . ($decoded['message'] ?? '')) : 'http-' . $code;
+	update_option('cubestheme_brevo_last_error', $code . ' ' . $detail, false);
+
+	return false;
 }
 
 function cubestheme_newsletter_signup()
@@ -135,6 +153,10 @@ function cubestheme_newsletter_notice()
 	if ($status === 'ok') {
 		echo '<p class="newsletter-note">' . esc_html__('You are on the list. Thank you.', 'cubestheme') . '</p>';
 	} elseif ($status === 'error') {
+		$detail = sanitize_text_field((string) get_option('cubestheme_brevo_last_error'));
 		echo '<p class="newsletter-note">' . esc_html__('We could not add that email. Try again in a moment.', 'cubestheme') . '</p>';
+		if ($detail !== '') {
+			echo "\n<!-- brevo-error: " . esc_html($detail) . " -->\n";
+		}
 	}
 }
