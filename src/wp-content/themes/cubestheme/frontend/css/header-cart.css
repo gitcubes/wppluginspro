@@ -15,6 +15,24 @@
   color: #e8fff2;
 }
 
+header .nav a.active,
+header .mobile-panel a.active {
+  color: #034dd3;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-weight: 700;
+}
+
+header.is-scrolled .nav a.active {
+  background: rgba(3, 77, 211, 0.1);
+}
+
+header .mobile-panel a.mobile-link.active {
+  color: #034dd3;
+  background: #fff;
+}
+
 header .mobile-actions {
   display: flex;
   flex-direction: row;

@@ -12,7 +12,7 @@ if (empty($primaryMenuItems)) {
     return;
 }
 
-$currentURL = trailingslashit(home_url($wp->request ?? ''));
+$currentPath = cubestheme_nav_path(home_url($wp->request ?? ''));
 $topLevelItems = array();
 $subMenuItemsByParent = array();
 
@@ -33,15 +33,14 @@ foreach ($primaryMenuItems as $primaryMenuItem) {
 
 foreach ($topLevelItems as $primaryMenuItem) {
     $activeClass = '';
-    $primaryMenuURL = untrailingslashit($primaryMenuItem->url);
     $subMenuItems = $subMenuItemsByParent[$primaryMenuItem->ID] ?? array();
 
-    if (untrailingslashit($currentURL) === $primaryMenuURL) {
+    if (cubestheme_nav_is_current($primaryMenuURL, $currentPath)) {
         $activeClass = 'active';
     }
 
     foreach ($subMenuItems as $subMenuItem) {
-        if (untrailingslashit($currentURL) === untrailingslashit($subMenuItem->url)) {
+        if (cubestheme_nav_is_current($subMenuItem->url, $currentPath)) {
             $activeClass = 'active';
             break;
         }
@@ -50,17 +49,19 @@ foreach ($topLevelItems as $primaryMenuItem) {
     $desktopLinkClass = trim($linkClass . ' ' . $activeClass);
 ?>
     <a href="<?php echo esc_url($primaryMenuItem->url); ?>"
-        <?php echo $desktopLinkClass ? ' class="' . esc_attr($desktopLinkClass) . '"' : ''; ?>>
+        <?php echo $desktopLinkClass ? ' class="' . esc_attr($desktopLinkClass) . '"' : ''; ?>
+        <?php echo $activeClass ? ' aria-current="page"' : ''; ?>>
         <?php echo esc_html($primaryMenuItem->title); ?>
     </a>
     <?php
 
     foreach ($subMenuItems as $subMenuItem) {
-        $submenuActiveClass = untrailingslashit($currentURL) === untrailingslashit($subMenuItem->url) ? 'active' : '';
+        $submenuActiveClass = cubestheme_nav_is_current($subMenuItem->url, $currentPath) ? 'active' : '';
         $submenuClasses = trim($submenuLinkClass . ' is-submenu-link ' . $submenuActiveClass);
     ?>
         <a href="<?php echo esc_url($subMenuItem->url); ?>"
-            <?php echo $submenuClasses ? ' class="' . esc_attr($submenuClasses) . '"' : ''; ?>>
+            <?php echo $submenuClasses ? ' class="' . esc_attr($submenuClasses) . '"' : ''; ?>
+            <?php echo $submenuActiveClass ? ' aria-current="page"' : ''; ?>>
             <?php echo esc_html($subMenuItem->title); ?>
         </a>
 <?php

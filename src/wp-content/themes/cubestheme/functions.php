@@ -16,7 +16,7 @@ if (!defined('_S_VERSION')) {
 
 function themeVersion()
 {
-    return  '1.0.29';
+    return  '1.0.30';
 }
 
 // INCLUDE FILES
@@ -888,6 +888,26 @@ function cubestheme_register_vat_field()
 }
 
 add_action('woocommerce_init', 'cubestheme_register_vat_field');
+
+function cubestheme_nav_path($url)
+{
+    $path = wp_parse_url($url, PHP_URL_PATH);
+    if (!is_string($path) || $path === '' || $path === '/') {
+        return '/';
+    }
+
+    return untrailingslashit($path);
+}
+
+function cubestheme_nav_is_current($url, $current_path)
+{
+    $path = cubestheme_nav_path($url);
+    if ($path === '/') {
+        return $current_path === '/';
+    }
+
+    return $current_path === $path || strpos($current_path, $path . '/') === 0;
+}
 
 function cubestheme_header_cart_count()
 {
