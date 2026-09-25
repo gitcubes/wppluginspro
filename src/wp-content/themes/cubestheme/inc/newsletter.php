@@ -151,7 +151,7 @@ function cubestheme_newsletter_notice()
 {
 	$status = sanitize_text_field(wp_unslash($_GET['newsletter'] ?? ''));
 	if ($status === 'ok') {
-		echo '<p class="newsletter-note">' . esc_html__('You are on the list. Thank you.', 'cubestheme') . '</p>';
+		echo '<p class="newsletter-note is-success">' . esc_html__('You are on the list. Thank you.', 'cubestheme') . '</p>';
 	} elseif ($status === 'error') {
 		echo '<p class="newsletter-note">' . esc_html__('We could not add that email. Try again in a moment.', 'cubestheme') . '</p>';
 	}
