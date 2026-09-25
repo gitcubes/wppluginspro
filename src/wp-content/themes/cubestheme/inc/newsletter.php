@@ -153,10 +153,6 @@ function cubestheme_newsletter_notice()
 	if ($status === 'ok') {
 		echo '<p class="newsletter-note">' . esc_html__('You are on the list. Thank you.', 'cubestheme') . '</p>';
 	} elseif ($status === 'error') {
-		$detail = sanitize_text_field((string) get_option('cubestheme_brevo_last_error'));
 		echo '<p class="newsletter-note">' . esc_html__('We could not add that email. Try again in a moment.', 'cubestheme') . '</p>';
-		if ($detail !== '') {
-			echo "\n<!-- brevo-error: " . esc_html($detail) . " -->\n";
-		}
 	}
 }
