@@ -86,8 +86,19 @@ $delays = ['0.1s', '0.18s', '0.26s', '0.34s'];
 
                                 <div class="cta d-flex align-items-center">
                                     <?php if ($plugin_bottom_button_text && $plugin_bottom_button_url) : ?>
+                                        <?php
+                                        $sold_number = $plugin_bottom_button_text;
+                                        $sold_label = '';
+                                        if (preg_match('/^(.*?)\s+(sold)$/i', $plugin_bottom_button_text, $sold_parts)) {
+                                            $sold_number = trim($sold_parts[1]);
+                                            $sold_label = 'SOLD';
+                                        }
+                                        ?>
                                         <a href="<?php echo esc_url($plugin_bottom_button_url); ?>" class="analytics">
-                                            <?php echo esc_html($plugin_bottom_button_text); ?>
+                                            <span class="sold-count"><?php echo esc_html($sold_number); ?></span>
+                                            <?php if ($sold_label !== '') : ?>
+                                                <span class="sold-label"><?php echo esc_html($sold_label); ?></span>
+                                            <?php endif; ?>
                                         </a>
                                     <?php endif; ?>
 

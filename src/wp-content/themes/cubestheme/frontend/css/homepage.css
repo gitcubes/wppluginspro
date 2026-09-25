@@ -2980,6 +2980,43 @@ header .mobile-actions .cta-button {
   border-radius: 999px;
   border: 2px solid rgba(255, 255, 255, 0.3);
 }
+.featured-plugins .featured-grid .featured-card {
+  display: flex;
+  height: 100%;
+}
+.featured-plugins .featured-grid .featured-card > .content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  flex: 1;
+}
+.featured-plugins .featured-grid .featured-card .cta {
+  margin-top: auto;
+  align-items: center;
+}
+.featured-plugins .featured-grid .featured-card .cta .analytics {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  color: #034dd3;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+.featured-plugins .featured-grid .featured-card .cta .analytics .sold-count {
+  color: #034dd3;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  line-height: 1;
+}
+.featured-plugins .featured-grid .featured-card .cta .analytics .sold-label {
+  color: #5aa8ff;
+  font-size: 12px;
+  font-weight: 800;
+}
 
 .suite-showcase {
   padding: 50px 0;
