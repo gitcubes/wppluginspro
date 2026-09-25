@@ -721,7 +721,7 @@ function cubestheme_views_counter_landing_page()
 
 function cubestheme_apply_views_counter_landing_copy()
 {
-    if (get_option('cubestheme_views_landing_copy') === '1' || !function_exists('update_field')) {
+    if (get_option('cubestheme_views_landing_copy') === '2' || !function_exists('update_field')) {
         return;
     }
 
@@ -874,12 +874,10 @@ function cubestheme_apply_views_counter_landing_copy()
     $seo_description = 'Track WordPress post views with advanced analytics, referrers, geo stats, real-time insights, popular content reports and bot protection.';
     update_post_meta($id, 'cubestheme_seo_title', $seo_title);
     update_post_meta($id, 'cubestheme_seo_description', $seo_description);
-    update_post_meta($id, '_yoast_wpseo_title', $seo_title);
-    update_post_meta($id, '_yoast_wpseo_metadesc', $seo_description);
-    update_post_meta($id, 'rank_math_title', $seo_title);
-    update_post_meta($id, 'rank_math_description', $seo_description);
+    update_post_meta($id, '_seopress_titles_title', $seo_title);
+    update_post_meta($id, '_seopress_titles_desc', $seo_description);
 
-    update_option('cubestheme_views_landing_copy', '1', false);
+    update_option('cubestheme_views_landing_copy', '2', false);
 }
 
 function cubestheme_landing_document_title($parts)
@@ -910,7 +908,7 @@ function cubestheme_landing_seo_head()
         return;
     }
 
-    if (defined('WPSEO_VERSION') || defined('RANK_MATH_VERSION') || defined('AIOSEO_VERSION')) {
+    if (defined('WPSEO_VERSION') || defined('RANK_MATH_VERSION') || defined('AIOSEO_VERSION') || defined('SEOPRESS_VERSION')) {
         return;
     }
 
