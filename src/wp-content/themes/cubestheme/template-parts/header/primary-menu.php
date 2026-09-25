@@ -35,7 +35,7 @@ foreach ($topLevelItems as $primaryMenuItem) {
     $activeClass = '';
     $subMenuItems = $subMenuItemsByParent[$primaryMenuItem->ID] ?? array();
 
-    if (cubestheme_nav_is_current($primaryMenuURL, $currentPath)) {
+    if (cubestheme_nav_is_current($primaryMenuItem->url, $currentPath)) {
         $activeClass = 'active';
     }
 
