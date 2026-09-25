@@ -16,12 +16,18 @@ $plans = cubestheme_landing_plan_copy($page_id);
 $variations = cubestheme_landing_variations(cubestheme_landing_product_id($page_id));
 $competitor_a = cubestheme_landing_value($page_id, 'landing_market_competitor_a');
 $competitor_b = cubestheme_landing_value($page_id, 'landing_market_competitor_b');
+$landing_blocks = get_post_meta($page_id, 'cubestheme_landing_blocks', true);
+if (!is_array($landing_blocks)) {
+    $landing_blocks = array();
+}
+$hero_alt = isset($landing_blocks['hero_alt']) ? (string) $landing_blocks['hero_alt'] : '';
+$preview_alt = isset($landing_blocks['preview_alt']) ? (string) $landing_blocks['preview_alt'] : '';
 ?>
 
 <?php if ($hero_title) : ?>
 <section class="hero-section landing-hero">
     <figure class="landing-hero-visual position-relative animation" data-animation="fadeIn" data-delay="0.1s">
-        <img src="<?php echo esc_url(cubestheme_landing_image_url($page_id, 'landing_hero_image', $theme_img . '/homepage/lead-img.png')); ?>" alt="" decoding="async" fetchpriority="high">
+        <img src="<?php echo esc_url(cubestheme_landing_image_url($page_id, 'landing_hero_image', $theme_img . '/homepage/lead-img.png')); ?>" alt="<?php echo esc_attr($hero_alt); ?>" decoding="async" fetchpriority="high">
     </figure>
     <div class="container">
         <div class="lead-content-holder landing-hero-copy animation" data-animation="slideUp" data-delay="0.15s">
@@ -40,10 +46,13 @@ $competitor_b = cubestheme_landing_value($page_id, 'landing_market_competitor_b'
                 <?php endif; ?>
                 <?php if (cubestheme_landing_value($page_id, 'landing_hero_secondary')) : ?>
                     <div class="border">
-                        <a href="#landing-features" class="btn btn-blue cta-link"><?php echo esc_html(cubestheme_landing_value($page_id, 'landing_hero_secondary')); ?></a>
+                        <a href="#landing-comparison" class="btn btn-blue cta-link"><?php echo esc_html(cubestheme_landing_value($page_id, 'landing_hero_secondary')); ?></a>
                     </div>
                 <?php endif; ?>
             </div>
+            <?php if (!empty($landing_blocks['hero_note'])) : ?>
+                <p class="landing-hero-note"><?php echo esc_html($landing_blocks['hero_note']); ?></p>
+            <?php endif; ?>
         </div>
     </div>
 </section>
@@ -111,7 +120,7 @@ $competitor_b = cubestheme_landing_value($page_id, 'landing_market_competitor_b'
                             <div class="landing-feature-tag"><span><?php echo esc_html($feature['tag']); ?></span></div>
                         <?php endif; ?>
                         <?php if (!empty($feature['title'])) : ?>
-                            <h4><?php echo esc_html($feature['title']); ?></h4>
+                            <h3><?php echo esc_html($feature['title']); ?></h3>
                         <?php endif; ?>
                         <?php if (!empty($feature['text'])) : ?>
                             <p><?php echo esc_html($feature['text']); ?></p>
@@ -120,6 +129,39 @@ $competitor_b = cubestheme_landing_value($page_id, 'landing_market_competitor_b'
                 </article>
             <?php endforeach; ?>
         </div>
+    </div>
+</section>
+<?php endif; ?>
+
+<?php if (!empty($landing_blocks['trending']['title'])) : ?>
+    <?php $trending = $landing_blocks['trending']; ?>
+<section class="landing-features landing-trending">
+    <div class="container position-relative">
+        <header class="top-section landing-features-header animation" data-animation="slideUp" data-delay="0.1s">
+            <?php if (!empty($trending['label'])) : ?>
+                <span class="label"><?php echo esc_html($trending['label']); ?></span>
+            <?php endif; ?>
+            <h2><?php echo esc_html($trending['title']); ?></h2>
+            <?php if (!empty($trending['text'])) : ?>
+                <p><?php echo esc_html($trending['text']); ?></p>
+            <?php endif; ?>
+        </header>
+        <?php if (!empty($trending['items']) && is_array($trending['items'])) : ?>
+            <div class="landing-features-grid">
+                <?php foreach ($trending['items'] as $item) : ?>
+                    <article class="landing-feature-card box animation" data-animation="slideUp" data-delay="0.12s">
+                        <div class="content">
+                            <?php if (!empty($item['title'])) : ?>
+                                <h3><?php echo esc_html($item['title']); ?></h3>
+                            <?php endif; ?>
+                            <?php if (!empty($item['text'])) : ?>
+                                <p><?php echo esc_html($item['text']); ?></p>
+                            <?php endif; ?>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     </div>
 </section>
 <?php endif; ?>
@@ -137,7 +179,7 @@ $competitor_b = cubestheme_landing_value($page_id, 'landing_market_competitor_b'
             <?php endif; ?>
         </header>
         <figure class="landing-preview-frame box">
-            <img src="<?php echo esc_url(cubestheme_landing_image_url($page_id, 'landing_preview_image', $theme_img . '/landing-page/preview.png')); ?>" alt="">
+            <img src="<?php echo esc_url(cubestheme_landing_image_url($page_id, 'landing_preview_image', $theme_img . '/landing-page/preview.png')); ?>" alt="<?php echo esc_attr($preview_alt); ?>" loading="lazy" decoding="async">
         </figure>
     </div>
 </section>
@@ -160,8 +202,41 @@ $competitor_b = cubestheme_landing_value($page_id, 'landing_market_competitor_b'
     </symbol>
 </svg>
 
+<?php if (!empty($landing_blocks['usecases']['title'])) : ?>
+    <?php $usecases = $landing_blocks['usecases']; ?>
+<section class="landing-features landing-usecases">
+    <div class="container position-relative">
+        <header class="top-section landing-features-header animation" data-animation="slideUp" data-delay="0.1s">
+            <?php if (!empty($usecases['label'])) : ?>
+                <span class="label"><?php echo esc_html($usecases['label']); ?></span>
+            <?php endif; ?>
+            <h2><?php echo esc_html($usecases['title']); ?></h2>
+            <?php if (!empty($usecases['text'])) : ?>
+                <p><?php echo esc_html($usecases['text']); ?></p>
+            <?php endif; ?>
+        </header>
+        <?php if (!empty($usecases['items']) && is_array($usecases['items'])) : ?>
+            <div class="landing-features-grid">
+                <?php foreach ($usecases['items'] as $item) : ?>
+                    <article class="landing-feature-card box animation" data-animation="slideUp" data-delay="0.12s">
+                        <div class="content">
+                            <?php if (!empty($item['title'])) : ?>
+                                <h3><?php echo esc_html($item['title']); ?></h3>
+                            <?php endif; ?>
+                            <?php if (!empty($item['text'])) : ?>
+                                <p><?php echo esc_html($item['text']); ?></p>
+                            <?php endif; ?>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</section>
+<?php endif; ?>
+
 <?php if ($compare_rows) : ?>
-<section class="landing-comparison">
+<section class="landing-comparison" id="landing-comparison">
     <div class="container position-relative">
         <div class="top-section landing-comparison-header animation" data-animation="slideUp" data-delay="0.1s">
             <?php if (cubestheme_landing_value($page_id, 'landing_compare_label')) : ?>
@@ -378,6 +453,30 @@ $competitor_b = cubestheme_landing_value($page_id, 'landing_market_competitor_b'
                 </button>
             </div>
         <?php endif; ?>
+    </div>
+</section>
+<?php endif; ?>
+
+<?php if (!empty($landing_blocks['final']['title'])) : ?>
+    <?php $final_cta = $landing_blocks['final']; ?>
+<section class="landing-features landing-final">
+    <div class="container position-relative">
+        <header class="top-section landing-features-header animation" data-animation="slideUp" data-delay="0.1s">
+            <h2><?php echo esc_html($final_cta['title']); ?></h2>
+            <?php if (!empty($final_cta['text'])) : ?>
+                <p><?php echo esc_html($final_cta['text']); ?></p>
+            <?php endif; ?>
+            <div class="landing-hero-actions">
+                <div class="border">
+                    <a href="#landing-pricing" class="btn btn-primary cta-link"><?php echo esc_html($final_cta['primary'] ?? 'Get WSH Views Counter PRO'); ?></a>
+                </div>
+            </div>
+            <p class="landing-final-links">
+                <a href="<?php echo esc_url(home_url('/plugins/')); ?>">All plugins</a>
+                <a href="<?php echo esc_url(home_url('/get-support/')); ?>">Support</a>
+                <a href="<?php echo esc_url(home_url('/docs/')); ?>">Docs</a>
+            </p>
+        </header>
     </div>
 </section>
 <?php endif; ?>

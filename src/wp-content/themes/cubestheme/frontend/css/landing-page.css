@@ -2916,9 +2916,42 @@ header .mobile-actions .cta-button {
   display: grid;
   gap: 12px;
 }
+.landing-feature-card h3,
 .landing-feature-card h4,
 .landing-feature-card p {
   margin-bottom: 0;
+}
+.landing-feature-card h3 {
+  font-size: 2rem;
+}
+@media (min-width: 768px) {
+  .landing-feature-card h3 {
+    font-size: 2.2rem;
+  }
+}
+@media (min-width: 992px) {
+  .landing-feature-card h3 {
+    font-size: 2.4rem;
+  }
+}
+.landing-hero-note {
+  margin: 20px 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.landing-final .landing-hero-actions {
+  margin-top: 28px;
+}
+.landing-final-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 20px 0 0;
+}
+.landing-final-links a {
+  color: #034dd3;
+  font-weight: 600;
 }
 
 .landing-feature-tag {

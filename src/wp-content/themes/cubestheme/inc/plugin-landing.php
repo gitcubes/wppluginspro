@@ -707,9 +707,223 @@ function cubestheme_fix_catalog_competitor_labels()
     update_option('cubestheme_catalog_market_labels', '1', false);
 }
 
+function cubestheme_views_counter_landing_page()
+{
+    foreach (array('wordpress-post-views-counter', 'views-counter-pro') as $slug) {
+        $page = get_page_by_path($slug);
+        if ($page instanceof WP_Post) {
+            return $page;
+        }
+    }
+
+    return null;
+}
+
+function cubestheme_apply_views_counter_landing_copy()
+{
+    if (get_option('cubestheme_views_landing_copy') === '1' || !function_exists('update_field')) {
+        return;
+    }
+
+    $page = cubestheme_views_counter_landing_page();
+    if (!$page instanceof WP_Post) {
+        return;
+    }
+
+    $id = $page->ID;
+    update_post_meta($id, '_wp_page_template', 'page-for-plugin-landing.php');
+
+    $fields = array(
+        'landing_hero_label' => 'WSH Views Counter PRO',
+        'landing_hero_title' => 'WordPress Post Views Counter & Advanced Analytics',
+        'landing_hero_text' => 'Track WordPress post views and discover which content performs best. Get real-time analytics, referrer and geo insights, popular and trending content, WooCommerce funnels, exports and advanced bot protection — directly inside WordPress.',
+        'landing_hero_primary' => 'Get WSH Views Counter PRO',
+        'landing_hero_secondary' => 'Compare Free vs PRO',
+        'landing_needs_label' => 'More than a counter',
+        'landing_needs_title' => 'More Than a Simple WordPress Post View Counter',
+        'landing_needs_text' => 'You should not need a separate analytics platform just to understand how your WordPress content performs. The free plugin already counts views. PRO adds the reports editors actually open: sources, places, what is popular right now, and product funnels. It can sit next to Google Analytics. It does not replace every kind of web analytics.',
+        'landing_features_label' => 'Features',
+        'landing_features_title' => 'Advanced WordPress Post Views Analytics',
+        'landing_features_text' => 'The free plugin keeps counting. PRO turns those counts into reports your team can read without leaving WordPress.',
+        'landing_preview_label' => 'Preview',
+        'landing_preview_title' => 'A Clean WordPress Analytics Dashboard Your Team Will Actually Use',
+        'landing_preview_text' => 'The screens below are the real PRO reports: charts, sources, places and live views. No extra ratings, and no features that are not in the plugin.',
+        'landing_compare_label' => 'Free vs PRO',
+        'landing_compare_title' => 'WSH Views Counter Free vs PRO',
+        'landing_compare_text' => 'Install PRO on a site that already runs the free plugin. Existing view counts stay in your database. PRO unlocks the extra reports. It does not start the history over.',
+        'landing_compare_free' => 'WSH Views Counter Free',
+        'landing_compare_pro' => 'WSH Views Counter PRO',
+        'landing_market_label' => 'Why PRO',
+        'landing_market_title' => 'Why Choose WSH Views Counter PRO?',
+        'landing_market_text' => 'A basic view counter stores a total. PRO is the reporting layer for sources, places, trends and product funnels, still inside WordPress.',
+        'landing_market_ours' => 'WSH Views Counter PRO',
+        'landing_market_competitor_a' => 'Basic view counter',
+        'landing_market_competitor_b' => '',
+        'landing_pricing_label' => 'Pricing',
+        'landing_pricing_title' => 'WordPress Post Views Counter PRO Pricing',
+        'landing_pricing_text' => 'Annual licenses for 1 site, 5 sites or unlimited sites. The price on each card is the live subscription price, with updates and support for the year.',
+        'landing_faq_label' => 'FAQ',
+        'landing_faq_title' => 'Frequently Asked Questions About WordPress Post Views',
+        'landing_faq_button' => 'See more',
+        'landing_faq_url' => home_url('/docs/'),
+    );
+
+    foreach ($fields as $name => $value) {
+        update_field($name, $value, $id);
+    }
+
+    update_field('landing_needs_items', array(
+        array('item_text' => 'See which posts are popular now, not only the all-time total.'),
+        array('item_text' => 'Compare authors, categories and time ranges inside WordPress.'),
+        array('item_text' => 'See referring sites, search and social from the same dashboard.'),
+        array('item_text' => 'Spot a spike while a story is still moving.'),
+        array('item_text' => 'Connect WooCommerce product views with add to cart and orders.'),
+        array('item_text' => 'Keep the numbers in your own WordPress database.'),
+    ), $id);
+
+    update_field('landing_features', array(
+        array('tag' => 'Analytics', 'title' => 'WordPress Post Views Analytics & Historical Reports', 'text' => 'Daily, weekly and monthly charts with 1, 7, 30 and 90 day ranges. See how a post, an author or the whole site moved over time.'),
+        array('tag' => 'Geo', 'title' => 'See Where Your WordPress Visitors Come From', 'text' => 'Countries and cities for a post, an author or the whole site. Country lookup runs only after a PRO license is active.'),
+        array('tag' => 'Referrers', 'title' => 'WordPress Referrer & Traffic Source Analytics', 'text' => 'Referring domains, search, social, newsletters, direct visits and internal links, broken down by post and by day.'),
+        array('tag' => 'Real-time', 'title' => 'Real-Time WordPress Visitor & Post View Tracking', 'text' => 'A live panel of recent views and the posts being read now, from the hits the free plugin already records.'),
+        array('tag' => 'WooCommerce', 'title' => 'WooCommerce Product View Analytics & Funnels', 'text' => 'Product views next to add-to-cart and orders, so you can see what people open and what they buy.'),
+        array('tag' => 'Bots', 'title' => 'Keep Bot Traffic Out of Your Post View Statistics', 'text' => 'The free plugin can ignore known bots and repeat views inside the interval you choose. PRO adds further fraud controls on top of that.'),
+    ), $id);
+
+    update_field('landing_compare_rows', array(
+        array('feature' => 'View counts for posts, pages and products', 'free_text' => 'Yes', 'pro_text' => 'Yes'),
+        array('feature' => 'Counting that works with page cache', 'free_text' => 'Yes', 'pro_text' => 'Yes'),
+        array('feature' => 'Daily stats and reports by post, author and date', 'free_text' => 'Yes', 'pro_text' => 'Yes, plus charts and time ranges'),
+        array('feature' => 'Shortcode and automatic view display', 'free_text' => 'Yes', 'pro_text' => 'Yes'),
+        array('feature' => 'Country and city reports', 'free_text' => 'No', 'pro_text' => 'Yes, after the license is active'),
+        array('feature' => 'Referrer reports', 'free_text' => 'Stores the referring domain', 'pro_text' => 'Referrer reports by post and by day'),
+        array('feature' => 'Live visitor panel', 'free_text' => 'Stores a short live-hit record', 'pro_text' => 'Live panel in wp-admin'),
+        array('feature' => 'WooCommerce funnel reports', 'free_text' => 'Stores product, cart and order events', 'pro_text' => 'Funnel reports'),
+        array('feature' => 'Export', 'free_text' => 'No', 'pro_text' => 'CSV export'),
+        array('feature' => 'Popular and trending widgets', 'free_text' => 'No', 'pro_text' => 'Widgets and blocks'),
+        array('feature' => 'Spike and trending detection', 'free_text' => 'No', 'pro_text' => 'Yes'),
+        array('feature' => 'Developer access', 'free_text' => 'No', 'pro_text' => 'REST API and JavaScript events'),
+        array('feature' => 'Bot filtering', 'free_text' => 'Known-bot filter and repeat-view interval', 'pro_text' => 'Those, plus extra fraud controls'),
+    ), $id);
+
+    update_field('landing_market_rows', array(
+        array('feature' => 'A running view total', 'ours' => 'Posts, pages and products', 'competitor_a' => 1, 'competitor_b' => 0),
+        array('feature' => 'Reports by date, author and category', 'ours' => 'Built into wp-admin', 'competitor_a' => 0, 'competitor_b' => 0),
+        array('feature' => 'Countries and cities', 'ours' => 'After the PRO license is active', 'competitor_a' => 0, 'competitor_b' => 0),
+        array('feature' => 'Referring sites and traffic sources', 'ours' => 'Referrer reports', 'competitor_a' => 0, 'competitor_b' => 0),
+        array('feature' => 'What is being read right now', 'ours' => 'Live panel', 'competitor_a' => 0, 'competitor_b' => 0),
+        array('feature' => 'WooCommerce view-to-order funnel', 'ours' => 'Views, add to cart and orders', 'competitor_a' => 0, 'competitor_b' => 0),
+        array('feature' => 'Export', 'ours' => 'CSV download from wp-admin', 'competitor_a' => 0, 'competitor_b' => 0),
+        array('feature' => 'Popular and trending blocks', 'ours' => 'Widgets and blocks', 'competitor_a' => 0, 'competitor_b' => 0),
+    ), $id);
+
+    update_field('landing_faq', array(
+        array('question' => 'What is a WordPress post views counter?', 'answer' => 'It records how many times a published post, page or product is viewed, and shows that number inside WordPress.'),
+        array('question' => 'How do I track post views in WordPress?', 'answer' => 'Install WSH Views Counter, choose the post types you want, and the plugin counts a view after the page loads. You can show the number with the shortcode or with automatic display.'),
+        array('question' => 'Does it work with caching plugins?', 'answer' => 'Yes. The count is a small request after the page has loaded, so a cached page can still be counted.'),
+        array('question' => 'What is the difference between Free and PRO?', 'answer' => 'Free counts views, stores daily stats, and includes reports, a shortcode, a known-bot filter and a repeat-view interval. It also keeps the referring domain, a session and a short live-hit record. PRO adds the geo, referrer, real-time, trending, WooCommerce funnel and CSV export screens. PRO needs the free plugin.'),
+        array('question' => 'Will I lose my view data if I upgrade to PRO?', 'answer' => 'No. PRO reads the same tables and the same post counts. Turning the license off later hides the PRO screens. It does not delete the counts.'),
+        array('question' => 'Can I see my most viewed WordPress posts?', 'answer' => 'Yes. The free reports already list posts by views. PRO adds popular and trending widgets and time-range reports.'),
+        array('question' => 'Can I find trending posts, not just all-time totals?', 'answer' => 'Yes in PRO. Trending and spike detection look at posts gaining views now, not only the lifetime total.'),
+        array('question' => 'Does it show real-time visitors?', 'answer' => 'The PRO live panel shows recent views and posts being read now. The free plugin records those hits, so the panel has history from before you upgrade.'),
+        array('question' => 'Can I see where my visitors came from?', 'answer' => 'PRO has referrer reports by domain, search, social and direct traffic. The free plugin stores the referring domain with the view.'),
+        array('question' => 'Can I see which countries and cities visit my posts?', 'answer' => 'Yes, after a PRO license is active. The lookup uses ipapi.co, then ipwhois.app if the first request fails. The free plugin does not send the visitor IP to a geo service.'),
+        array('question' => 'Does it work with WooCommerce?', 'answer' => 'Yes. Count product views by enabling the product post type. PRO reports the path from product view to add to cart to order. Those events are stored even before PRO is installed, so the funnel is not empty on day one.'),
+        array('question' => 'Can it filter bots and fake views?', 'answer' => 'The free plugin can skip known bots and ignore another view from the same visitor inside the interval you set (from 30 minutes to 1 day). PRO adds further fraud controls. No filter can remove every bot.'),
+        array('question' => 'Does it use Google Analytics?', 'answer' => 'No. Counts stay in your WordPress database. You can keep Google Analytics for the rest of the site. This plugin does not replace it.'),
+        array('question' => 'Where is the data stored?', 'answer' => 'In your own database: a views table and the wsh_views_count field on each post. View data is not sent to WPPluginsPRO. Country lookup, only with an active PRO license, asks an external geo service and caches the result on your site.'),
+        array('question' => 'Can I export the reports?', 'answer' => 'PRO exports CSV for post summaries, daily counts, countries and referrers. It does not export Excel or JSON files.'),
+        array('question' => 'Does it work with custom post types?', 'answer' => 'Yes. Turn on the post types you want in the plugin settings, including posts, pages and products.'),
+        array('question' => 'Will it slow down a busy site?', 'answer' => 'The public page sends one small count request after load. The heavier reports run in wp-admin, from a dedicated table rather than by scanning every post.'),
+    ), $id);
+
+    update_post_meta($id, 'cubestheme_landing_blocks', array(
+        'hero_note' => 'Already using WSH Views Counter Free? Upgrade to PRO without losing your existing view data.',
+        'hero_alt' => 'WSH Views Counter PRO dashboard inside WordPress',
+        'preview_alt' => 'WSH Views Counter PRO reports for views, sources and live traffic',
+        'trending' => array(
+            'label' => 'Popular and trending',
+            'title' => 'Discover Your Most Popular and Trending WordPress Posts',
+            'text' => 'A lifetime total is only part of the story. PRO adds the views that matter this week.',
+            'items' => array(
+                array('title' => 'Most viewed', 'text' => 'Posts, pages and products ranked by views.'),
+                array('title' => 'Trending now', 'text' => 'Posts gaining views today, not only the all-time list.'),
+                array('title' => 'Spikes', 'text' => 'A sudden jump is marked so editors can react while the story is moving.'),
+                array('title' => 'Authors and categories', 'text' => 'The same ranges for a writer, a section or the whole site.'),
+            ),
+        ),
+        'usecases' => array(
+            'label' => 'Use cases',
+            'title' => 'Built for Content-Driven WordPress Sites',
+            'text' => 'Made for teams that publish a lot and need the numbers next to the content.',
+            'items' => array(
+                array('title' => 'Newsrooms and publishers', 'text' => 'See which story is moving, which author is carrying the day, and which section is quiet.'),
+                array('title' => 'Blogs and magazines', 'text' => 'Keep a most-viewed list and a trending list without a second analytics login.'),
+                array('title' => 'WooCommerce stores', 'text' => 'Read product views next to add to cart and orders.'),
+                array('title' => 'Agencies', 'text' => 'One PRO license level covers the number of client sites you choose. A staging copy does not use a site slot.'),
+            ),
+        ),
+        'final' => array(
+            'title' => 'Turn Your WordPress View Counts Into Actionable Content Analytics',
+            'text' => 'Pick the license that matches how many sites you run. If the free plugin is already installed, PRO uses the counts you already have.',
+            'primary' => 'Get WSH Views Counter PRO',
+        ),
+    ));
+
+    $seo_title = 'WordPress Post Views Counter & Analytics | WSH Views Counter';
+    $seo_description = 'Track WordPress post views with advanced analytics, referrers, geo stats, real-time insights, popular content reports and bot protection.';
+    update_post_meta($id, 'cubestheme_seo_title', $seo_title);
+    update_post_meta($id, 'cubestheme_seo_description', $seo_description);
+    update_post_meta($id, '_yoast_wpseo_title', $seo_title);
+    update_post_meta($id, '_yoast_wpseo_metadesc', $seo_description);
+    update_post_meta($id, 'rank_math_title', $seo_title);
+    update_post_meta($id, 'rank_math_description', $seo_description);
+
+    update_option('cubestheme_views_landing_copy', '1', false);
+}
+
+function cubestheme_landing_document_title($parts)
+{
+    if (!is_singular('page')) {
+        return $parts;
+    }
+
+    $title = get_post_meta(get_queried_object_id(), 'cubestheme_seo_title', true);
+    if (is_string($title) && $title !== '') {
+        $parts['title'] = $title;
+    }
+
+    return $parts;
+}
+
+add_filter('document_title_parts', 'cubestheme_landing_document_title');
+
+function cubestheme_landing_seo_head()
+{
+    if (!is_singular('page')) {
+        return;
+    }
+
+    $id = get_queried_object_id();
+    $description = get_post_meta($id, 'cubestheme_seo_description', true);
+    if (!is_string($description) || $description === '') {
+        return;
+    }
+
+    if (defined('WPSEO_VERSION') || defined('RANK_MATH_VERSION') || defined('AIOSEO_VERSION')) {
+        return;
+    }
+
+    echo '<meta name="description" content="' . esc_attr($description) . '">' . "\n";
+    echo '<link rel="canonical" href="' . esc_url(get_permalink($id)) . '">' . "\n";
+}
+
+add_action('wp_head', 'cubestheme_landing_seo_head', 1);
+
 add_action('acf/init', function () {
     cubestheme_register_plugin_landing_fields();
     cubestheme_seed_plugin_landing();
     cubestheme_seed_remaining_landings();
     cubestheme_fix_catalog_competitor_labels();
+    cubestheme_apply_views_counter_landing_copy();
 });
