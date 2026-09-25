@@ -358,6 +358,10 @@ $preview_alt = isset($landing_blocks['preview_alt']) ? (string) $landing_blocks[
                 <?php foreach ($variations as $index => $item) : ?>
                     <?php
                     $plan = $plans[$item['slug']] ?? array();
+                    $plan_labels = get_post_meta($page_id, 'cubestheme_plan_labels', true);
+                    if (is_array($plan_labels) && !empty($plan_labels[$item['slug']])) {
+                        $item['label'] = $plan_labels[$item['slug']];
+                    }
                     $highlight = !empty($plan['plan_highlight']);
                     $description = isset($plan['plan_description']) ? (string) $plan['plan_description'] : '';
                     $button = !empty($plan['plan_button']) ? (string) $plan['plan_button'] : 'Buy ' . $item['label'];
@@ -380,7 +384,7 @@ $preview_alt = isset($landing_blocks['preview_alt']) ? (string) $landing_blocks[
                                 </div>
                                 <h4><?php echo esc_html($item['label']); ?></h4>
                             </div>
-                            <h3><?php echo esc_html(cubestheme_landing_price_text($item['variation'])); ?></h3>
+                            <h3><?php echo wp_kses_post(cubestheme_landing_price_text($item['variation'])); ?></h3>
                             <?php if ($description) : ?>
                                 <p><?php echo esc_html($description); ?></p>
                             <?php endif; ?>

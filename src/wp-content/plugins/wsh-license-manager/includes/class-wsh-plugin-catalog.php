@@ -32,6 +32,7 @@ class WSH_Plugin_Catalog
 		add_action('woocommerce_order_details_after_order_table', array(__CLASS__, 'render_order_access'), 5);
 		add_action('woocommerce_after_register_post_type', array(__CLASS__, 'seed_suite_products'));
 		add_action('woocommerce_after_register_post_type', array(__CLASS__, 'replace_unlimited_with_25_sites'), 20);
+		add_action('woocommerce_after_register_post_type', array(__CLASS__, 'set_views_counter_prices'), 30);
 	}
 
 	public static function register_account_endpoint()
@@ -885,6 +886,61 @@ class WSH_Plugin_Catalog
 		}
 
 		update_option('wsh_sites_25_migration', '1', false);
+	}
+
+	/**
+	 * Views Counter PRO list prices and the public sale prices.
+	 */
+	public static function set_views_counter_prices()
+	{
+		if (get_option('wsh_views_counter_prices') === '1' || ! function_exists('wc_get_product')) {
+			return;
+		}
+
+		$product = get_page_by_path('wsh-views-counter-pro', OBJECT, 'product');
+		if (! $product instanceof WP_Post) {
+			return;
+		}
+
+		$prices = array(
+			'1-site'  => array('regular' => '79', 'sale' => '27'),
+			'5-sites' => array('regular' => '149', 'sale' => '47'),
+			'25-sites' => array('regular' => '249', 'sale' => '87'),
+		);
+
+		$children = get_posts(array(
+			'post_type'      => 'product_variation',
+			'post_parent'    => $product->ID,
+			'post_status'    => array('publish', 'private'),
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		));
+
+		$updated = 0;
+		foreach ($children as $child_id) {
+			$slug = (string) get_post_meta($child_id, 'attribute_pa_sites', true);
+			if (! isset($prices[$slug])) {
+				continue;
+			}
+
+			update_post_meta($child_id, '_regular_price', $prices[$slug]['regular']);
+			update_post_meta($child_id, '_subscription_price', $prices[$slug]['regular']);
+			update_post_meta($child_id, '_sale_price', $prices[$slug]['sale']);
+			update_post_meta($child_id, '_price', $prices[$slug]['sale']);
+			delete_post_meta($child_id, '_sale_price_dates_from');
+			delete_post_meta($child_id, '_sale_price_dates_to');
+			$updated++;
+		}
+
+		if ($updated < 3) {
+			return;
+		}
+
+		if (class_exists('WC_Product_Variable')) {
+			WC_Product_Variable::sync($product->ID);
+		}
+		wc_delete_product_transients($product->ID);
+		update_option('wsh_views_counter_prices', '1', false);
 	}
 
 	private static function variation_exists($product_id, $slug)

@@ -313,7 +313,6 @@ function cubestheme_landing_cart_url($page_id, $item)
 
 function cubestheme_landing_price_text($variation)
 {
-    $amount = html_entity_decode(wp_strip_all_tags(wc_price($variation->get_price())), ENT_QUOTES, get_bloginfo('charset'));
     $period = '';
 
     if (class_exists('WC_Subscriptions_Product')) {
@@ -324,7 +323,16 @@ function cubestheme_landing_price_text($variation)
         }
     }
 
-    return $period !== '' ? $amount . ' / ' . $period : $amount;
+    $suffix = $period !== '' ? ' <span class="landing-price-period">/ ' . esc_html($period) . '</span>' : '';
+    $current = wc_price($variation->get_price());
+    $regular_amount = (float) $variation->get_regular_price();
+    $current_amount = (float) $variation->get_price();
+
+    if ($variation->is_on_sale() && $regular_amount > $current_amount) {
+        return '<del class="landing-price-regular">' . wc_price($variation->get_regular_price()) . '</del><span class="landing-price-sale">' . $current . $suffix . '</span>';
+    }
+
+    return $current . $suffix;
 }
 
 function cubestheme_landing_plan_copy($page_id)
@@ -975,6 +983,44 @@ function cubestheme_migrate_plans_to_25_sites()
     update_option('cubestheme_plans_25', '1', false);
 }
 
+function cubestheme_views_counter_plan_names()
+{
+    if (get_option('cubestheme_views_counter_plan_names') === '1' || !function_exists('update_field')) {
+        return;
+    }
+
+    $page = cubestheme_views_counter_landing_page();
+    if (!$page instanceof WP_Post) {
+        return;
+    }
+
+    update_post_meta($page->ID, 'cubestheme_plan_labels', array(
+        '1-site' => 'Single',
+        '5-sites' => 'Business',
+        '25-sites' => 'Agency',
+    ));
+
+    $buttons = array(
+        '1-site' => 'Buy Single',
+        '5-sites' => 'Buy Business',
+        '25-sites' => 'Buy Agency',
+    );
+    $plans = cubestheme_landing_rows($page->ID, 'landing_plans');
+    foreach ($plans as $index => $plan) {
+        $slug = isset($plan['plan_slug']) ? (string) $plan['plan_slug'] : '';
+        if (isset($buttons[$slug])) {
+            $plans[$index]['plan_button'] = $buttons[$slug];
+        }
+        $plans[$index]['plan_highlight'] = $slug === '5-sites' ? 1 : 0;
+    }
+
+    if ($plans) {
+        update_field('landing_plans', $plans, $page->ID);
+    }
+
+    update_option('cubestheme_views_counter_plan_names', '1', false);
+}
+
 add_action('acf/init', function () {
     cubestheme_register_plugin_landing_fields();
     cubestheme_seed_plugin_landing();
@@ -982,4 +1028,5 @@ add_action('acf/init', function () {
     cubestheme_fix_catalog_competitor_labels();
     cubestheme_apply_views_counter_landing_copy();
     cubestheme_migrate_plans_to_25_sites();
+    cubestheme_views_counter_plan_names();
 });
