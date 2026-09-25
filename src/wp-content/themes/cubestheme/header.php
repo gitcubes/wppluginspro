@@ -7,23 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="cubes d.o.o">
     <meta name="keywords" content="">
-    <meta name="theme-color" content="#fff">
-
-
-    <!--ios compatibility-->
+    <meta name="theme-color" content="#034dd3">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content='<?php bloginfo('name'); ?>'>
-    <link rel="apple-touch-icon" href="/apple-icon-144x144.png">
-
-
-    <!--Android compatibility-->
-
-    <meta name=" mobile-web-app-capable" content="yes">
-    <meta name="application-name" content='<?php bloginfo('name'); ?>'>
-    <link rel="icon" type="image/png" href="/android-icon-192x192.png">
-
-
-    <link rel=" icon" type="image/x-icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="<?php echo esc_attr(get_bloginfo('name')); ?>">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="<?php echo esc_attr(get_bloginfo('name')); ?>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,6 +22,14 @@
     <!--CSS FILES-->
 
     <?php wp_head(); ?>
+    <?php $favicon_uri = get_template_directory_uri() . '/frontend/favicon'; ?>
+    <link rel="icon" type="image/x-icon" href="<?php echo esc_url($favicon_uri); ?>/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url($favicon_uri); ?>/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url($favicon_uri); ?>/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="<?php echo esc_url($favicon_uri); ?>/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="<?php echo esc_url($favicon_uri); ?>/favicon-96x96.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo esc_url($favicon_uri); ?>/apple-touch-icon.png">
+    <link rel="manifest" href="<?php echo esc_url($favicon_uri); ?>/site.webmanifest">
 
     <?php
     if (!empty(get_option('cubestheme_head_code'))) {
@@ -65,7 +61,7 @@
                         ?>
                         <div class="logo-details">
                             <span>WP Plugins Pro</span>
-                            <span>By Web Solution Hub</span>
+                            <span>By Web Solutions Hub</span>
                         </div>
                     </a>
                 <?php
