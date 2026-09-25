@@ -721,7 +721,7 @@ function cubestheme_views_counter_landing_page()
 
 function cubestheme_apply_views_counter_landing_copy()
 {
-    if (get_option('cubestheme_views_landing_copy') === '2' || !function_exists('update_field')) {
+    if (get_option('cubestheme_views_landing_copy') === '3' || !function_exists('update_field')) {
         return;
     }
 
@@ -850,6 +850,8 @@ function cubestheme_apply_views_counter_landing_copy()
                 array('title' => 'Trending now', 'text' => 'Posts gaining views today, not only the all-time list.'),
                 array('title' => 'Spikes', 'text' => 'A sudden jump is marked so editors can react while the story is moving.'),
                 array('title' => 'Authors and categories', 'text' => 'The same ranges for a writer, a section or the whole site.'),
+                array('title' => 'Time ranges', 'text' => 'Switch between today, the last 7 days, 30 days and 90 days.'),
+                array('title' => 'On the site', 'text' => 'Show a popular or trending list with a widget, a block or a shortcode.'),
             ),
         ),
         'usecases' => array(
@@ -861,6 +863,8 @@ function cubestheme_apply_views_counter_landing_copy()
                 array('title' => 'Blogs and magazines', 'text' => 'Keep a most-viewed list and a trending list without a second analytics login.'),
                 array('title' => 'WooCommerce stores', 'text' => 'Read product views next to add to cart and orders.'),
                 array('title' => 'Agencies', 'text' => 'One PRO license level covers the number of client sites you choose. A staging copy does not use a site slot.'),
+                array('title' => 'Marketing teams', 'text' => 'See which newsletter, social post or referring site actually lifted a story.'),
+                array('title' => 'Ad-supported sites', 'text' => 'Leave known bots out of the numbers you use when you talk about reach.'),
             ),
         ),
         'final' => array(
@@ -877,7 +881,7 @@ function cubestheme_apply_views_counter_landing_copy()
     update_post_meta($id, '_seopress_titles_title', $seo_title);
     update_post_meta($id, '_seopress_titles_desc', $seo_description);
 
-    update_option('cubestheme_views_landing_copy', '2', false);
+    update_option('cubestheme_views_landing_copy', '3', false);
 }
 
 function cubestheme_landing_document_title($parts)
