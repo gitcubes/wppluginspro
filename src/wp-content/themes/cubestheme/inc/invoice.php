@@ -129,8 +129,10 @@ function cubestheme_render_invoice($order)
 	<style>
 		* { box-sizing: border-box; }
 		body { margin: 0; background: #eef3fb; color: #1b1b21; font-family: Helvetica, Arial, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-		.toolbar { max-width: 820px; margin: 24px auto 0; padding: 0 16px; text-align: right; }
-		.toolbar button { border: 0; border-radius: 999px; background: #034dd3; color: #fff; font: 600 14px Helvetica, Arial, sans-serif; padding: 12px 18px; cursor: pointer; }
+		.toolbar { max-width: 820px; margin: 24px auto 0; padding: 0 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+		.toolbar a, .toolbar button { border: 0; border-radius: 999px; font: 600 14px Helvetica, Arial, sans-serif; padding: 12px 18px; cursor: pointer; text-decoration: none; }
+		.toolbar a { background: #fff; color: #034dd3; border: 1px solid rgba(3, 77, 211, 0.25); }
+		.toolbar button { background: #034dd3; color: #fff; }
 		.sheet { max-width: 820px; margin: 16px auto 40px; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 40px rgba(3, 77, 211, 0.08); }
 		.pad { padding: 36px 40px 32px; }
 		.head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; padding-bottom: 22px; border-bottom: 3px solid #034dd3; }
@@ -162,6 +164,7 @@ function cubestheme_render_invoice($order)
 </head>
 <body>
 	<div class="toolbar">
+		<a href="<?php echo esc_url(wc_get_account_endpoint_url('orders')); ?>"><?php esc_html_e('Back to orders', 'cubestheme'); ?></a>
 		<button type="button" onclick="window.print()"><?php esc_html_e('Download PDF', 'cubestheme'); ?></button>
 	</div>
 	<article class="sheet">
