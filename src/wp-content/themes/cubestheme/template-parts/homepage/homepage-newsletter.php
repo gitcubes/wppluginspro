@@ -20,10 +20,11 @@ $newsletter_lottie_file = get_field('newsletter_lottie_file');
                         <h2><?php echo esc_html($newsletter_title); ?></h2>
                     <?php endif; ?>
 
-                    <form action="" method="post" aria-label="Newsletter signup form">
+                    <form action="#newsletter-signup" method="post" aria-label="Newsletter signup form">
+                        <input type="hidden" name="newsletter_signup" value="1">
                         <div class="form-group">
                             <div class="border">
-                                <input type="email" class="form-control" name="email" placeholder="you@example.com"
+                                <input type="email" class="form-control" name="newsletter_email" placeholder="you@example.com"
                                     aria-label="Email address" autocomplete="email" inputmode="email" required>
                             </div>
 
@@ -33,6 +34,7 @@ $newsletter_lottie_file = get_field('newsletter_lottie_file');
                                 </button>
                             </div>
                         </div>
+                        <?php cubestheme_newsletter_notice(); ?>
                     </form>
                 </div>
 

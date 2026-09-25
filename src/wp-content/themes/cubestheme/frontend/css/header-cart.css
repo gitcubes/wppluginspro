@@ -1,3 +1,10 @@
+.newsletter .newsletter-note {
+  margin: 14px 0 0;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
 header .mobile-actions {
   display: flex;
   flex-direction: row;

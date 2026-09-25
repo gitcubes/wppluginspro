@@ -58,6 +58,7 @@ function theme_front_page_settings() {
         update_option("cubestheme_copyright_text", $copyright_text);
 
         update_option("cubestheme_company_logo_id", absint($_POST["company_logo_id"] ?? 0));
+        update_option("cubestheme_brevo_list_id", absint($_POST["brevo_list_id"] ?? 0));
         
         $message = "Custom Settings have been updated successfully.";
     }
@@ -73,6 +74,7 @@ function theme_front_page_settings() {
     $footer_text = stripslashes(get_option("cubestheme_footer_text"));
     $copyright_text = stripslashes(get_option("cubestheme_copyright_text"));
     $company_logo_id = absint(get_option("cubestheme_company_logo_id"));
+    $brevo_list_id = absint(get_option("cubestheme_brevo_list_id"));
     $company_logo_url = $company_logo_id ? wp_get_attachment_image_url($company_logo_id, 'medium') : '';
     ?>
     <div class="wrap">
@@ -94,6 +96,15 @@ function theme_front_page_settings() {
                         <button type="button" class="button" id="company_logo_select"><?php esc_html_e('Upload logo', 'cubestheme'); ?></button>
                         <button type="button" class="button" id="company_logo_remove" style="display:<?php echo $company_logo_url ? 'inline-block' : 'none'; ?>;"><?php esc_html_e('Remove logo', 'cubestheme'); ?></button>
                         <p class="description"><?php esc_html_e('Shown at the top of customer invoices. Use a PNG with a transparent background.', 'cubestheme'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">
+                        <label for="brevo_list_id"><?php esc_html_e('Brevo list ID', 'cubestheme'); ?></label>
+                    </th>
+                    <td>
+                        <input type="number" id="brevo_list_id" name="brevo_list_id" value="<?php echo esc_attr($brevo_list_id); ?>" min="0" class="small-text">
+                        <p class="description"><?php esc_html_e('Homepage newsletter signups are added to this Brevo list. Find the ID in Brevo under Contacts, Lists.', 'cubestheme'); ?></p>
                     </td>
                 </tr>
                 <tr valign="top">
