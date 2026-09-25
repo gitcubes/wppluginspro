@@ -88,16 +88,18 @@ function cubestheme_brevo_subscribe($email)
 		return false;
 	}
 
+	$headers = array(
+		'api-key' => $api_key,
+		'content-type' => 'application/json',
+		'accept' => 'application/json',
+	);
 	$response = wp_remote_post('https://api.brevo.com/v3/contacts', array(
-		'headers' => array(
-			'api-key' => $api_key,
-			'content-type' => 'application/json',
-			'accept' => 'application/json',
-		),
+		'headers' => $headers,
 		'body' => wp_json_encode(array(
 			'email' => $email,
 			'listIds' => array($list_id),
 			'updateEnabled' => true,
+			'emailBlacklisted' => false,
 		)),
 		'timeout' => 15,
 	));
@@ -109,22 +111,44 @@ function cubestheme_brevo_subscribe($email)
 
 	$code = (int) wp_remote_retrieve_response_code($response);
 	$body = wp_remote_retrieve_body($response);
-	if ($code >= 200 && $code < 300) {
-		delete_option('cubestheme_brevo_last_error');
+	$saved = ($code >= 200 && $code < 300)
+		|| strpos($body, 'duplicate_parameter') !== false
+		|| strpos($body, 'already exist') !== false;
+	if (!$saved) {
+		$decoded = json_decode($body, true);
+		$detail = is_array($decoded) ? sanitize_text_field(($decoded['code'] ?? '') . ' ' . ($decoded['message'] ?? '')) : 'http-' . $code;
+		update_option('cubestheme_brevo_last_error', $code . ' ' . $detail, false);
 
-		return true;
+		return false;
 	}
-	if (strpos($body, 'duplicate_parameter') !== false || strpos($body, 'already exist') !== false) {
-		delete_option('cubestheme_brevo_last_error');
 
-		return true;
+	$unblock = wp_remote_request('https://api.brevo.com/v3/contacts/' . rawurlencode($email), array(
+		'method' => 'PUT',
+		'headers' => $headers,
+		'body' => wp_json_encode(array(
+			'emailBlacklisted' => false,
+			'listIds' => array($list_id),
+		)),
+		'timeout' => 15,
+	));
+	if (is_wp_error($unblock)) {
+		update_option('cubestheme_brevo_last_error', 'unblock:' . $unblock->get_error_code(), false);
+
+		return false;
 	}
 
-	$decoded = json_decode($body, true);
-	$detail = is_array($decoded) ? sanitize_text_field(($decoded['code'] ?? '') . ' ' . ($decoded['message'] ?? '')) : 'http-' . $code;
-	update_option('cubestheme_brevo_last_error', $code . ' ' . $detail, false);
+	$unblock_code = (int) wp_remote_retrieve_response_code($unblock);
+	if ($unblock_code >= 300) {
+		$decoded = json_decode(wp_remote_retrieve_body($unblock), true);
+		$detail = is_array($decoded) ? sanitize_text_field(($decoded['code'] ?? '') . ' ' . ($decoded['message'] ?? '')) : 'http-' . $unblock_code;
+		update_option('cubestheme_brevo_last_error', $unblock_code . ' ' . $detail, false);
 
-	return false;
+		return false;
+	}
+
+	delete_option('cubestheme_brevo_last_error');
+
+	return true;
 }
 
 function cubestheme_newsletter_signup()
