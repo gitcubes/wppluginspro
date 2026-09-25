@@ -341,10 +341,15 @@
 
 .woocommerce-account .woocommerce-MyAccount-content .button.button-secondary,
 .woocommerce-account .woocommerce-MyAccount-content .button.cancel,
-.woocommerce-account .woocommerce-MyAccount-content .button.delete {
+.woocommerce-account .woocommerce-MyAccount-content .button.delete,
+.woocommerce-account .woocommerce-MyAccount-content .button.invoice {
   border: 1px solid rgba(3, 77, 211, 0.25);
   background: #fff;
   color: #034dd3;
+}
+
+.woocommerce-account .woocommerce-orders-table__cell-order-actions {
+  white-space: nowrap;
 }
 
 .woocommerce-account .woocommerce-MyAccount-content .button:hover,
