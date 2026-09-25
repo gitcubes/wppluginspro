@@ -5,6 +5,11 @@ if (!defined('ABSPATH')) {
 
 function cubestheme_brevo_api_key()
 {
+	$saved = get_option('cubestheme_brevo_api_key');
+	if (is_string($saved) && $saved !== '') {
+		return $saved;
+	}
+
 	$smtp = get_option('wp_mail_smtp');
 	if (is_array($smtp) && !empty($smtp['sendinblue']['api_key'])) {
 		return (string) $smtp['sendinblue']['api_key'];

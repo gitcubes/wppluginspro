@@ -59,6 +59,10 @@ function theme_front_page_settings() {
 
         update_option("cubestheme_company_logo_id", absint($_POST["company_logo_id"] ?? 0));
         update_option("cubestheme_brevo_list_id", absint($_POST["brevo_list_id"] ?? 0));
+        $brevo_api_key = sanitize_text_field(wp_unslash($_POST["brevo_api_key"] ?? ""));
+        if ($brevo_api_key !== "") {
+            update_option("cubestheme_brevo_api_key", $brevo_api_key);
+        }
         
         $message = "Custom Settings have been updated successfully.";
     }
@@ -75,6 +79,8 @@ function theme_front_page_settings() {
     $copyright_text = stripslashes(get_option("cubestheme_copyright_text"));
     $company_logo_id = absint(get_option("cubestheme_company_logo_id"));
     $brevo_list_id = absint(get_option("cubestheme_brevo_list_id"));
+    $saved_brevo_key = get_option("cubestheme_brevo_api_key");
+    $brevo_api_key_set = is_string($saved_brevo_key) && $saved_brevo_key !== "";
     $company_logo_url = $company_logo_id ? wp_get_attachment_image_url($company_logo_id, 'medium') : '';
     ?>
     <div class="wrap">
@@ -105,6 +111,15 @@ function theme_front_page_settings() {
                     <td>
                         <input type="number" id="brevo_list_id" name="brevo_list_id" value="<?php echo esc_attr($brevo_list_id); ?>" min="0" class="small-text">
                         <p class="description"><?php esc_html_e('Homepage newsletter signups are added to this Brevo list. Find the ID in Brevo under Contacts, Lists.', 'cubestheme'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">
+                        <label for="brevo_api_key"><?php esc_html_e('Brevo API key', 'cubestheme'); ?></label>
+                    </th>
+                    <td>
+                        <input type="password" id="brevo_api_key" name="brevo_api_key" value="" class="regular-text" autocomplete="off" placeholder="<?php echo $brevo_api_key_set ? esc_attr__('Saved. Paste a new key to replace it.', 'cubestheme') : ''; ?>">
+                        <p class="description"><?php esc_html_e('This is the contacts API key, not the SMTP key. In Brevo open SMTP & API, then API keys, and create a key. Leave this blank to keep the saved key.', 'cubestheme'); ?></p>
                     </td>
                 </tr>
                 <tr valign="top">
